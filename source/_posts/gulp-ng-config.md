@@ -7,7 +7,7 @@ tags:
 #Environment com gulp-ng-config
 Hoje vou falar sobre uma ideia de ambientação em um app angular utilizando um plugin muito bacana e facil de usar chamado gulp-ng-config.
 
-supondo que voce ja tenha gulp instalado em seu projeto, vamos instalar o plugin gulp-ng-config com:
+Supondo que voce ja tenha gulp instalado em seu projeto, vamos instalar o plugin gulp-ng-config com:
 
 ```
 npm i gulp-ng-config — save
