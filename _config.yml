@@ -69,3 +69,8 @@ theme: casper
 deploy:
   type: git
   repo: https://github.com/dielduarte/dielduarte.github.io
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: false
