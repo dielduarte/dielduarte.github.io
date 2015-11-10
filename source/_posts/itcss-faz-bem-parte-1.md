@@ -52,7 +52,7 @@ Analisando novamente nosso código, se quisermos estilizar o titulo do nosso pos
 
 ```
 
-mas sempre vamos utilizar um h1 dentro do nosso article? e se algum dev desinformado desse padrão colocar um h2 no lugar? Pensando nisso vamos dar uma classe para nosso titulo, algo como isso:
+mas sempre vamos utilizar um h1 dentro do nosso article? e se algum dev desinformado desse padrão colocar um h2 no lugar? Pensando nisso vamos dar uma classe para nosso título, algo como isso:
 
 ```
     <article class='post'>
