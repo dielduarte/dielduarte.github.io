@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Desenvolvedor Front End]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dielduarte.com/"/>
-  <updated>2015-11-10T01:46:06.000Z</updated>
+  <updated>2015-11-10T01:47:13.000Z</updated>
   <id>http://dielduarte.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"/>
     <id>http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/</id>
     <published>2015-11-10T01:30:16.000Z</published>
-    <updated>2015-11-10T01:46:06.000Z</updated>
+    <updated>2015-11-10T01:47:13.000Z</updated>
     <content type="html"><![CDATA[<p>Você já se deparou com a seguinte pergunta: como posso organizar o css do meu app de forma simples, rápida mas que seja organizada/escalável caso meu app cresça ? Nesta série amiguinhos vou falar sobre o uso do ITCSS juntamente com o uso das regras de nomenclatura do BEM. Vou dividir em 3 posts para não ficar muito extenso e chato:</p>
 <ul>
 <li>BEM</li>
@@ -47,7 +47,7 @@
 <h3>Modificadores</h3>
 
 <p>Como o própio nome já diz, elementos modificadores modificam o estilo atual, usamos isso para poder reutilizar ao máximo nosso css modificando apenas o que realmente importa. A regra de nomenclatura empregada pelo BEM para elementos modificadores é simples: nome do elemento +  –  + nome do modificador.</p>
-<p>Vamos supor que existam posts patrocinados no nosso blog em que a cor da fonte do titulo de posts patrocinados será vermelha, vamos criar um modificador chamado <code>.post__title—-sponsored</code> aonde essa classe modifica apenas o que realmente precisamos ficando assim:</p>
+<p>Vamos supor que existam posts patrocinados no nosso blog em que a cor da fonte do título de posts patrocinados será vermelha, vamos criar um modificador chamado <code>.post__title—-sponsored</code> aonde essa classe modifica apenas o que realmente precisamos ficando assim:</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.post__title</span>—<span class="tag">-sponsored</span> <span class="rules">&#123; <span class="rule"><span class="attribute">color</span>:<span class="value"> red</span></span>; &#125;</span></span><br></pre></td></tr></table></figure>
 <p>o que resultaria em um resultado final assim:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span> <span class="attribute">class</span>=<span class="value">’post’</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span> <span class="attribute">class</span>=<span class="value">’post__title</span> <span class="attribute">post__title</span>—<span class="attribute">-sponsored</span>’&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span> <span class="attribute">class</span>=<span class="value">’post__text’</span>&gt;</span> Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
