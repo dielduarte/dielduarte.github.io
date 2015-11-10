@@ -97,7 +97,7 @@ Vamos supor que existam posts patrocinados no nosso blog em que a cor da fonte d
 
 ```
 
-o que resultaria em um resultado final assim:
+o que resultaria em um html final assim:
 
 ```
     <article class=’post’>
