@@ -88,7 +88,7 @@ ele vai saber que o titulo pertence ao componente post, simples não? Além de f
 
 <h3>Modificadores</h3>
 
-Como o própio nome já diz, elementos modificadores modificam o estilo atual, usamos isso para poder reutilizar ao máximo nosso css modificando apenas o que realmente importa. A regra de nomenclatura empregada pelo BEM para elementos modificadores e simples: nome do elemento +  --  + nome do modificador.
+Como o própio nome já diz, elementos modificadores modificam o estilo atual, usamos isso para poder reutilizar ao máximo nosso css modificando apenas o que realmente importa. A regra de nomenclatura empregada pelo BEM para elementos modificadores é simples: nome do elemento +  --  + nome do modificador.
 
 Vamos supor que existam posts patrocinados no nosso blog em que a cor da fonte do titulo de posts patrocinados será vermelha, vamos criar um modificador chamado `.post__title—-sponsored` aonde essa classe modifica apenas o que realmente precisamos ficando assim:
 
