@@ -1,8 +1,7 @@
-title: itcss-faz-bem-parte-1
-date: 2015-11-09 23:03:35
+title: ITCSS faz BEM - Parte 1
+date: 2015-11-09 23:30:16
 tags:
 ---
-#ITCSS faz BEM — Parte 1
 
 Você já se deparou com a seguinte pergunta: como posso organizar o css do meu app de forma simples, rápida mas que seja organizada/escalável caso meu app cresça ? Nesta série amiguinhos vou falar sobre o uso do ITCSS juntamente com o uso das regras de nomenclatura do BEM. Vou dividir em 3 posts para não ficar muito extenso e chato:
 
@@ -14,7 +13,7 @@ Você já se deparou com a seguinte pergunta: como posso organizar o css do meu 
 
 BEM é a sigla para **“block element modifier”**. Ele sugere que organizamos nossas estrutura/nomenclatura css em 3 níveis, bloco, elemento e modificador.
 
-###Bloco
+<h3>Bloco</h3>
 
 Vamos imaginar que temos um página html um elemento article, que nada mais é do que um post de um blog que terá seu título e texto
 
@@ -43,7 +42,7 @@ Analisando o código acima conseguimos visualizar que o elemento pai é a tag `<
 
 ```
 
-###Elemento
+<h3>Elemento</h3>
 
 Analisando novamente nosso código, se quisermos estilizar o titulo do nosso post poderíamos utilizar o css:
 
@@ -86,7 +85,7 @@ ele vai saber que o titulo pertence ao componente post, simples não? Além de f
 
 ```
 
-###Modificadores
+<h3>Modificadores</h3>
 
 Como o própio nome já diz, elementos modificadores modificam o estilo atual, usamos isso para poder reutilizar ao máximo nosso css modificando apenas o que realmente importa. A regra de nomenclatura empregada pelo BEM para elementos modificadores e simples: nome do elemento +  --  + nome do modificador.
 
