@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>ITCSS faz BEM - Parte 1 | Diel Duarte</title>
+  <meta name="description" content="Desenvolvedor Front End" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Diel Duarte">
+  <meta name="theme-color" content="#3D7292">
+
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <a class="older-posts home-btn" href="http://dielduarte.com">
+     ← Home
+  </a>
+  <header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xlf1/v/t1.0-9/10455655_814573725303479_7339050636275370059_n.jpg?oh=ff2ce3b9a9a7544f0a69e14383279077&oe=5661F953&__gda__=1450930476_1060d810936968771b51d5653c6c01fa" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Diel Duarte</h1>
+            <h2 class="blog-description">Desenvolvedor Front End</h2>
+            <a class="network-icons" target="_blank" href="https://www.facebook.com/diel.duarte"> <img src="img/facebook.svg" alt="facebook" /></a>
+            <a class="network-icons" target="_blank" href="https://github.com/dielduarte"> <img src="img/github.svg" alt="github" /></a>   
+            <br>
+            <a class="older-posts blog-btn" href="#">
+        	   Visite meu Blog →
+    	    </a>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2015-11-10T01:30:16.000Z" itemprop="datePublished">
+          09-11-2015
+      </time>
+    
+</span>
+    <h1 class="post-title">ITCSS faz BEM - Parte 1</h1>
+    <section class="post-content">
+      <p>Você já se deparou com a seguinte pergunta: como posso organizar o css do meu app de forma simples, rápida mas que seja organizada/escalável caso meu app cresça ? Nesta série amiguinhos vou falar sobre o uso do ITCSS juntamente com o uso das regras de nomenclatura do BEM. Vou dividir em 3 posts para não ficar muito extenso e chato:</p>
+<ul>
+<li>BEM</li>
+<li>ITCSS</li>
+<li>Usando ITCSS + BEM.</li>
+</ul>
+<p><strong>OBS</strong>: Neste post vou dar apenas um overview sobre o assunto, então se você quer se aprofundar sobre BEM indico ler esse post <a href="http://u.planb.com.br/blog/ti/metodologia-bem/" target="_blank" rel="external">aqui</a>, escrito pelo Lucas Germano um grande brother meu.</p>
+<p>BEM é a sigla para <strong>“block element modifier”</strong>. Ele sugere que organizamos nossas estrutura/nomenclatura css em 3 níveis, bloco, elemento e modificador.</p>
+<h3>Bloco</h3>
+
+<p>Vamos imaginar que temos um página html um elemento article, que nada mais é do que um post de um blog que terá seu título e texto</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Analisando o código acima conseguimos visualizar que o elemento pai é a tag <code>&lt;article&gt;</code>, essa tag seria um elemento do tipo bloco. Elementos do tipo bloco são os elementos pai de um componente. O BEM prega o uso de classes ao invés de ID, então vamos dar uma classe para nosso elemento chamada de .post</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span> <span class="attribute">class</span>=<span class="value">'post'</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3>Elemento</h3>
+
+<p>Analisando novamente nosso código, se quisermos estilizar o titulo do nosso post poderíamos utilizar o css:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.post</span> <span class="tag">h1</span> <span class="rules">&#123; <span class="comment">/* algum estilo lindo aqui dentro*/</span> &#125;</span></span><br></pre></td></tr></table></figure>
+<p>mas sempre vamos utilizar um h1 dentro do nosso article? e se algum dev desinformado desse padrão colocar um h2 no lugar? Pensando nisso vamos dar uma classe para nosso titulo, algo como isso:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span> <span class="attribute">class</span>=<span class="value">'post'</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span> <span class="attribute">class</span>=<span class="value">'post__title'</span>&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Perceba o que fizemos acima, repetimos o nome do elemento pai + __ + nome do nosso componente. O BEM prega o uso de dois undercores para dizermos que o elemento filho faz parte do elemento pai, quando algum outro dev da sua equipe bater o olho em um css assim:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.post__title</span> <span class="rules">&#123; <span class="comment">/*um estilo bem lindo aqui*/</span> &#125;</span></span><br></pre></td></tr></table></figure>
+<p>ele vai saber que o titulo pertence ao componente post, simples não? Além de ficar fácil o entendimento do que se trata ainda economizamos um aninhamento de seletores melhorando nossa performance, <strong>ISSO É AMOR!</strong> Levando em consideração tudo que falei acima qual classe poderíamos dar ao texto do post? usando a mesma ideia de nomenclatura para elementos filhos: nome do pai + __ + nome do filho ficaria assim:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;article <span class="keyword">class</span>=<span class="string">'post'</span>&gt;</span><br><span class="line"></span><br><span class="line">  &lt;h1 <span class="keyword">class</span>=<span class="string">'post__title'</span>&gt;Titulo <span class="keyword">do</span> post&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line">  &lt;p <span class="keyword">class</span>=<span class="string">'post__text'</span>&gt;Texto <span class="keyword">do</span> post&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/article&gt;</span><br></pre></td></tr></table></figure>
+<h3>Modificadores</h3>
+
+<p>Como o própio nome já diz, elementos modificadores modificam o estilo atual, usamos isso para poder reutilizar ao máximo nosso css modificando apenas o que realmente importa. A regra de nomenclatura empregada pelo BEM para elementos modificadores e simples: nome do elemento +  –  + nome do modificador.</p>
+<p>Vamos supor que existam posts patrocinados no nosso blog em que a cor da fonte do titulo de posts patrocinados será vermelha, vamos criar um modificador chamado <code>.post__title—-sponsored</code> aonde essa classe modifica apenas o que realmente precisamos ficando assim:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.post__title</span>—<span class="tag">-sponsored</span> <span class="rules">&#123; <span class="rule"><span class="attribute">color</span>:<span class="value"> red</span></span>; &#125;</span></span><br></pre></td></tr></table></figure>
+<p>o que resultaria em um resultado final assim:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span> <span class="attribute">class</span>=<span class="value">’post’</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span> <span class="attribute">class</span>=<span class="value">’post__title</span> <span class="attribute">post__title</span>—<span class="attribute">-sponsored</span>’&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span> <span class="attribute">class</span>=<span class="value">’post__text’</span>&gt;</span> Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Muitas pessoas dizem que as classes utilizando BEM ficam enormes e por isso não gostam de utiliza-lo, mas o nível de organização e facilidade para entendermos do que se trata é outro, principalmente quando trabalhamos em equipe. Por hoje e só galera, continuando nossa serie o próximo post sera sobre ITCSS =).</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Diel Duarte</h4>
+    <p>github.com/dielduarte</p>
+</section>
+      <section class="share">
+    <h4>Compartilhe nas redes sociais</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2015/10/10/oi/">
+        oi =) →
+    </a>
+    
+</nav>
+</main>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68674150-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+</body> 
+</html>
