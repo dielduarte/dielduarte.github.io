@@ -1,14 +1,7 @@
-title: ITCSS faz BEM - Parte 1
+title: Escrevendo BEM classes css
 date: 2015-11-09 23:30:16
 tags:
 ---
-
-
-Você já se deparou com a seguinte pergunta: como posso organizar o css do meu app de forma simples, rápida mas que seja organizada/escalável caso meu app cresça ? Nesta série amiguinhos vou falar sobre o uso do ITCSS juntamente com o uso das regras de nomenclatura do BEM. Vou dividir em 3 posts para não ficar muito extenso e chato:
-
-- BEM
-- ITCSS
-- Usando ITCSS + BEM.
 
 **OBS**: Neste post vou dar apenas um overview sobre o assunto, então se você quer se aprofundar sobre BEM indico ler esse post [aqui](http://u.planb.com.br/blog/ti/metodologia-bem/), escrito pelo Lucas Germano um grande brother meu.
 
@@ -109,4 +102,4 @@ o que resultaria em um html final assim:
     </article>
     
 ```
-Muitas pessoas dizem que as classes utilizando BEM ficam enormes e por isso não gostam de utiliza-lo, mas o nível de organização e facilidade para entendermos do que se trata é outro, principalmente quando trabalhamos em equipe. Por hoje e só galera, continuando nossa serie o próximo post sera sobre ITCSS =).
+Muitas pessoas dizem que as classes utilizando BEM ficam enormes e por isso não gostam de utiliza-lo, mas o nível de organização e facilidade para entendermos do que se trata é outro, principalmente quando trabalhamos em equipe. Por hoje e só galera, até a próximo post =).
