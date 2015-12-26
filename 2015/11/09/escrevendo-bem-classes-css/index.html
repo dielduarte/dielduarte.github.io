@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>ITCSS faz BEM - Parte 1 | Diel Duarte</title>
+  <title>Escrevendo BEM classes css | Diel Duarte</title>
   <meta name="description" content="Desenvolvedor Front End" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -34,7 +34,7 @@
   <header class="site-head">
     <div class="vertical">
         <div class="site-head-content inner">
-             <a class="blog-logo" href="/"><img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xlf1/v/t1.0-9/10455655_814573725303479_7339050636275370059_n.jpg?oh=ff2ce3b9a9a7544f0a69e14383279077&oe=5661F953&__gda__=1450930476_1060d810936968771b51d5653c6c01fa" alt="Blog Logo"/></a> 
+             <a class="blog-logo" href="/"><img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xla1/v/t1.0-9/10455655_814573725303479_7339050636275370059_n.jpg?oh=44625cedda598183db0dd6c85d701a6c&oe=56D8A053&__gda__=1459704062_0373139db846e997c765ba01660e91ea" alt="Blog Logo"/></a> 
             <h1 class="blog-title">Diel Duarte</h1>
             <h2 class="blog-description">Desenvolvedor Front End</h2>
             <a class="network-icons" target="_blank" href="https://www.facebook.com/diel.duarte"> <img src="img/facebook.svg" alt="facebook" /></a>
@@ -56,15 +56,9 @@
       </time>
     
 </span>
-    <h1 class="post-title">ITCSS faz BEM - Parte 1</h1>
+    <h1 class="post-title">Escrevendo BEM classes css</h1>
     <section class="post-content">
-      <p>Você já se deparou com a seguinte pergunta: como posso organizar o css do meu app de forma simples, rápida mas que seja organizada/escalável caso meu app cresça ? Nesta série amiguinhos vou falar sobre o uso do ITCSS juntamente com o uso das regras de nomenclatura do BEM. Vou dividir em 3 posts para não ficar muito extenso e chato:</p>
-<ul>
-<li>BEM</li>
-<li>ITCSS</li>
-<li>Usando ITCSS + BEM.</li>
-</ul>
-<p><strong>OBS</strong>: Neste post vou dar apenas um overview sobre o assunto, então se você quer se aprofundar sobre BEM indico ler esse post <a href="http://u.planb.com.br/blog/ti/metodologia-bem/" target="_blank" rel="external">aqui</a>, escrito pelo Lucas Germano um grande brother meu.</p>
+      <p><strong>OBS</strong>: Neste post vou dar apenas um overview sobre o assunto, então se você quer se aprofundar sobre BEM indico ler esse post <a href="http://u.planb.com.br/blog/ti/metodologia-bem/" target="_blank" rel="external">aqui</a>, escrito pelo Lucas Germano um grande brother meu.</p>
 <p>BEM é a sigla para <strong>“block element modifier”</strong>. Ele sugere que organizamos nossas estrutura/nomenclatura css em 3 níveis, bloco, elemento e modificador.</p>
 <h3>Bloco</h3>
 
@@ -89,7 +83,7 @@
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.post__title</span>—<span class="tag">-sponsored</span> <span class="rules">&#123; <span class="rule"><span class="attribute">color</span>:<span class="value"> red</span></span>; &#125;</span></span><br></pre></td></tr></table></figure>
 <p>o que resultaria em um html final assim:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">article</span> <span class="attribute">class</span>=<span class="value">’post’</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">h1</span> <span class="attribute">class</span>=<span class="value">’post__title</span> <span class="attribute">post__title</span>—<span class="attribute">-sponsored</span>’&gt;</span>Titulo do post<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span> <span class="attribute">class</span>=<span class="value">’post__text’</span>&gt;</span> Texto do post<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Muitas pessoas dizem que as classes utilizando BEM ficam enormes e por isso não gostam de utiliza-lo, mas o nível de organização e facilidade para entendermos do que se trata é outro, principalmente quando trabalhamos em equipe. Por hoje e só galera, continuando nossa serie o próximo post sera sobre ITCSS =).</p>
+<p>Muitas pessoas dizem que as classes utilizando BEM ficam enormes e por isso não gostam de utiliza-lo, mas o nível de organização e facilidade para entendermos do que se trata é outro, principalmente quando trabalhamos em equipe. Por hoje e só galera, até a próximo post =).</p>
 
     </section>
     <footer class="post-footer">
@@ -99,15 +93,15 @@
 </section>
       <section class="share">
     <h4>Compartilhe nas redes sociais</h4>
-    <a class="icon-twitter" href="http://twitter.com/share?url=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dielduarte.com/2015/11/09/escrevendo-bem-classes-css/"
        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
         <span class="hidden">Twitter</span>
     </a>
-    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dielduarte.com/2015/11/09/escrevendo-bem-classes-css/"
        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
         <span class="hidden">Facebook</span>
     </a>
-    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dielduarte.com/2015/11/09/ITCSS-faz-BEM-Parte-1/"
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dielduarte.com/2015/11/09/escrevendo-bem-classes-css/"
        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
         <span class="hidden">Google+</span>
     </a>
