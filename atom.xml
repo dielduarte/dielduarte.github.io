@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Desenvolvedor Front End]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dielduarte.com/"/>
-  <updated>2015-12-26T20:29:01.000Z</updated>
+  <updated>2016-02-06T14:30:01.000Z</updated>
   <id>http://dielduarte.com/</id>
   
   <author>
@@ -13,6 +13,51 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Conhecendo o vue.js]]></title>
+    <link href="http://dielduarte.com/2016/02/06/conhecendo-o-vue-js/"/>
+    <id>http://dielduarte.com/2016/02/06/conhecendo-o-vue-js/</id>
+    <published>2016-02-06T12:52:33.000Z</published>
+    <updated>2016-02-06T14:30:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Vue.js é uma simples mas poderosa biblioteca para construção de interfaces web modernas e interativas com o poder do data  - <strong>lindo</strong> -  binding :P e focado em componentização da interface. </p>
+<p>Em meu entendimento - que não é  verdade absoluta -  o Vue consegue juntar o melhor do mundo angular com a ideia de componentização muito parecida com algumas libs como react e riot. É claro que sem a utilização do virtual DOM, ao invés disso Vue usa DOM real pois é importante frisar que ele tem o propósito de resolver uma solução progmática para a web, enquanto outros frameworks, por exemplo o react, tenta solucionar para várias plataformas. Se você quer saber mais sobre as principais diferenças entre Vue e outros frameworks veja esse <a href="http://vuejs.org/guide/comparison.html" target="_blank" rel="external">link</a>.</p>
+<p>É possível perceber grande influência do angular em como tratar o data binding, funções como v-for e v-if iguais há ng-repeat e ng-if, entre outros. Sua  api é muito simples e rápida para pegar, principalmente para quem ja estuda/trabalha com outros frameworks javascript aprender Vue não será um problema.</p>
+<h2>E Como posso usar Vue.js na minha aplicação?</h2>
+
+<p>Podemos startar uma aplicação com Vue de diversas formas, de uma forma rápida como no exemplo que vamos fazer hoje importando o arquivo js instalado a partir do <em>npm</em> ou <em>bower</em>. Também existe a opção de usar o vue-cli um generator oficial com um scaffolding para projetos usando o <em>Vue + WebPack</em> ou <em>Vue + browserify</em> ou até mesmo chamando o arquivo do Vue através de uma cdn.</p>
+<p>Saiba mais nesse <a href="http://vuejs.org/guide/installation.html" target="_blank" rel="external">link</a>.</p>
+<h2>Criando um simples hello world com Vue.js</h2>
+
+<ul>
+<li>Crie uma pasta para seu projeto </li>
+<li>Inicie a configuraçao do bower com <code>bower init</code></li>
+<li>Instale o Vue.js com <code>bower install vue --save</code></li>
+</ul>
+<p>Crie um arquivo <code>index.html</code> com o básico de uma estrutura html, como no exemplo abaixo:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line">   		<span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></span><br><span class="line">   	 	<span class="tag">&lt;<span class="title">title</span>&gt;</span>hello world vue.js<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>importe o Vue.js</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/vue/dist/vue.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Crie um componente html com id <code>#hello</code> e imprima o model chamado message:</li>
+</ul>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"hello"</span>&gt;</span></span><br><span class="line">    </span><span class="expression">&#123;&#123; <span class="variable">message</span> &#125;&#125;</span><span class="xml"></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>No mesmo arquivo vamos criar um script criando uma instância do Vue:</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="actionscript"></span><br><span class="line"> <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    el: <span class="string">'#hello'</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">        message: <span class="string">'hello world! =)'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Para criar uma nova instância do Vue como fizemos no exemplo acima basta digitarmos <code>new Vue(options);</code> aonde <strong>options</strong> é um objeto de configurações.</p>
+<p>Na chave <code>el</code> do nosso objeto passamos como valor o id do nosso componente, no caso <code>#hello</code>. A chave <code>data</code> é um objeto aonde setamos nossos models. Models são públicos ao nosso componente e controlados atraves do data - <strong>lindo</strong> - binding :P. Criamos um model <code>message</code> que nada mais é que uma string com uma messagem de olá mundo que será exibida no nosso componente.</p>
+<p>Pronto! abra o seu arquivo index.html e veja a mensagem de olá mundo.</p>
+<p>Esse exemplo é muito básico mas o propósito desse post é ser uma introdução sobre o Vue.js, no próximo post vamos fazer uma todo list o que dará uma visão bem mais ampla do poder dessa lib e poderemos aprender mais sobre o Vue.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Vue.js é uma simples mas poderosa biblioteca para construção de interfaces web modernas e interativas com o poder do data  - <strong>lind]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Escrevendo BEM classes css]]></title>
