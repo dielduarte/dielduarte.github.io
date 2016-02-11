@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Desenvolvedor Front End]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dielduarte.com/"/>
-  <updated>2016-02-06T14:30:01.000Z</updated>
+  <updated>2016-02-06T14:31:13.000Z</updated>
   <id>http://dielduarte.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://dielduarte.com/2016/02/06/conhecendo-o-vue-js/"/>
     <id>http://dielduarte.com/2016/02/06/conhecendo-o-vue-js/</id>
     <published>2016-02-06T12:52:33.000Z</published>
-    <updated>2016-02-06T14:30:01.000Z</updated>
+    <updated>2016-02-06T14:31:13.000Z</updated>
     <content type="html"><![CDATA[<p>Vue.js é uma simples mas poderosa biblioteca para construção de interfaces web modernas e interativas com o poder do data  - <strong>lindo</strong> -  binding :P e focado em componentização da interface. </p>
 <p>Em meu entendimento - que não é  verdade absoluta -  o Vue consegue juntar o melhor do mundo angular com a ideia de componentização muito parecida com algumas libs como react e riot. É claro que sem a utilização do virtual DOM, ao invés disso Vue usa DOM real pois é importante frisar que ele tem o propósito de resolver uma solução progmática para a web, enquanto outros frameworks, por exemplo o react, tenta solucionar para várias plataformas. Se você quer saber mais sobre as principais diferenças entre Vue e outros frameworks veja esse <a href="http://vuejs.org/guide/comparison.html" target="_blank" rel="external">link</a>.</p>
 <p>É possível perceber grande influência do angular em como tratar o data binding, funções como v-for e v-if iguais há ng-repeat e ng-if, entre outros. Sua  api é muito simples e rápida para pegar, principalmente para quem ja estuda/trabalha com outros frameworks javascript aprender Vue não será um problema.</p>
