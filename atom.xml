@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Desenvolvedor Front End]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dielduarte.com/"/>
-  <updated>2016-02-22T17:46:28.000Z</updated>
+  <updated>2016-02-22T17:55:03.000Z</updated>
   <id>http://dielduarte.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://dielduarte.com/usando-a-tag-picture/"/>
     <id>http://dielduarte.com/usando-a-tag-picture/</id>
     <published>2016-02-22T17:08:21.000Z</published>
-    <updated>2016-02-22T17:46:28.000Z</updated>
+    <updated>2016-02-22T17:55:03.000Z</updated>
     <content type="html"><![CDATA[<p>Hoje em um freela me deparei com um problema de imagens responsivas e lembro que recentemente li um post sobre o picture o qual falava que seu suporte já estava bem bacana pelo menos no chrome, firefox e edge. Resolvi dar uma estudada a fundo e criar esse post ao mesmo tempo pois, vou usa-lo no projeto em que estou trabalhando.</p>
 <p><strong>OBS:</strong> Estou tentando utilizar essa técnica de escrever um post ao estudar sobre determinado assunto e estou gostando muito do resultado. Tentem vocês também amiguinhos! as vezes temos medo de compartilhar um pouco do que sabemos por achar que é muito básico ou que vai ser ridicularizado por alguém, mas se você aprendeu com certeza outras pessoas também estão procurando sobre o mesmo assunto. <em>COMPARTILHE</em>!</p>
 <h2 id="O_que_é_?_e_para_que_serve_?">O que é ? e para que serve ?</h2><p>A tag picture surgiu da necessidade de tratarmos imagens responsivas, ou seja, imagem certa para resolução certa. Ja imaginou seu usuário acessando seu site através de um 3g com limite de 10mb por dia, baixando uma imagem de 20mb? conseguiu visualizar o problema ?</p>
@@ -29,7 +29,7 @@
 <p>Os atributos da tag source como podemos ver acima são:</p>
 <ul>
 <li><strong>srcset</strong> onde passamos o caminho da imagem</li>
-<li><strong>media</strong> Configuramos as medias em que essa imagem será exibida.</li>
+<li><strong>media</strong> Configuramos as medias em que essa imagem será exibida (lembra das media querys do css?).</li>
 </ul>
 <p>Nesse exemplo estamos mostrando a nossa <code>imagem-grande.png</code> quando o tamanho da tela for maior ou igual a 960px simulando desktops, e quando o maximo for 480px simulando celulares vamos mostrar a <code>imagem-pequena.png</code>. Quando nenhuma dessas regras forem atendidas mostramos a <code>imagem-default.png</code>.</p>
 <p>Ok Diel, mas qual a real vantagem da tag picture? A real vantagem de usarmos a tag picture é que ela só vai fazer o download da imagem correta para a media do cliente eliminando o nosso problema de baixar uma imagem gigante desnecessaria o que nos faz ganhar em performance de carregamento da nossa página.</p>

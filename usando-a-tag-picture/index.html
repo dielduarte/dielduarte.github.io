@@ -68,7 +68,7 @@
 <p>Os atributos da tag source como podemos ver acima são:</p>
 <ul>
 <li><strong>srcset</strong> onde passamos o caminho da imagem</li>
-<li><strong>media</strong> Configuramos as medias em que essa imagem será exibida.</li>
+<li><strong>media</strong> Configuramos as medias em que essa imagem será exibida (lembra das media querys do css?).</li>
 </ul>
 <p>Nesse exemplo estamos mostrando a nossa <code>imagem-grande.png</code> quando o tamanho da tela for maior ou igual a 960px simulando desktops, e quando o maximo for 480px simulando celulares vamos mostrar a <code>imagem-pequena.png</code>. Quando nenhuma dessas regras forem atendidas mostramos a <code>imagem-default.png</code>.</p>
 <p>Ok Diel, mas qual a real vantagem da tag picture? A real vantagem de usarmos a tag picture é que ela só vai fazer o download da imagem correta para a media do cliente eliminando o nosso problema de baixar uma imagem gigante desnecessaria o que nos faz ganhar em performance de carregamento da nossa página.</p>
