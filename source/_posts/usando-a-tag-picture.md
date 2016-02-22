@@ -6,7 +6,7 @@ tags:
 Hoje em um freela me deparei com um problema de imagens responsivas e lembro que recentemente li um post sobre o picture o qual falava que seu suporte já estava bem bacana pelo menos no chrome, firefox e edge. Resolvi dar uma estudada a fundo e criar esse post ao mesmo tempo pois, vou usa-lo no projeto em que estou trabalhando.
 
 
-**OBS:** Estou tentando utilizar essa técnica de escrever um post ao estudar sobre determinado assunto e estou gostando muito do resultado. Tentem vocês também amiguinhos! as vezes temos medo de compartilhar um pouco do que sabemos por achar que é muito básico ou que vai ser ridicularizado por alguém, mas se você aprendeu com certeza outras pessoas também estão procurando sobre o mesmo assunto. *COMPARTILHE*!
+**OBS:** Estou tentando utilizar essa técnica de escrever um post ao estudar sobre determinado assunto e estou gostando muito do resultado. Tentem vocês também amiguinhos! as vezes temos medo de compartilhar um pouco do que sabemos por achar que é muito básico ou que vai ser ridicularizado por alguém, mas se você aprendeu com certeza outras pessoas também estão procurando sobre o mesmo assunto. _COMPARTILHE_!
 
 
 ## O que é ? e para que serve ?
