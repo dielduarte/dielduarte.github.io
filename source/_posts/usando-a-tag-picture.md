@@ -41,7 +41,7 @@ Ok Diel, mas qual a real vantagem da tag picture? A real vantagem de usarmos a t
 
 ## E suporte dos browsers ?
 
-Podemos ver no [can i use ](http://caniuse.com/#search=picture) que o suporte já está bem bacana, chrome, firefox e edge já suportam sem grandes problemas.
+Podemos ver no [can i use ](http://caniuse.com/#search=picture) que o suporte já está bem bacana no chrome, firefox e edge já suportam sem grandes problemas.
 
 Mas se você precisa dar um suporte maior ainda, podemos usar um polyfill chamado [picturefill](https://scottjehl.github.io/picturefill/).
 
