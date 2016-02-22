@@ -32,7 +32,8 @@ Tag picture é muito simples, bem parecida por exemplo com a tag de audio, aonde
 Os atributos da tag source como podemos ver acima são:
 
 - **srcset** onde passamos o caminho da imagem
-- **media** Configuramos as medias em que essa imagem será exibida.
+- **media** Configuramos as medias em que essa imagem será exibida (lembra das media querys do css?).
+
 
 Nesse exemplo estamos mostrando a nossa ```imagem-grande.png``` quando o tamanho da tela for maior ou igual a 960px simulando desktops, e quando o maximo for 480px simulando celulares vamos mostrar a ```imagem-pequena.png```. Quando nenhuma dessas regras forem atendidas mostramos a ```imagem-default.png```.
 
