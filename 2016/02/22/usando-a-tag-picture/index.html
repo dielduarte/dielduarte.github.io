@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Usando a tag picture | Diel Duarte</title>
+  <meta name="description" content="Desenvolvedor Front End" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Diel Duarte">
+  <meta name="theme-color" content="#3D7292">
+
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <a class="older-posts home-btn" href="/">
+     ← Home
+  </a>
+  <header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xla1/v/t1.0-9/10455655_814573725303479_7339050636275370059_n.jpg?oh=44625cedda598183db0dd6c85d701a6c&oe=56D8A053&__gda__=1459704062_0373139db846e997c765ba01660e91ea" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Diel Duarte</h1>
+            <h2 class="blog-description">Desenvolvedor Front End</h2>
+            <a class="network-icons" target="_blank" href="https://www.facebook.com/diel.duarte"> <img src="img/facebook.svg" alt="facebook" /></a>
+            <a class="network-icons" target="_blank" href="https://github.com/dielduarte"> <img src="img/github.svg" alt="github" /></a>   
+            <br>
+            <a class="older-posts blog-btn" href="#">
+        	   Visite meu Blog →
+    	    </a>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-02-22T17:08:21.000Z" itemprop="datePublished">
+          22/02/2016
+      </time>
+    
+</span>
+    <h1 class="post-title">Usando a tag picture</h1>
+    <section class="post-content">
+      <p>Hoje em um freela me deparei com um problema de imagens responsivas e lembro que recentemente li um post sobre o picture o qual falava que seu suporte já estava bem bacana pelo menos no chrome, firefox e edge. Resolvi dar uma estudada a fundo e criar esse post ao mesmo tempo pois, vou usa-lo no projeto em que estou trabalhando.</p>
+<p><strong>OBS:</strong> Estou tentando utilizar essa técnica de escrever um post ao estudar sobre determinado assunto e estou gostando muito do resultado. Tentem vocês também amiguinhos! as vezes temos medo de compartilhar um pouco do que sabemos por achar que é muito básico ou que vai ser ridicularizado por alguém, mas se você aprendeu com certeza outras pessoas também estão procurando sobre o mesmo assunto. <em>COMPARTILHE*</em>!</p>
+<h2 id="O_que_é_?_e_para_que_serve_?">O que é ? e para que serve ?</h2><p>A tag picture surgiu da necessidade de tratarmos imagens responsivas, ou seja, imagem certa para resolução certa. Ja imaginou seu usuário acessando seu site através de um 3g com limite de 10mb por dia, baixando uma imagem de 20mb? conseguiu visualizar o problema ?</p>
+<p>Alem disso não há necessidade de baixarmos uma imagem de 1920x700 por exemplo, em um um smartphone com resolução maxima de 320px no caso de um iPhone 4.</p>
+<h2 id="Como_usar_?">Como usar ?</h2><p>Tag picture é muito simples, bem parecida por exemplo com a tag de audio, aonde colocamos na tag source vários arquivos de audios com extensões diferentes para determinados browsers. A diferença é que na tag source dentro da tag picture vamos configurar varias imagens diferentes para cada resolução. Vamos ver isso de uma forma mais prática, vejamos o código a baixo:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">picture</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">source</span> <span class="attribute">srcset</span>=<span class="value">'imagem-grande.png'</span> <span class="attribute">media</span>=<span class="value">'(min-width: 960px)'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">source</span> <span class="attribute">srcset</span>=<span class="value">'imagem-pequena.png'</span> <span class="attribute">media</span>=<span class="value">'(max-width: 480px)'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">img</span> <span class="attribute">srcset</span>=<span class="value">'imagem-default.png'</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">picture</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Os atributos da tag source como podemos ver acima são:</p>
+<ul>
+<li><strong>srcset</strong> onde passamos o caminho da imagem</li>
+<li><strong>media</strong> Configuramos as medias em que essa imagem será exibida.</li>
+</ul>
+<p>Nesse exemplo estamos mostrando a nossa <code>imagem-grande.png</code> quando o tamanho da tela for maior ou igual a 960px simulando desktops, e quando o maximo for 480px simulando celulares vamos mostrar a <code>imagem-pequena.png</code>. Quando nenhuma dessas regras forem atendidas mostramos a <code>imagem-default.png</code>.</p>
+<p>Ok Diel, mas qual a real vantagem da tag picture? A real vantagem de usarmos a tag picture é que ela só vai fazer o download da imagem correta para a media do cliente eliminando o nosso problema de baixar uma imagem gigante desnecessaria o que nos faz ganhar em performance de carregamento da nossa página.</p>
+<h2 id="E_suporte_dos_browsers_?">E suporte dos browsers ?</h2><p>Podemos ver no <a href="http://caniuse.com/#search=picture" target="_blank" rel="external">can i use </a> que o suporte já está bem bacana, chrome, firefox e edge já suportam sem grandes problemas.</p>
+<p>Mas se você precisa dar um suporte maior ainda, podemos usar um polyfill chamado <a href="https://scottjehl.github.io/picturefill/" target="_blank" rel="external">picturefill</a>.</p>
+<p>Por hoje é só, valeu! =)</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Diel Duarte</h4>
+    <p>github.com/dielduarte</p>
+</section>
+      <section class="share">
+    <h4>Compartilhe nas redes sociais</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dielduarte.com/2016/02/22/usando-a-tag-picture/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dielduarte.com/2016/02/22/usando-a-tag-picture/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dielduarte.com/2016/02/22/usando-a-tag-picture/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2016/02/06/conhecendo-o-vue-js/">
+        Conhecendo o vue.js →
+    </a>
+    
+</nav>
+</main>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68674150-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+</body>
+</html>
