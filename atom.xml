@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Desenvolvedor Front End]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://dielduarte.com/"/>
-  <updated>2016-02-22T17:55:03.000Z</updated>
+  <updated>2016-04-01T19:40:21.000Z</updated>
   <id>http://dielduarte.com/</id>
   
   <author>
@@ -13,6 +13,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Angular component]]></title>
+    <link href="http://dielduarte.com/angular-component/"/>
+    <id>http://dielduarte.com/angular-component/</id>
+    <published>2016-04-01T18:31:40.000Z</published>
+    <updated>2016-04-01T19:40:21.000Z</updated>
+    <content type="html"><![CDATA[<p>Mesmo nos ultimos tempos todos os olhos se voltando para o react e o angular 2, não podemos esquecer do angular na sua versão 1 que ainda é amplamente utilizada por diversos projetos, empresas e segue em constantes atualizações. Sua última grande atualizaçāo na versão 1.5 foi o angular component.</p>
+<h3> Mas o que é  o angular component ? </h3>
+
+<p>Component é um tipo especial de directiva, sua configuração/criação é mais simples que uma directiva normal e é adequada para utilizar em um aplicativo baseado em componentes. Component veio para facilitar a vida de quem pretende atualizar seu app para angular 2 ao sair sua versão estável, seu uso se assemelha bastante também ao uso de web componentes.</p>
+<h3>E qual a vantagem do component em relação a uma directiva normal?</h3>
+
+<ul>
+<li>Como dito no parágrafo acima, é mais fácil de configurar/criar um component.</li>
+<li>Foi criado e é otimizado para uma arquitetura baseada em componentes.</li>
+<li>Atualizar o seu app para a versão 2 do angular será muito mais fácil.</li>
+</ul>
+<h3> Quando não usar componentes e optar por directivas ? </h3>
+
+<ul>
+<li>Quando precisamos fazer manipulação de DOM,  pois funções existentes em directivas como link e compile não estão disponíveis.</li>
+<li>Quando precisamos criar uma directiva mais avançada.</li>
+<li>Quando precisamos usar uma directiva como atributo ou classe css.</li>
+</ul>
+<h3>Um Exemplo básico de como escrever um component</h3>
+
+<p>Vamos criar um component chamado card-user, nosso componente vai receber apenas o nome do usuário pois se trata de um exemplo.</p>
+<ul>
+<li>Criamos um modulo para nosso app:</li>
+</ul>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">angular.<span class="keyword">module</span>(<span class="symbol">'app'</span>, <span class="literal">[]</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Agora crie um controller principal</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .controller(<span class="string">'appController'</span>, appController);</span><br><span class="line">    </span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">appController</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">        vm.user = &#123;</span><br><span class="line">            name: <span class="string">'Diel Duarte'</span></span><br><span class="line">        &#125;;</span><br><span class="line">     &#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Nosso component user-card</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">angular</span><br><span class="line">    .module('app')</span><br><span class="line">    .component('userCard', &#123;</span><br><span class="line">            <span class="keyword">template</span>: '&lt;h1&gt;&#123;&#123; $ctrl.user.name &#125;&#125;&lt;/h1&gt;',</span><br><span class="line">            bindings: &#123;</span><br><span class="line">                user: '=',</span><br><span class="line">            &#125;</span><br><span class="line">     &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>obs:</strong> Por default dentro de um component o controller as syntax é definido como <code>$ctrl</code>.</p>
+<ul>
+<li>E por último mas não menos importante, nosso index.html</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span> <span class="attribute">ng-app</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">title</span>&gt;</span>Angualar component<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"appController as vm"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">user-card</span> <span class="attribute">user</span>=<span class="value">"vm.user"</span>&gt;</span><span class="tag">&lt;/<span class="title">user-card</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"app.js"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">    <span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span></span></span><br></pre></td></tr></table></figure>
+<p><strong>Pronto!</strong> veja funcionando <a href="https://embed.plnkr.co/WsYdTHl4KzIx0sLDdodq/" target="_blank" rel="external">aqui</a>.</p>
+<p>Se você gostou e deseja se aprofundar ainda mais em component nada melhor que propria doc do angular, <a href="https://docs.angularjs.org/guide/component" target="_blank" rel="external">veja aqui</a>. No próximo post falaremos sobre aquitetura baseada em components , ate lá =)  </p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Mesmo nos ultimos tempos todos os olhos se voltando para o react e o angular 2, não podemos esquecer do angular na sua versão 1 que ainda]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Usando a tag picture]]></title>

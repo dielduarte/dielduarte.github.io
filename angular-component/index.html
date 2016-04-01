@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Angular component | Diel Duarte</title>
+  <meta name="description" content="Desenvolvedor Front End" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+  <meta name="generator" content="Diel Duarte">
+  <meta name="theme-color" content="#3D7292">
+
+  
+  
+  <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml">
+  
+  
+
+
+  
+</head>
+
+
+<body class="post-template">
+
+  <a class="older-posts home-btn" href="/">
+     ← Home
+  </a>
+  <header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xla1/v/t1.0-9/10455655_814573725303479_7339050636275370059_n.jpg?oh=ba7d6e5893412dc2f9b838dc2124b397&oe=5776D453&__gda__=1467480062_7310de9b024bbf16080fc368e272687d" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Diel Duarte</h1>
+            <h2 class="blog-description">Desenvolvedor Front End</h2>
+            <a class="network-icons" target="_blank" href="https://www.facebook.com/diel.duarte"> <img src="img/facebook.svg" alt="facebook" /></a>
+            <a class="network-icons" target="_blank" href="https://github.com/dielduarte"> <img src="img/github.svg" alt="github" /></a>   
+            <br>
+            <a class="older-posts blog-btn" href="#">
+        	   Visite meu Blog →
+    	    </a>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2016-04-01T18:31:40.000Z" itemprop="datePublished">
+          01/04/2016
+      </time>
+    
+</span>
+    <h1 class="post-title">Angular component</h1>
+    <section class="post-content">
+      <p>Mesmo nos ultimos tempos todos os olhos se voltando para o react e o angular 2, não podemos esquecer do angular na sua versão 1 que ainda é amplamente utilizada por diversos projetos, empresas e segue em constantes atualizações. Sua última grande atualizaçāo na versão 1.5 foi o angular component.</p>
+<h3> Mas o que é  o angular component ? </h3>
+
+<p>Component é um tipo especial de directiva, sua configuração/criação é mais simples que uma directiva normal e é adequada para utilizar em um aplicativo baseado em componentes. Component veio para facilitar a vida de quem pretende atualizar seu app para angular 2 ao sair sua versão estável, seu uso se assemelha bastante também ao uso de web componentes.</p>
+<h3>E qual a vantagem do component em relação a uma directiva normal?</h3>
+
+<ul>
+<li>Como dito no parágrafo acima, é mais fácil de configurar/criar um component.</li>
+<li>Foi criado e é otimizado para uma arquitetura baseada em componentes.</li>
+<li>Atualizar o seu app para a versão 2 do angular será muito mais fácil.</li>
+</ul>
+<h3> Quando não usar componentes e optar por directivas ? </h3>
+
+<ul>
+<li>Quando precisamos fazer manipulação de DOM,  pois funções existentes em directivas como link e compile não estão disponíveis.</li>
+<li>Quando precisamos criar uma directiva mais avançada.</li>
+<li>Quando precisamos usar uma directiva como atributo ou classe css.</li>
+</ul>
+<h3>Um Exemplo básico de como escrever um component</h3>
+
+<p>Vamos criar um component chamado card-user, nosso componente vai receber apenas o nome do usuário pois se trata de um exemplo.</p>
+<ul>
+<li>Criamos um modulo para nosso app:</li>
+</ul>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">angular.<span class="keyword">module</span>(<span class="symbol">'app'</span>, <span class="literal">[]</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Agora crie um controller principal</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">angular</span><br><span class="line">    .module(<span class="string">'app'</span>)</span><br><span class="line">    .controller(<span class="string">'appController'</span>, appController);</span><br><span class="line">    </span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">appController</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> vm = <span class="keyword">this</span>;</span><br><span class="line">        vm.user = &#123;</span><br><span class="line">            name: <span class="string">'Diel Duarte'</span></span><br><span class="line">        &#125;;</span><br><span class="line">     &#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Nosso component user-card</li>
+</ul>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">angular</span><br><span class="line">    .module('app')</span><br><span class="line">    .component('userCard', &#123;</span><br><span class="line">            <span class="keyword">template</span>: '&lt;h1&gt;&#123;&#123; $ctrl.user.name &#125;&#125;&lt;/h1&gt;',</span><br><span class="line">            bindings: &#123;</span><br><span class="line">                user: '=',</span><br><span class="line">            &#125;</span><br><span class="line">     &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>obs:</strong> Por default dentro de um component o controller as syntax é definido como <code>$ctrl</code>.</p>
+<ul>
+<li>E por último mas não menos importante, nosso index.html</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span> <span class="attribute">ng-app</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">title</span>&gt;</span>Angualar component<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"appController as vm"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">user-card</span> <span class="attribute">user</span>=<span class="value">"vm.user"</span>&gt;</span><span class="tag">&lt;/<span class="title">user-card</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"app.js"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">    <span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span></span></span><br></pre></td></tr></table></figure>
+<p><strong>Pronto!</strong> veja funcionando <a href="https://embed.plnkr.co/WsYdTHl4KzIx0sLDdodq/" target="_blank" rel="external">aqui</a>.</p>
+<p>Se você gostou e deseja se aprofundar ainda mais em component nada melhor que propria doc do angular, <a href="https://docs.angularjs.org/guide/component" target="_blank" rel="external">veja aqui</a>. No próximo post falaremos sobre aquitetura baseada em components , ate lá =)  </p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Diel Duarte</h4>
+    <p>github.com/dielduarte</p>
+</section>
+      <section class="share">
+    <h4>Compartilhe nas redes sociais</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://dielduarte.com/angular-component/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://dielduarte.com/angular-component/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://dielduarte.com/angular-component/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/usando-a-tag-picture/">
+        Usando a tag picture →
+    </a>
+    
+</nav>
+</main>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68674150-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+
+</body>
+</html>
