@@ -1,0 +1,74 @@
+.experiencies {
+  --experiencies: 'My history begins as a back-end developer...';
+  --experiencies-back: 'having worked with delphi, php and nodejs.';
+  --experiencies-front: 'But I love client-side developer...';
+  --experiencies-front1: 'so I decided to turn myself one front-end developer...';
+  --experiencies-front2: 'since I did it, I worked in...';
+  --experiencies-front3: 'digital agencies, startups and also big companies...';
+  --experiencies-front4: 'UFMG, Hotmart, Gristpot, Tienda Nube...';
+  --experiencies-front5: 'are just a few companies that I worked.';
+  --experiencies-front6: "Right now, I'm SR. front-end engineer at AvantStay!";
+  --experiencies-front7: 'I love to develop complete experiences...';
+  --experiencies-front8: 'always caring about performance, scalability and UX.';
+  --experiencies-front9: "I'm brazilian but I lived in Berlin - Germany for a few months...";
+  --experiencies-front10: "now I'm working remotely from brazil.";
+  --experiencies-end: 'To know more about me, select the topic below:';
+}
+
+.experiencies::before {
+  content: var(--experiencies);
+  animation: experience 32.5s linear 2.5s forwards;
+}
+
+@keyframes experience {
+  7.69% {
+    content: var(--experiencies-back);
+  }
+
+  15.38% {
+    content: var(--experiencies-front);
+  }
+
+  23.07% {
+    content: var(--experiencies-front1);
+  }
+
+  30.76% {
+    content: var(--experiencies-front2);
+  }
+
+  38.45% {
+    content: var(--experiencies-front3);
+  }
+
+  46.14% {
+    content: var(--experiencies-front4);
+  }
+  53.83% {
+    content: var(--experiencies-front5);
+  }
+
+  61.52% {
+    content: var(--experiencies-front6);
+  }
+
+  69.21% {
+    content: var(--experiencies-front7);
+  }
+
+  76.9% {
+    content: var(--experiencies-front8);
+  }
+
+  84.59% {
+    content: var(--experiencies-front9);
+  }
+
+  92.98% {
+    content: var(--experiencies-front10);
+  }
+
+  100% {
+    content: var(--experiencies-end);
+  }
+}

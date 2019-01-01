@@ -1,0 +1,7 @@
+.skills {
+  --skills: 'See all of my skills on the link below:';
+}
+
+.skills::before {
+  content: var(--skills);
+}

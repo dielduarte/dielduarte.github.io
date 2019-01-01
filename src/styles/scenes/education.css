@@ -1,0 +1,50 @@
+.education {
+  --education: "I'm self-taught, so I didn't finish my degree...";
+  --education-degree: 'I studied for 3 years system of information at PUC...';
+  --education-degree1: 'before that, I did a technical school as well...';
+  --education-degree2: 'where I learned a lot about programming.';
+  --education-howTolearn: 'Share my knowledge has been the best way to learn more...';
+  --education-howTolearn1: "so I'm always enjoying meetups, conferences...";
+  --education-howTolearn2: 'writing blog posts, doing talks and workshops...';
+  --education-howTolearn3: 'and of course, open source.';
+  --education-end: 'To know more about me, select the topic below:';
+}
+
+.education::before {
+  content: var(--education);
+  animation: education 20s linear 2.5s forwards;
+}
+
+@keyframes education {
+  12.5% {
+    content: var(--education-degree);
+  }
+
+  25% {
+    content: var(--education-degree1);
+  }
+
+  37.5% {
+    content: var(--education-degree2);
+  }
+
+  50% {
+    content: var(--education-howTolearn);
+  }
+
+  62.5% {
+    content: var(--education-howTolearn1);
+  }
+
+  75% {
+    content: var(--education-howTolearn2);
+  }
+
+  87.5% {
+    content: var(--education-howTolearn3);
+  }
+
+  100% {
+    content: var(--education-end);
+  }
+}

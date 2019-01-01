@@ -1,0 +1,25 @@
+.buttons-container {
+  margin-top: 250px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out 25s forwards;
+  padding: 0 20px;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  font-family: 'Press Start 2P', cursive;
+  margin-right: 30px;
+  transition: transform 0.2s linear;
+}
+
+.btn:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+@media (min-width: 720px) {
+  .buttons-container {
+    margin-top: 400px;
+  }
+}

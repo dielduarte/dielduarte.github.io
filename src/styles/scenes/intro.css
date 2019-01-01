@@ -1,0 +1,53 @@
+.intro {
+  --intro: "Hi, it's a joke! There's no loading...";
+  --intro-perf: 'The time to interactive...';
+  --intro-perf1: 'is one of the most important metrict...';
+  --intro-perf2: 'to follow as a Front-end engineer.';
+  --intro-aboutme: 'My name is Magdiel...';
+  --intro-aboutme1: 'but you can call me just Diel.';
+  --intro-aboutme2: "I've 5 years as a Front-end engineer...";
+  --intro-aboutme3: "but also I've experience with back-end...";
+  --intro-aboutme4: 'I love do open source, go to meetups and conferences.';
+  --intro-end: 'To know more about me, select the topic below:';
+}
+
+.intro::before {
+  content: var(--intro);
+  animation: intro 22.5s linear 2s forwards;
+}
+
+@keyframes intro {
+  20% {
+    content: var(--intro-perf);
+  }
+
+  30% {
+    content: var(--intro-perf1);
+  }
+
+  40% {
+    content: var(--intro-perf2);
+  }
+
+  50% {
+    content: var(--intro-aboutme);
+  }
+
+  60% {
+    content: var(--intro-aboutme1);
+  }
+
+  70% {
+    content: var(--intro-aboutme2);
+  }
+  80% {
+    content: var(--intro-aboutme3);
+  }
+  90% {
+    content: var(--intro-aboutme4);
+  }
+
+  100% {
+    content: var(--intro-end);
+  }
+}

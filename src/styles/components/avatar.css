@@ -1,0 +1,57 @@
+.avatar-container {
+  width: 130px;
+  height: 130px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: absolute;
+  left: calc(50% - 65px);
+  top: -100vh;
+  opacity: 0;
+  animation: avatarEntranceMobile 0.1s ease-out 0.4s forwards;
+}
+
+.avatar {
+  width: 85px;
+  height: 85px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.avatar-bubble {
+  min-width: 300px;
+  position: absolute;
+  top: -100px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-out 0.8s forwards, floating 0.8s linear alternate infinite;
+}
+
+@keyframes avatarEntrance {
+  0% {
+  }
+  100% {
+    opacity: 1;
+    top: calc(50vh - 68px);
+  }
+}
+
+@keyframes avatarEntranceMobile {
+  0% {
+  }
+  100% {
+    opacity: 1;
+    top: calc(40vh - 68px);
+  }
+}
+
+@media (min-width: 720px) {
+  .avatar-container {
+    animation: avatarEntrance 0.1s ease-out 0.4s forwards;
+  }
+
+  .avatar-bubble {
+    min-width: 400px;
+  }
+}

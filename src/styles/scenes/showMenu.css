@@ -1,0 +1,7 @@
+.showMenu {
+  --skills: 'To know more about me, select the topic below:';
+}
+
+.showMenu::before {
+  content: var(--skills);
+}

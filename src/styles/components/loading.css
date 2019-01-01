@@ -1,0 +1,24 @@
+.loading {
+  color: var(--white);
+  font-size: 28px;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 2s ease-out forwards, loadingLeft 0.2s ease-in 0.4s forwards;
+  top: inherit;
+}
+
+@keyframes loadingLeft {
+  0% {
+    transform: translateY(inherit);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@media (min-width: 720px) {
+  .loading {
+    font-size: 32px;
+  }
+}

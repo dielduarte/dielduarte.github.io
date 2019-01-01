@@ -1,0 +1,7 @@
+.contact {
+  --contact: 'See my contacts on the links below:';
+}
+
+.contact::before {
+  content: var(--contact);
+}
