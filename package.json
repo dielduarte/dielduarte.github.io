@@ -1,0 +1,22 @@
+{
+  "name": "dielduarte.github.io",
+  "version": "1.0.0",
+  "description": "My Personal website",
+  "main": "Main.elm",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dielduarte/dielduarte.github.io.git"
+  },
+  "author": "Diel Duarte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dielduarte/dielduarte.github.io/issues"
+  },
+  "homepage": "https://github.com/dielduarte/dielduarte.github.io#readme"
+}
