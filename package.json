@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": ""
+    "build": "gh-pages -d build -b master"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/dielduarte/dielduarte.github.io/issues"
   },
-  "homepage": "https://github.com/dielduarte/dielduarte.github.io#readme"
+  "homepage": "https://github.com/dielduarte/dielduarte.github.io#readme",
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
+  }
 }

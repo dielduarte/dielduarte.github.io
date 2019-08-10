@@ -60,7 +60,7 @@ twitterUrl : String
 twitterUrl = "https://twitter.com/diel_duarte"
 
 blogUrl : String
-blogUrl = "https://medium.com/codeuai"
+blogUrl = "./blog"
  
 
 getHideActiveClass : Model -> String
