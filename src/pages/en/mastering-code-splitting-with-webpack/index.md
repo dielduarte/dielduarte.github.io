@@ -19,11 +19,11 @@ Google Chrome has a nice dev tool called `coverage` that shows what percentage o
 
 To use the coverage tool just open your dev tools, `cmd/ctrl + p`, and type `show coverage`:
 
-![image showing how to access coverage tab on chrome dev tools](/blog/images/coverage.png) 
+![image showing how to access coverage tab on chrome dev tools](/images/coverage.png) 
 
 then, on the coverage tab click on the reload button and wait until the website is reloaded, this will show you how much code you are using on that specific page per asset downloaded. It's AMAZING! &#128525;
 
-![image showing coverage tab, where we can see a list of assets downloaded and how much code is not being used in red.](/blog/images/result.png) 
+![image showing coverage tab, where we can see a list of assets downloaded and how much code is not being used in red.](/images/result.png) 
 
 In the example above, 46% of the code delivered is `not` being used! but that metric is also relative, depends on file size and many other variables, so the context/scenario is super important when using these tools.
 

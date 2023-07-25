@@ -6,7 +6,7 @@ description: Construindo sua primeira aplicação com react e xstate...
 languageKey: pt-br
 languageLink: /en/creating-your-first-application-with-react-and-xstate
 slug: pt-br/criando-sua-primeira-aplicacao-com-react-e-xstate
-socialImage: /blog/images/creating-your-first-application-with-react-and-xstate/cats-app-machine.png
+socialImage: /images/creating-your-first-application-with-react-and-xstate/cats-app-machine.png
 ---
 
 Hoje vamos criar nossa primeira aplicação utilizando o nosso modelo do post anterior que você pode ler [aqui](/pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate/). Nós iremos utilizar Snowpack, React e Xstate.
@@ -261,7 +261,7 @@ const [current, send] = useMachine(AppMachine, { devTools: true });
 Agora voltamos pra nossa aplicação e você vai ver que ao renderizá-la novamente o xstate/inspect vai abrir uma nova aba renderizando a sua machine em realtime e você pode tanto usar a sua aplicação e ver os resultados disso na aba do inspect quanto ao contrário, você pode enviar eventos do inspect para a sua aplicação.
 
 <video controls="true" allowfullscreen="true">
-    <source src="/blog/images/creating-your-first-application-with-react-and-xstate/video-1.mp4" type="video/mp4">
+    <source src="/images/creating-your-first-application-with-react-and-xstate/video-1.mp4" type="video/mp4">
   </video>
 
 ### Simulando API retornando erro.
@@ -280,7 +280,7 @@ Podemos ver também que nossa lógica de retry times funcionou, o usuário pode 
 
 
 <video controls="true" allowfullscreen="true">
-    <source src="/blog/images/creating-your-first-application-with-react-and-xstate/video-2.mp4" type="video/mp4">
+    <source src="/images/creating-your-first-application-with-react-and-xstate/video-2.mp4" type="video/mp4">
   </video>
 
 Por hoje é só pessoal!

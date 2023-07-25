@@ -57,13 +57,13 @@ Use groups by knowledge areas to increase engagement and knowledge sharing. It m
 
 A good way to know if someone is online or not is using chat status. Some tools, like Slack, enable the users to add more status besides only online/offline. A nice idea that my current team use and it is working well are the statuses:
 
-![imagem mostrando status pré definidos além de online ou offline](/blog/images/status-1.png)
+![imagem mostrando status pré definidos além de online ou offline](/images/status-1.png)
 
 We can see the status next to the user name:
 
-![imagem mostrando status ao lado do nome do usário](/blog/images/status-2.png)
+![imagem mostrando status ao lado do nome do usário](/images/status-2.png)
 
-![imagem mostrando status ao lado do nome do usário em uma conversa real](/blog/images/status-3.png)
+![imagem mostrando status ao lado do nome do usário em uma conversa real](/images/status-3.png)
 
 In the example above, I know that the user Magdiel Duarte is offline, it means that even though I send a message to him the answers won't be instantaneous and that's okay! send the message in the same way and wait. If you really need an instantaneously answer always send in groups where more people can help.
 

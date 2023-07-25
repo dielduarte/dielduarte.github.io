@@ -58,13 +58,13 @@ Use grupos por áreas de conhecimento para aumentar o engajamento e a troca de c
 
 Uma ótima maneira saudável de saber quando alguém está online ou não é usando o próprio status de chats em real time. Algumas ferramentas, como Slack, permitem aos usuários adicionarem status diferentes de apenas online/offline. Uma ideia que meu time atual aplica e tem funcionado muito bem são os status:
 
-![imagem mostrando status pré definidos além de online ou offline](/blog/images/status-1.png)
+![imagem mostrando status pré definidos além de online ou offline](/images/status-1.png)
 
 O status é exibido ao lado do nome do usuário:
 
-![imagem mostrando status ao lado do nome do usário](/blog/images/status-2.png)
+![imagem mostrando status ao lado do nome do usário](/images/status-2.png)
 
-![imagem mostrando status ao lado do nome do usário em uma conversa real](/blog/images/status-3.png)
+![imagem mostrando status ao lado do nome do usário em uma conversa real](/images/status-3.png)
 
 No exemplo acima, eu sei que o usuário Magdiel Duarte está offline no momento, isso quer dizer que, mesmo ao enviar uma mensagem direta para ele a resposta não vai ser instantânea, e tudo bem, mande a mensagem da mesma forma e espere. Se precisar realmente de uma resposta urgente sempre mande em grupos onde mais pessoas podem ajudar.
 

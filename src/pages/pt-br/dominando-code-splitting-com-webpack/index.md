@@ -18,11 +18,11 @@ O Google Chrome tem uma ótima ferramenta chamada `coverage` que nos mostra qual
 
 Para usar essa ferramenta abra o dev tools do Chrome, `cmd/ctrl + p`, e digite `show coverage`:
 
-![imagem mostrando como acessar a janela coverage no dev tools do Chrome](/blog/images/coverage.png) 
+![imagem mostrando como acessar a janela coverage no dev tools do Chrome](/images/coverage.png) 
 
 Uma vez que abrimos a opção coverage, clique no botão de reload e espere até que nosso site seja completamente carregado. Os resultados vão nos motrar o quanto do código carregado por arquivo está sendo usado. É maravilhoso! &#128525;
 
-![imagem mostrando a tab coverage, onde nos podemos ver a lista de arquivos baixados e o quanto do código de cada arquivo está sendo usado.](/blog/images/result.png) 
+![imagem mostrando a tab coverage, onde nos podemos ver a lista de arquivos baixados e o quanto do código de cada arquivo está sendo usado.](/images/result.png) 
 
 No exemplo abaixo, 46% do código entregue `não` está sendo usado, essa métrica também é relativa, dependende do tamanho do arquivo e de muitas outras variáveis. Então é sempre bom entender o contexto que estamos trabalhando quando estivermos usando essas ferramentas.
 

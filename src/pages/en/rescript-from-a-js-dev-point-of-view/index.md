@@ -5,7 +5,7 @@ date: "2021-04-27"
 description: A few opinions about Rescript language.
 languageKey: en
 languageLink: /pt-br/rescript-sob-o-ponto-de-vista-de-um-dev-js
-socialImage: /blog/images/rescript-from-a-js-dev-point-of-view/image-1.png
+socialImage: /images/rescript-from-a-js-dev-point-of-view/image-1.png
 slug: en/rescript-from-a-js-dev-point-of-view
 ---
 
