@@ -3,7 +3,7 @@ layout: '../../../layouts/Post.astro'
 title: Um ano trabalhando remoto
 date: "2020-01-20"
 description: Trabalhar remoto foi uma das melhores decisões que fiz até agora, eu espero que você possa aprender algo com a minha expêriencia.
-languageKey: pt_br
+languageKey: pt-br
 languageLink: /en/a-year-working-remotely
 slug: pt-br/um-ano-trabalhando-remoto
 ---

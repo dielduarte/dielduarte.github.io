@@ -3,7 +3,7 @@ layout: '../../../layouts/Post.astro'
 title: Dicas para times remotos
 date: "2020-04-19"
 description: Comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos.
-languageKey: pt_br
+languageKey: pt-br
 languageLink: /en/tips-for-remote-teams
 slug: pt-br/dicas-para-times-remotos
 ---

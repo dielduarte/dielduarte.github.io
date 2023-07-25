@@ -43,7 +43,7 @@ const { posts } = Astro.props;
     <h2 class="text-lg">Blog</h2>
     <nav class="mt-10 flex flex-col gap-2 text-left max-w-lg">
       {posts.map(post =>
-        <a href={`${post.frontmatter.slug}`} class="border-b border-white first:border-t pt-4 pb-6">
+        <a href={`/${post.frontmatter.slug}/`} class="border-b border-white first:border-t pt-4 pb-6">
           <h3 class="text-xs">
             {post.frontmatter.title}
           </h3>
