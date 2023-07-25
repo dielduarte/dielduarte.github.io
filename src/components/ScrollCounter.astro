@@ -1,6 +1,40 @@
-<img 
-  src="/images/diel.jpeg" 
-  alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done" 
-  class="rounded-full bottom-5 right-5 fixed w-14 h-14" 
-  id="js-scroll-counter aaaa" 
-/>
+<script>
+  const onDocumentLoad = () => {
+    const scrollCounter = document.getElementById('js-scroll-counter')
+    const pathLength = scrollCounter.getTotalLength()
+    const scrollHeight = document.body.scrollHeight - window.innerHeight
+
+    scrollCounter.style['stroke-dasharray'] = pathLength + 1
+    scrollCounter.style['stroke-dashoffset'] = pathLength + 1
+
+    window.addEventListener('scroll', () => {
+      const scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / scrollHeight
+      const drawLength = pathLength * scrollPercentage
+      scrollCounter.style['stroke-dashoffset'] = (scrollPercentage === 0 ? pathLength + 1 : pathLength)  - drawLength
+    })
+  }
+
+  window.addEventListener('load', onDocumentLoad)
+</script>
+
+<div class="bottom-5 right-5 fixed">
+  <svg    
+    class="absolute h-20 w-20 top-[-12px] left-[-12px]" 
+    viewBox="25 25 50 50"
+  >
+    <circle 
+      id="js-scroll-counter"
+      cx="50" 
+      cy="50" 
+      r="20" 
+      fill="none" 
+      stroke="#5eb6ae" 
+      stroke-width="2"
+    ></circle>
+  </svg>
+  <img 
+    src="/images/diel.jpeg" 
+    alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done" 
+    class="rounded-full w-14 h-14"
+  />
+</div>
