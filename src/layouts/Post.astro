@@ -1,6 +1,15 @@
 ---
 import ScrollCounter from '../components/ScrollCounter.astro';
-const {frontmatter} = Astro.props
+import readingTime from 'reading-time'
+import fs from 'fs'
+
+const {frontmatter, file} = Astro.props
+
+const fileText = fs.readFileSync(file, 'utf8')
+const stats = readingTime(fileText)
+const totalTime = frontmatter.languageKey === 'en' 
+  ? stats.text 
+  : `Tempo de leitura ${Math.ceil(stats.minutes)} minutos`
 ---
 
 <html lang="en">
@@ -113,6 +122,7 @@ const {frontmatter} = Astro.props
   </div>
   <article class="max-w-3xl content">
     <h1>{frontmatter.title}</h1>
+    <p class="text-center italic text-sm">{totalTime}</p>
     <slot />
   </article>
   <ScrollCounter />
