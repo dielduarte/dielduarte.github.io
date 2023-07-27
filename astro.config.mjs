@@ -7,5 +7,6 @@ export default defineConfig({
   integrations: [tailwind()],
   experimental: {
    viewTransitions: true
-  }
+  },
+  site: 'https://dielduarte.dev',
 });
