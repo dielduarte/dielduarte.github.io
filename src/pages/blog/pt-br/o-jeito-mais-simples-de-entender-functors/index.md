@@ -54,9 +54,9 @@ const functor = (anyValue) => ({
 
 Como podemos ver, a função functor recebe `qualquer valor` e retorna um objeto com:
 
-  - Um método chamado `map` que recebe a função e retorna um functor do valor que a função passada retornou, fazendo com que o valor retornado seja mapeável novamente.
-  
-  - Um campo chamado `value` que contém o resultado da ultima função executada, pesquisando você vai achar variações dessa ideia como o método `flatMap` que retorna o valor da função executada sem encapsular o mesmo em um functor, então na última chamada da pilha de maps ao invés de chamar `map(anyValue).value` você vai chamar apenas `flatMap(anyValue)`
+- Um método chamado `map` que recebe a função e retorna um functor do valor que a função passada retornou, fazendo com que o valor retornado seja mapeável novamente.
+
+- Um campo chamado `value` que contém o resultado da ultima função executada, pesquisando você vai achar variações dessa ideia como o método `flatMap` que retorna o valor da função executada sem encapsular o mesmo em um functor, então na última chamada da pilha de maps ao invés de chamar `map(anyValue).value` você vai chamar apenas `flatMap(anyValue)`
 
 Agora com o nosso functor helper, podemos converter a função convertMoneyToNumber para:
 

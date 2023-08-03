@@ -1,6 +1,7 @@
 ---
 import ScrollCounter from '../components/ScrollCounter.astro';
 import readingTime from 'reading-time'
+import { SEO } from "astro-seo";
 import fs from 'fs'
 
 const {frontmatter, file} = Astro.props
@@ -10,6 +11,7 @@ const stats = readingTime(fileText)
 const totalTime = frontmatter.languageKey === 'en' 
   ? stats.text 
   : `Tempo de leitura ${Math.ceil(stats.minutes)} minutos`
+const socialImage = frontmatter.socialImage
 ---
 
 <html lang="en">
@@ -20,6 +22,32 @@ const totalTime = frontmatter.languageKey === 'en'
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap" rel="stylesheet">
+
+  <SEO
+      title={frontmatter.title}
+      description={frontmatter.description}
+      openGraph={{
+        basic: {
+          title: frontmatter.title,
+          type: "A type.",
+          image: socialImage ?? ''
+        }
+      }}
+      twitter={{
+        creator: "@diel_duarte"
+      }}
+      extend={{
+        // extending the default meta tags
+        meta: [
+          {
+            name: "twitter:image",
+            content: socialImage,
+          },
+          { name: "twitter:title", content: frontmatter.title },
+          { name: "twitter:description", content: frontmatter.description},
+        ],
+      }}
+    />
 
   <style is:global>
     .content { 

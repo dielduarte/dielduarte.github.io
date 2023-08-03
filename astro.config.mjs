@@ -5,8 +5,18 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  experimental: {
-   viewTransitions: true
-  },
   site: 'https://dielduarte.dev',
+  redirects: {
+    '/': '/blog/en',
+    '/blog': '/blog/en',
+  },
+  compressHTML: true,
+  markdown: {
+    gfm: false,
+    smartypants: false,
+    syntaxHighlight: 'shiki',
+    shikiConfig: {
+      theme: 'nord'
+    }
+  }
 });
