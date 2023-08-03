@@ -144,11 +144,11 @@ const socialImage = frontmatter.socialImage
   </style>
 </head>
 
-<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart">  
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">  
   <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8">
     <a class="border-white border text-xs py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`}>x</a>
   </div>
-  <article class="max-w-3xl content">
+  <article class="max-w-3xl content w-full">
     <h1>{frontmatter.title}</h1>
     <p class="text-center italic text-sm">{totalTime}</p>
     <slot />

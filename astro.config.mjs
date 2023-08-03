@@ -16,7 +16,7 @@ export default defineConfig({
     smartypants: false,
     syntaxHighlight: 'shiki',
     shikiConfig: {
-      theme: 'nord'
+      theme: 'nord',
     }
   }
 });
