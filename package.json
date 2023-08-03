@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && gh-pages -d dist",
+    "build": "astro build && gh-pages -d dist -b main",
     "preview": "astro preview",
     "astro": "astro"
   },
