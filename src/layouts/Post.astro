@@ -14,7 +14,7 @@ const totalTime = frontmatter.languageKey === 'en'
 const socialImage = frontmatter.socialImage
 ---
 
-<html lang="en">
+<html lang={frontmatter.languageKey}>
 
 <head>
   <meta charset="utf-8">
@@ -146,7 +146,7 @@ const socialImage = frontmatter.socialImage
 
 <body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">  
   <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8">
-    <a class="border-white border text-xs py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`}>x</a>
+    <a class="border-white border text-xs py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`} aria-label="close article and go back to home"><span aria-hidden="true">x</span></a>
   </div>
   <article class="max-w-3xl content w-full">
     <h1>{frontmatter.title}</h1>
