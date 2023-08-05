@@ -1,6 +1,8 @@
 <script>
   const onDocumentLoad = () => {
     const scrollCounter = document.getElementById('js-scroll-counter')
+    if(!scrollCounter) return;
+    
     const pathLength = scrollCounter.getTotalLength()
     const scrollHeight = document.body.scrollHeight - window.innerHeight
 
