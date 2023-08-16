@@ -43,7 +43,7 @@ export default () => ({
                       {
                         type: 'p',
                         props: {
-                          style: { fontSize: 30 },
+                          style: { fontSize: 30, lineHeight: 1.5 },
                           children: title,
                         },
                       },
@@ -62,6 +62,7 @@ export default () => ({
                 flexDirection: 'column',
                 color: 'white',
                 backgroundSize: '100px 100px',
+                padding: '30px'
               },
             },
         },
