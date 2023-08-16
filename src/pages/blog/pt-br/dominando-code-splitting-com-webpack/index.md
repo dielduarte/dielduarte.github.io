@@ -6,6 +6,7 @@ description: Vamos conversar sobre como Webpack pode ajudar no processo de code 
 languageKey: pt-br
 languageLink: /en/mastering-code-splitting-with-webpack
 slug: pt-br/dominando-code-splitting-com-webpack
+socialImage: /images/pt-br-dominando-code-splitting-com-webpack.png
 ---
 
 Code Splitting é um processo em build time que quebra parte do seu código em pequenos pedaços que são requisitados de forma assíncrona, apenas quando necessário. Vamos conversar sobre como Webpack pode ajudar no processo de Code Splitting para atingir a meta de um site mais performático.

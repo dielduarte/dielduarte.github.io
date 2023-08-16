@@ -6,7 +6,7 @@ description: Construindo sua primeira aplicação com react e xstate...
 languageKey: pt-br
 languageLink: /en/creating-your-first-application-with-react-and-xstate
 slug: pt-br/criando-sua-primeira-aplicacao-com-react-e-xstate
-socialImage: /images/creating-your-first-application-with-react-and-xstate/cats-app-machine.png
+socialImage: /images/pt-br-criando-sua-primeira-aplicacao-com-react-e-xstate.png
 ---
 
 Hoje vamos criar nossa primeira aplicação utilizando o nosso modelo do post anterior que você pode ler [aqui](/pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate/). Nós iremos utilizar Snowpack, React e Xstate.

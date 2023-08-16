@@ -6,6 +6,7 @@ description: the easier way to understand functors in my humble opinion is the c
 languageKey: en
 languageLink: /pt-br/o-jeito-mais-simples-de-entender-functors
 slug: en/the-easier-way-to-understand-functors
+socialImage: /images/en-the-easier-way-to-understand-functors.png
 ---
 
 I really like functional programming, and have been studying it during last years, including elm and more recently Reason, just for fun. Never shipped some production ready app in these languages but really fancy the idea to bring some of their concepts to javascript. But somehow I always ended up frustrated with some functional techniques explanations,

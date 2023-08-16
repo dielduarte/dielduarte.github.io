@@ -5,7 +5,7 @@ date: "2020-11-01"
 description: Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito "simples"...
 languageKey: pt-br
 languageLink: /en/web-development-with-state-charts-intro
-socialImage: /images/web-development-with-state-charts-intro/image-7.png
+socialImage: /images/pt-br-introducao-a-state-charts-em-aplicacoes-web.png
 slug: pt-br/introducao-a-state-charts-em-aplicacoes-web
 ---
 

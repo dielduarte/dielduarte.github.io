@@ -6,6 +6,7 @@ description: Trabalhar remoto foi uma das melhores decisões que fiz até agora,
 languageKey: pt-br
 languageLink: /en/a-year-working-remotely
 slug: pt-br/um-ano-trabalhando-remoto
+socialImage: /images/pt-br-um-ano-trabalhando-remoto.png
 ---
 
 Trabalhar remoto foi uma das melhores decisões que tomei até agora, espero que você possa aprender algo com a minha expêriencia.

@@ -6,6 +6,7 @@ description: Comunicação assíncrona, algumas ferramentas e dicas para manter 
 languageKey: pt-br
 languageLink: /en/tips-for-remote-teams
 slug: pt-br/dicas-para-times-remotos
+socialImage: /images/pt-br-dicas-para-times-remotos.png
 ---
 
 Esse é um material sobre comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos. Não estamos falando de uma ciência exata e recomendo testar as dicas por algumas semanas e avaliar os resultados com a ajuda de feedbacks da equipe. 

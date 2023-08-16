@@ -5,7 +5,7 @@ date: "2020-11-24"
 description: This and in the next episode we will build one application using StateChart and Xstate.
 languageKey: en
 languageLink: /pt-br/criando-sua-primeira-aplicacao-com-react-e-xstate
-socialImage: /images/creating-your-first-application-with-react-and-xstate/cats-app-machine.png
+socialImage: /images/en-creating-your-first-application-with-react-and-xstate.png
 slug: en/creating-your-first-application-with-react-and-xstate
 ---
 
