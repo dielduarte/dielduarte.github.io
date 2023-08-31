@@ -33,9 +33,6 @@ const socialImage = frontmatter.socialImage
           image: socialImage ?? ''
         }
       }}
-      twitter={{
-        creator: "@diel_duarte"
-      }}
       extend={{
         // extending the default meta tags
         meta: [
@@ -44,6 +41,8 @@ const socialImage = frontmatter.socialImage
             content: socialImage,
           },
           { name: "twitter:title", content: frontmatter.title },
+          { name: "twitter:site", content: '@diel_duarte' },
+          { name: "twitter:card", content: 'summary_large_image' },
           { name: "twitter:description", content: frontmatter.description},
         ],
       }}
