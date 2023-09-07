@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Modelando sua primeira aplicação com Statecharts e Xstate</title>
+  <link rel="canonical"
+    href="https://dielduarte.dev/blog/pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate/">
+  <meta name="description"
+    content="Nesse e nos próximos posts vamos contruir uma aplicação utilizando Statecharts e a ajuda da lib Xstate...">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Modelando sua primeira aplicação com Statecharts e Xstate">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image"
+    content="https://dielduarte.dev/images/pt-br-modelando-sua-primeira-aplicacao-com-statecharts-e-xstate.png">
+  <meta property="og:url"
+    content="https://dielduarte.dev/blog/pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate/">
+  <meta content="https://dielduarte.dev/images/pt-br-modelando-sua-primeira-aplicacao-com-statecharts-e-xstate.png"
+    name="twitter:image">
+  <meta content="Modelando sua primeira aplicação com Statecharts e Xstate" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta
+    content="Nesse e nos próximos posts vamos contruir uma aplicação utilizando Statecharts e a ajuda da lib Xstate..."
+    name="twitter:description">
+  <link rel="stylesheet" href="/lang.4ac63ac1.css " />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Modelando sua primeira aplicação com Statecharts e Xstate</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 13 minutos</p>
+    <p>Nesse e nos próximos posts vamos contruir uma aplicação utilizando Statecharts e a ajuda da lib Xstate. Os posts
+      serão quebrados em 2 partes:</p>
+    <ul>
+      <li>O post que você está lendo será como modelar sua aplicação utilizando Statecharts e Xstate/Viz onde vamos
+        cubrir alguns dos principais conceitos de Statecharts.</li>
+      <li>Escrevendo sua aplicação com React e Xstate</li>
+    </ul>
+    <p>Sem mais delongas, bora pro post de hoje!</p>
+    <p>Antes de começarmos a modelar uma aplicação, precisamos entender um pouco mais sobre alguns dos conceitos de
+      Statecharts, vale lembrar também que todos os exemplos serão usando Xstate mas você não precisa de nenhuma lib
+      para começar usar hoje mesmo. Durante o desenvolvimento do modelo, vamos cobrir os seguintes conceitos:</p>
+    <ul>
+      <li>context</li>
+      <li>state</li>
+      <li>invoke</li>
+      <li>actions</li>
+      <li>guards</li>
+    </ul>
+    <p>Uma das features mais legais do Xstate é poder vizualizar seu código, hoje vamos usar o xstate/viz que vai nos
+      ajudar a criar nosso modelo. Antes de mais nada, abra o seguinte link: xstate/viz , você provavelmente verá uma
+      página igual a da imagem abaixo, ele irá iniciar com uma fetch machine e com o código do exemplo do lado direito.
+    </p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-1.png"
+        alt="imagem mostrando o xstate/viz aberto com uma fetch machine."></p>
+    <p>A primeira coisa que vamos fazer é atualizar o código no Xstate/Viz para o código abaixo e clicar em update:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>O código acima é o código basico para iniciarmos uma nova State Machine, cada state machine recebe um id único,
+      um estado inicial e claro, a lista de estados disponíveis. O resultado será:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-2.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>A primeira coisa a se fazer é pensar em quais estados nossa aplicação pode ter, nesse exemplo vamos criar uma
+      aplicação que, ao clicar em um botão busca de uma API uma imagem de um gatinho. A aplicação também tratará errors
+      na api, habilitando o usuário a tentar novamente por 3 vezes consecutivas caso a API retorne errors.</p>
+    <p>Com essa breve descrição podemos então dizer que nossa aplicação terá os seguintes estados:</p>
+    <ul>
+      <li>idle</li>
+      <li>loading</li>
+      <li>success</li>
+      <li>error</li>
+      <li>cant_retry</li>
+    </ul>
+    <p>O resultado em código ficaria assim:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>E o resultado no xstate/viz:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-3.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Não se preocupe caso você esqueça de algum estado da primeira vez, aos poucos e com prática você vai pegando
+      maldade e vai conseguir ser mais assertivo em quais estados sua aplicação ou seu componente deve ter. Alterar caso
+      precise é mais simples do que parece, você pode usar o xstate/viz para te ajudar a vizualizar as mudanças e testar
+      todos os fluxos possíveis.</p>
+    <p>Lembra do nosso diagrama de transição de estados falado no primeiro post dessa série, onde mostramos que
+      começando em um estado A ⇒ um vento X aconteceu ⇒ vamos para um estado B ? O próximo passo é definir quais eventos
+      dentro do seu sistema força uma transição de estado. Exemplo, quando estamos no estado inicial
+      (<strong>idle)</strong> podemos dizer que o evento <strong>LOAD_NEW_PICTURE</strong> força uma transição para o
+      estado <strong>loading</strong> ou seja:</p>
+    <ul>
+      <li><strong>idle ⇒ LOAD_NEW_PICTURE ⇒ loading</strong></li>
+      <li><strong>loading ⇒ ON_DONE ⇒ sucess</strong></li>
+      <li><strong>loading ⇒ ON_ERROR ⇒ error</strong></li>
+      <li><strong>success ⇒ LOAD_NEW_PICTURE ⇒ loading</strong></li>
+      <li><strong>error ⇒ RETRY ⇒ loading</strong></li>
+    </ul>
+    <p>Em código ficaria:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">ON_DONE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">ON_ERROR</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">  </span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>e no xstate/viz:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-4.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Vizualizar seu código é muito interessante, no exemplo acima, podemos ver nitidamente qual evento leva a
+      aplicação para outro estado e todos os fluxos possíveis. E inclusive furos no sistema, veja como o estado
+      cant_retry nunca acontecerá pois nenhum evento força uma transição até ele 🤷‍♂️ mas calma, nós vamos chegar lá.
+    </p>
+    <h3 id="context">Context</h3>
+    <p>Context é uma feature da lib Xstate que ter permite salvar contextos dinâmicos dependendo do estado que sua
+      aplicação está. Context nesse caso é o nosso famoso estado como estamos acostumados a usar com outras libs como
+      Redux, Mobx, Context Api no caso de usar com React, ou até mesmo um simples componente state.</p>
+    <p>Nesse caso, nosso contexto será a nossa foto atual para ser exibida e a quantidade de vezes que o usuário tentou
+      buscar uma nova foto em caso de erros, precisamos iniciar nossa machine com o contexto inicial, o código então
+      ficaria dessa forma:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">''</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">ON_DONE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">ON_ERROR</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">  </span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>Perceba que nesse caso, não temos nenhuma alteração nos estados da aplicação. Mas no xstate/viz se você abrir a
+      aba chamada <code>State</code> você pode ver que ele te mostra qual o estado atual da aplicação e qual os valores
+      do contexto naquele momento.</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-5.png"
+        alt="imagem mostrando a aba state no xstate/viz"></p>
+    <h3 id="trabalhando-com-ações-assíncronas">Trabalhando com ações assíncronas</h3>
+    <p>Em qualquer aplicação sempre teremos ações que são assíncronas e os resultados dessas ações podem ou não resultar
+      em uma transição de estado. Usando Xstate chamamos isso de Services, e chamar um serviço é tão fácil e declarativo
+      quanto qualquer outro conceito.</p>
+    <p>No nosso exemplo, o serviço será uma promise que vai fazer o request para buscar uma nova foto. O resultado dessa
+      promise, se com sucesso ou erro gerara transições de estados. Pensando em um fluxo de dados quando a aplicação sai
+      do estado de ocioso(idle) para loading é nesse momento que devemos então fazer nosso request. Preste bem atenção
+      no estado de loading no proximo exemplo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">undefined</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #88C0D0">src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">services</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">fetchNewPicture</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">fetch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">) </span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>Substituímos nossos eventos por uma key chamada <strong>invoke,</strong> que recebe nesse exemplo, 3
+      configurações:</p>
+    <ul>
+      <li>
+        <p><strong>src</strong>: É uma função que retorna uma promisse. No nosso código estamos passando apenas o nome
+          da função que será chamada e como segundo parâmetro da função <strong>Machine</strong>, passamos um objeto com
+          a key <strong>services</strong> que nada mais é que outro objeto com todos os serviços que podem ser chamados.
+        </p>
+      </li>
+      <li>
+        <p><strong>onDone</strong>: Qual o próximo estado vamos redirecionar nossa machine se tudo ocorrer bem.</p>
+      </li>
+      <li>
+        <p><strong>onError</strong>: Qual o próximo estado vamos redirecionar nossa machine se algum erro acontecer.</p>
+      </li>
+    </ul>
+    <p>Vale lembrar que um serviço pode ser uma promisse, observables, callback ou outra machine.</p>
+    <p>A vizualização do nosso código ficaria assim:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-6.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Da pra perceber que o viz coloca invoke / nome do serviço dentro da quadradinho que representa o estado atual e
+      também o nome do serviço dentro de um parênteses nos eventos simbolizando que aquele evento está relacionado ao
+      serviço chamado.</p>
+    <h3 id="actions">Actions</h3>
+    <p>Actions são funções do tipo fire-and-forget, ou seja, funções que não geram uma transição de estados. As actions
+      porém, são muito usadas para rodar qualquer tipo de side effect que podem atualizar nosso contexto.</p>
+    <p>No nosso exemplo, quando a promisse que busca uma nova foto retorna precisamos chamar uma action para atualizar o
+      valor do nosso contexto currentImageUrl.</p>
+    <p>Qualquer transição de estado dentro do Xstate pode receber apenas uma string com o nome do novo estado ou um
+      objeto de configuração, onde passamos o target que representa o próximo estado e outras configurações como por
+      exemplo, uma action. Nesse caso vamos alterar nosso invoke objeto para:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #D8DEE9FF">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">setCurrentImageUrl</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Perceba que passamos apenas uma string que é referência para uma função action, também vamos passar a action no
+      segundo parametro da função Machine, dessa forma, eu acredito que fica mais simples de ler nossa machine. O código
+      final ficaria assim:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">undefined</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #88C0D0">src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">setCurrentImageUrl</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">services</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">fetchNewPicture</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">fetch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">setCurrentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">data</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">imageUrl</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>Uma action recebe por parâmetro, o contexto atual e um event, esse event nada mais é do que o retorno do serviço,
+      como nosso serviço nesse caso é uma promisse, nosso event será o retorno dela. Caso nosso serviço fosse um
+      callback por ex, esse event seria a chamada do callback com qualquer informação adicional que o serviço queira
+      passar para a action.</p>
+    <p>A vizualização do código ficaria assim:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-7.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Perceba que o Viz coloca uma lista de ações que acontecem quando um evento é disparado com do / nome da action
+      bem abaixo da representação visual de um evento.</p>
+    <p>Seguindo nosso exemplo, sempre que a promisse retornar um erro e o usuário envia o evento RETRY devemos
+      incrementar o valor de retryTimes no nosso contexto, também devemos resetar esse valor caso a promisse retorne com
+      sucesso. Nesse caso, vamos adiconar uma action quando chamamos o evento RETRY e outra quando a promisse retorna
+      com sucesso:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"></span>
+<span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">undefined</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #88C0D0">src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">setCurrentImageUrl</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">resetRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #D8DEE9">actions</span><span style="color: #D8DEE9FF">: [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">incrementRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">services</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">fetchNewPicture</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">fetch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">setCurrentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">data</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">imageUrl</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">resetRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">incrementRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">retryTimes</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">1</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>A vizualização do código ficaria assim:</p>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-8.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Agora você já sabe reconhecer quando uma action é chamada apenas olhando a vizualização do código 🚀.</p>
+    <h3 id="guards">Guards</h3>
+    <p>Guards são usados para garantir que uma transição de estado que depende de alguma regra de negocio seja feita com
+      segurança, usando o nosso exemplo, quando a promisse que busca uma nova foto retorna um erro, o usuário pode
+      tentar buscar novamente por 3 vezes. Ao tentar 3 vezes e sem sucesso, o usuário é então redirecionado para um
+      estado onde ele não pode mais tentar buscar uma nova foto.</p>
+    <p>Para fazer isso acontecer iremos usar os guards, o jeito de configurar um guard é bem simples, no nosso caso, o
+      evento RETRY vai conter duas possíveis branchs:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #D8DEE9FF">  error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">incrementRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">cant_retry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       ]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Nesse caso nada acontece, pois ainda não adicionamos o nosso guard, para adicionar um ou mais guards basta
+      colocar uma key cond na branch que deve ser redirecionada apenas se o guard retornar true. As branchs são sempre
+      lidas por ordem que foram declaradas, ou seja, nesse caso vamos colocar nosso guard na primeira branch, caso o
+      retorno do guard seja falso iremos então para a próxima opção que vai então forçar uma transição de estado para o
+      estado cant_retry, nosso código ficaria assim:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #D8DEE9FF">  error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">incrementRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">cond</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">canRetry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">cant_retry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       ]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span></code></pre>
+    <p>Novamente usamos a string para referenciar ao nome da função guard que estará no segundo parâmetro do método
+      Machine, código final ficaria assim:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">undefined</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #D8DEE9FF"> </span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #88C0D0">src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">setCurrentImageUrl</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">resetRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">         </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">incrementRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">cond</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">canRetry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">cant_retry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	       ]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">services</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">fetchNewPicture</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">fetch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">setCurrentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">data</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">imageUrl</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">resetRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">incrementRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">retryTimes</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">1</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">guards</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">canRetry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">retryTimes</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x3C;=</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">3</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p><img src="/images/modeling-your-first-application-using-statecharts-and-xstate/image-9.png"
+        alt="imagem mostrando o resultado do codigo colado no xstate/viz"></p>
+    <p>Perceba que agora nosso estado cant_retry tem uma ligação com o evento Retry, e nós temos dois eventos Retry que
+      representam por ordem as branchs que declaramos. Perceba também que a primeira branch dentro do evento tem um
+      array de guards e os nomes dessas condições, um guard fica verde em caso retorne true e vermelho em caso retorne
+      false representando que aquele evento não vai acontecer.</p>
+    <h3 id="type-final">Type final</h3>
+    <p>Estados do tipo final, representam que aquela machine está terminada, ou seja, nenhum evento ou transição irá
+      acontecer depois que a machine chegar a esse estado. No nosso exemplo, o estado cant_retry é nosso estado final.
+      Vale lembrar que uma machine não necessariamente precisa ter um estado final.</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">catsApp</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Machine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">catsApp</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #88C0D0">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	    </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">''</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">loading</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">invoke</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #88C0D0">src</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">fetchNewPicture</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onDone</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">success</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				    </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">setCurrentImageUrl</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">resetRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">				  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">onError</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">error</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">LOAD_NEW_PICTURE</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">         </span><span style="color: #88C0D0">RETRY</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">loading</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">incrementRetryTimes</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">cond</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">canRetry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	          </span><span style="color: #88C0D0">target</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">cant_retry</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	       ]</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">cant_retry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #88C0D0">type</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">final</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">services</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">fetchNewPicture</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">fetch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">setCurrentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">currentImageUrl</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">data</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">imageUrl</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">resetRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">incrementRetryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #88C0D0">retryTimes</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">retryTimes</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">1</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">guards</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">canRetry</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">retryTimes</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x3C;=</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">3</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>Bom modelar uma aplicação parece divertido agora, principalmente sabendo que todo o código que escrevemos nessa
+      tarefa é o mesmo código que será usado na aplicação final. No próximo post iremos de fato usar esse codigo e criar
+      nossa aplicação front-end usando react e xstate.</p>
+    <p>Te vejo lá!</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>
