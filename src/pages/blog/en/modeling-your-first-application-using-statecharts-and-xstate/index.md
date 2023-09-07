@@ -5,7 +5,7 @@ date: "2020-11-22"
 description: This and in the next episode we will build one application using StateChart and Xstate.
 languageKey: en
 languageLink: /pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate
-socialImage: /images/en-modeling-your-first-application-using-statecharts-and-xstate.png
+socialImage: images/en-modeling-your-first-application-using-statecharts-and-xstate.png
 slug: en/modeling-your-first-application-using-statecharts-and-xstate
 ---
 

@@ -5,7 +5,7 @@ date: "2023-09-07"
 description: Sharing my vision on pull requests and best practices 
 languageKey: en
 languageLink: /pt-br/como-descrever-o-seu-pull-request-perfeito
-socialImage: /images/en-how-to-describe-your-really-good-pull-request.png
+socialImage: images/en-how-to-describe-your-really-good-pull-request.png
 slug: en/how-to-describe-your-really-good-pull-request
 ---
 
@@ -37,7 +37,7 @@ This point requires time to understand your audience/team, but as soon as you kn
 
 Engaging documentations are well organized, won't require hours of uninterrupted attention, shows its value at the beginning and make people want to finish because it is easy to follow. Recently I received a very cool feedback, and it wasn't even related to my PRs but the way I communicate, it feels relevant to share though: 
 
-"I checked that support link you post. Always love reading your solutions and the questions/answers format, it's like a conversation lol" - from an amazing person I have the pleasure to work with. ❤️
+"I checked that support link you posted. Always love reading your solutions and the questions/answers format, it's like a conversation making it easy to understand." - from an amazing person I have the pleasure to work with. ❤️
 
 <h2>Be your worst reviewer - in the good way.</h2>
 

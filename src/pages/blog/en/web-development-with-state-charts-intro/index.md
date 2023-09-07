@@ -5,7 +5,7 @@ date: "2020-11-01"
 description: Once upon a time a front-end development that didn't know about state charts and were working in a simple tasks...
 languageKey: en
 languageLink: /pt-br/introducao-a-state-charts-em-aplicacoes-web
-socialImage: /images/en-web-development-with-state-charts-intro.png
+socialImage: images/en-web-development-with-state-charts-intro.png
 slug: en/web-development-with-state-charts-intro
 ---
 

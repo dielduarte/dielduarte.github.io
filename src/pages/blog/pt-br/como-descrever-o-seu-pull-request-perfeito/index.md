@@ -5,7 +5,7 @@ date: "2023-09-07"
 description: Compartilhando minhas experiências com pull requests
 languageKey: pt-br
 languageLink: en/how-to-describe-your-really-good-pull-request
-socialImage: /images/pt-br-como-descrever-o-seu-pull-request-perfeito.png
+socialImage: images/pt-br-como-descrever-o-seu-pull-request-perfeito.png
 slug: pt-br/como-descrever-o-seu-pull-request-perfeito
 ---
 

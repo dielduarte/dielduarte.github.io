@@ -6,7 +6,7 @@ description: This is a post about async communication, tools, and tips to keep a
 languageKey: en
 languageLink: /pt-br/dicas-para-times-remotos
 slug: en/tips-for-remote-teams
-socialImage: /images/en-tips-for-remote-teams.png
+socialImage: images/en-tips-for-remote-teams.png
 ---
 
 This is a post about async communication, tools, and tips to keep a remote team based on my experiêncie and studies. We're not talking about a precise science, that said, I highly recommend to test the tips for some weeks and analyze the results with the help of the team feedback.

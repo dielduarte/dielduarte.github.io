@@ -6,7 +6,7 @@ description: Working remotely has been one of the best decisions that I have mad
 languageKey: en
 languageLink: /pt-br/um-ano-trabalhando-remoto
 slug: en/a-year-working-remotely
-socialImage: /images/en-a-year-working-remotely.png
+socialImage: images/en-a-year-working-remotely.png
 ---
 
 Working remotely has been one of the best decisions that I have made up to this point. I hope you can learn something from my experience.

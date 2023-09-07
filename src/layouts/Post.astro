@@ -11,7 +11,7 @@ const stats = readingTime(fileText)
 const totalTime = frontmatter.languageKey === 'en' 
   ? stats.text 
   : `Tempo de leitura ${Math.ceil(stats.minutes)} minutos`
-const socialImage = frontmatter.socialImage
+const socialImage = Astro.site + frontmatter.socialImage
 ---
 
 <html lang={frontmatter.languageKey}>
