@@ -43,7 +43,7 @@ Engaging documentations are well organized, won't require hours of uninterrupted
 
 Always review your PRs before sharing with your team and be critical, at the end of the day you are the best person that knows your limits and how good you can delivery something. Always question your decisions, does this code really makes sense? what could I do better here? what would I suggest if this wasn't my own code and if I would suggest it, why I haven't done it already?
 
-Add comments to lines/functions/files you think your team will have questions. Sse this strategy to guide the reviewers to the points in the code you might not be sure about and want feedback, be ahead of them and respect your colleagues time by using their time wisely.
+Add comments to lines/functions/files you think your team will have questions. Use this strategy to guide the reviewers to the points in the code you might not be sure about and want feedback, be ahead of them and respect your colleagues time by using their time wisely.
 
 Let's be honest <b>everyone is busy</b>, and quite often code review time is not considered when discussing the team's capability of committing to delivering a feature or fixing a bug. Avoiding back and forth and being as clear as possible is a way to show you respect your reviewers and you are trying to do your best work.
 
