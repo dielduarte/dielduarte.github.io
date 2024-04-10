@@ -21,7 +21,8 @@ export async function getStaticPaths() {
 }
 
 const { posts } = Astro.props;
-const sortedPosts = [...posts].sort((prevPost, nextPost) => {
+
+const sortedPosts = [...posts].filter(post => !post.frontmatter.draft).sort((prevPost, nextPost) => {
   return new Date(nextPost.frontmatter.date).getTime() > new Date(prevPost.frontmatter.date).getTime() 
     ? 1 
     : -1;
