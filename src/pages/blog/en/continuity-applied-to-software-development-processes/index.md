@@ -7,7 +7,6 @@ languageKey: en
 languageLink: /pt-br/como-descrever-o-seu-pull-request-perfeito
 socialImage: images/en-continuity-applied-to-software-development-processes.png
 slug: en/continuity-applied-to-software-development-processes
-draft: true
 ---
 
 It wasn't a long time ago that I became a tech lead for the first time in my career, and right after was considered a Staff engineer as well. That changed everything, from the person who was deep into coding (still cause I love it) to the person that represents the technical vision of a team and tries to move the group to a better place technically speaking. Scary isn't it? 
