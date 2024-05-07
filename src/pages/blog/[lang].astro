@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 
 const { posts } = Astro.props;
 
-const sortedPosts = [...posts].filter(post => post.frontmatter.slug !== 'en/continuity-applied-to-software-development-processes').sort((prevPost, nextPost) => {
+const sortedPosts = [...posts].sort((prevPost, nextPost) => {
   return new Date(nextPost.frontmatter.date).getTime() > new Date(prevPost.frontmatter.date).getTime() 
     ? 1 
     : -1;
