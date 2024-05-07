@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Rescript from a JS dev point of view</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/en/rescript-from-a-js-dev-point-of-view/">
+  <meta name="description" content="A few opinions about Rescript language.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Rescript from a JS dev point of view">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image" content="https://dielduarte.dev/images/en-rescript-from-a-js-dev-point-of-view.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/en/rescript-from-a-js-dev-point-of-view/">
+  <meta content="https://dielduarte.dev/images/en-rescript-from-a-js-dev-point-of-view.png" name="twitter:image">
+  <meta content="Rescript from a JS dev point of view" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="A few opinions about Rescript language." name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/en/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Rescript from a JS dev point of view</h1>
+    <p class="text-center italic text-sm">14 min read</p>
+    <p>You all know that I'm fascinated to learn new languages, I like to study compilers/transpilers, etc.. the last
+      two languages I've been learning are Go (thanks to <a href="https://github.com/guilhermehubner">Guilherme</a> that
+      influenced me and convince me to use in a side project that we are doing together 💜, this is one of the best
+      engineers I know) and Rescript. You also know, that I make money as a JS/front-end engineer and I love it, even
+      though with all the problems we have with JS, still an amazing language, flexible enough for a beginner to start
+      and for a really experienced programmer to use every day and enjoy it, as well it has the flexibility to run
+      everywhere! Web, Mobile, Desktop, hardware, you choose! The community is amazing and the ecosystem is soo active,
+      at this point we may have a few hundred new npm libs available.</p>
+    <p>This is a presentation and a blog post at the same time, just explaining a few points as a JS dev learning
+      Rescript that I considered to say: "you know what? it worth it! Worth learning Rescript language and use it". This
+      is not a post to say I hate TS, just because, I don't. I've been using TS for the last two years and enjoying it,
+      yet, I can see problems and room to improve as any other language in the world.</p>
+    <p>In the end, all I want is to feel productive using something to solve problems, but the right problems. I want to
+      feel confident that I can work in a big refactor and if the compiler compiled with success everything is right,
+      for real. I want to write less and do more because I know the compiler won't let someone use my functions passing
+      the wrong values, a better inference. I want it to be FAST, so fast that I will save the file again just to make
+      sure it is right instead of opening a new Twitter tab, Rescript.</p>
+    <p>That was the biggest intro I've ever done, which may show how excited I am. Below are the points I considered
+      important to learn Rescript and why I would use it in a day-to-day project. It doesn't mean I'm right, just
+      opinions.</p>
+    <h2 class="subtitle--separator">JS Interop</h2>
+    <p>Here's something for you: JS is the web language! JS is everywhere! and always bet on JS! even if you don't like
+      it, it is true. So one of the first points that I took a look at was how easy or difficult it would be to use any
+      js lib/ js code without the need to rewrite it to Rescript.</p>
+    <p>and why? because I don't want to stop using JS. If something super cool like Xstate appears or a new browser API,
+      I'd like to still be able to use it on my Rescript code anyway, even if the language doesn't have official support
+      for it. It needs to be easy to maintain and fast to create if needed.</p>
+    <p>Let's say I'd like to use Lodash, waiting for comments: You don't need to use Lodash yada yada yada.. bleee, I
+      bet it saved your ass MANY times and it is just an example, anyway, everything you would need to do would be
+      simply defining some types like you would do with TS if you want to have some type safety in your code. e.g:</p>
+    <p>We could create a <code>Lodash.res</code> definitions file:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D08770">@</span><span style="color: #8FBCBB">module</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">lodash/chunk</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9">external</span><span style="color: #D8DEE9FF"> chunk</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">array</span><span style="color: #81A1C1">&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">a>, int) => array&#x3C;array&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9">a</span><span style="color: #81A1C1">>></span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">default</span><span style="color: #ECEFF4">"</span></span></code></pre>
+    <p>and then in another file whenever you want to use it, it would be just a matter of doing it:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> [</span><span style="color: #B48EAD">1</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">2</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">chunks</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">chunk</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>you could also export many functions, backing to <code>Lodash.res</code> again:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D08770">@</span><span style="color: #8FBCBB">module</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">lodash</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9">external</span><span style="color: #D8DEE9FF"> chunk</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">array</span><span style="color: #81A1C1">&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">a>, int) => array&#x3C;array&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9">a</span><span style="color: #81A1C1">>></span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">chunk</span><span style="color: #ECEFF4">"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">@</span><span style="color: #8FBCBB">module</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">lodash</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9">external</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">difference</span><span style="color: #D8DEE9FF">: </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">array</span><span style="color: #D8DEE9FF">&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">a>, array&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF">></span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">array</span><span style="color: #81A1C1">&#x3C;</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">a> = "difference</span><span style="color: #D8DEE9">"</span></span></code></pre>
+    <p>and use in the same way:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> [</span><span style="color: #B48EAD">1</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">2</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">chunks</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">chunk</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">difference</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">difference</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> [</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">])</span></span></code></pre>
+    <h2>Readable output</h2>
+    <p>The output code that Rescript produces is human readable, clean, and minimal which makes the bundle size to be
+      the same as some human coding JS. Here is the output from the example above:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #616E88">// Generated by ReScript, PLEASE EDIT WITH CARE</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">*</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">as</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">Lodash</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">lodash</span><span style="color: #ECEFF4">"</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">var</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> [</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">1</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">2</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">3</span></span>
+<span class="line"><span style="color: #D8DEE9FF">]</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">var</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">chunks</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">chunk</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">var</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">difference</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">difference</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> [</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">])</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">export</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #8FBCBB">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #8FBCBB">chunks</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #8FBCBB">difference</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #616E88">/* chunks Not a pure module */</span></span></code></pre>
+    <h2>Is it Rescript or JS?</h2>
+    <p>Another important point is that the syntax is quite similar to JS, Rescript is another language different than
+      Typescript that is built on top of JS. So having a similar syntax helps a lot to get on track Fast! To prove this
+      point let's do an exercise called "is it Rescript or JS?"</p>
+    <p><strong>is it Rescript or JS?</strong></p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">person</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">age</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">5</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">name</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Big ReScript</span><span style="color: #ECEFF4">"</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p><code>Rescript!</code></p>
+    <p><strong>is it Rescript or JS?</strong></p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">addTwo</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">test</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">addTwo</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">10</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">// 12</span></span></code></pre>
+    <p><code>Rescript!</code> JS is not curried by default, more about that below.</p>
+    <p><strong>is it Rescript or JS?</strong></p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> [</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">hello</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">world</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">how are you</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">firstItem</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF">[</span><span style="color: #B48EAD">0</span><span style="color: #D8DEE9FF">] </span><span style="color: #616E88">// "hello"</span></span></code></pre>
+    <p><code>Rescript!</code></p>
+    <p>In fact, almost all the examples would work in JS and Rescript world. The difference is that with Rescript we
+      would have a compiler with an amazing type inference system that would help us write better/safe code and we even
+      didn't need to write any type yet.</p>
+    <p>Of course, we do have a few differences in syntax and features, but they are so minimal that is just a matter of
+      knowing that they exist, for example, if statements:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">showMenu</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">showMenu</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">displayMenu</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">else</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">nothing here...</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>we just don't need to use parentheses.</p>
+    <h2>No imports</h2>
+    <p>Unlike JS, Rescript doesn't have export or import statements, what happens in Rescript is that every file is a
+      module and its name needs to be unique. Even files within folders are accessible on the same level as anything
+      else. You just need to use the FileName which needs to be in CamelCase and then dot type/method name and use it.
+    </p>
+    <p>you can also use <code>open</code> and instead of using <strong>ModuleName.Something</strong> all the time you
+      would do:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">open</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Lodash</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myArray</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> [</span><span style="color: #B48EAD">1</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">2</span><span style="color: #ECEFF4">,</span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF">]</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">chunks</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">chunk</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">myArray</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Having no imports/exports and module by file system also forces us to keep a more flat structure that has some
+      big advantages long term.</p>
+    <p>From the rescript documentation:</p>
+    <blockquote>
+      <p>By default, every file's type declaration, binding and module is exported, aka publicly usable by another file.
+        This also means those values, once compiled into JS, are immediately usable by your JS code.</p>
+    </blockquote>
+    <h2>Type system</h2>
+    <p>Well, I could write something with my own words, but the Rescript team did an amazing job talking about Types on
+      the Rescript docs page, so, from Rescript docs:</p>
+    <blockquote>
+      <p>Types are the highlight of ReScript! They are:</p>
+      <p>Strong. A type can't change into another type. In JavaScript, your variable's type might change when the code
+        runs (aka at runtime). E.g. a number variable might change into a string sometimes. This is an anti-feature; it
+        makes the code much harder to understand when reading or debugging.</p>
+      <p>Static. ReScript types are erased after compilation and don't exist at runtime. Never worry about your types
+        dragging down performance. You don't need type info during runtime; we report all the information (especially
+        all the type errors) during compile time. Catch the bugs earlier!</p>
+      <p>Sound. This is our biggest differentiator versus many other typed languages that compile to JavaScript. Our
+        type system is guaranteed to never be wrong. Most type systems make a guess at the type of a value and show you
+        a type in your editor that's sometime incorrect. We don't do that. We believe that a type system that is
+        sometime incorrect can end up being dangerous due to expectation mismatches.</p>
+      <p>Fast. Many developers underestimate how much of their project's build time goes into type checking. Our type
+        checker is one of the fastest around.</p>
+      <p>Inferred. You don't have to write down the types! ReScript can deduce them from their values. Yes, it might
+        seem magical that we can deduce all of your program's types, without incorrectness, without your manual
+        annotation, and do so quickly. Welcome to ReScript =).</p>
+    </blockquote>
+    <p>Let's explore a bit about inference, which is the most exciting part about Rescript language, write less and do
+      more!</p>
+    <p>let's consider the following function:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span></span></code></pre>
+    <p>here's the compiler error if you try to use this function passing two strings instead of numbers:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">We</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">ve found a bug for you</span><span style="color: #D8DEE9">!</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">Users</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">dielduarte</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">localhost</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">testing</span><span style="color: #81A1C1">-</span><span style="color: #D8DEE9">rescript</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">src</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">ExternalLibs</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">res</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">5</span><span style="color: #81A1C1">-</span><span style="color: #B48EAD">8</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">1</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF"> │</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">11</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">2</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">This</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">has</span><span style="color: #D8DEE9FF"> type</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">string</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">Somewhere</span><span style="color: #D8DEE9FF"> wanted</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">int</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">You</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">can</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">convert</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">string</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">to</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">int</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">with</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Belt</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">Int</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">fromString</span><span style="color: #ECEFF4">.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">FAILED</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">cannot</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">make</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">progress</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">due</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">to</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">previous</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">errors</span><span style="color: #ECEFF4">.</span></span>
+<span class="line"><span style="color: #81A1C1">>>>></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Finish</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">compiling</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">exit</span><span style="color: #D8DEE9FF">: </span><span style="color: #B48EAD">1</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Wow, it looks like how TS compiler should be 😅 with Rescript I feel like I'm pair programming all the time. The
+      compiler shows the error, why, and yet, how to solve it and we didn't even write any type.</p>
+    <p>But how is that possible? well, in Rescript using <code>+</code> is just valid for numbers, so the compiler
+      infers by default that the function Add just works for numbers. If you want to concatenate strings you should use
+      <code>++</code>.</p>
+    <h2>Variants</h2>
+    <p>Most data structures in most languages are about "this and that". A variant allows us to express "this or that".
+    </p>
+    <p>Variants at first, look like enums with superpowers.</p>
+    <p>a simple example would be:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"></span>
+<span class="line"><span style="color: #81A1C1">type</span><span style="color: #D8DEE9FF"> myResponse </span><span style="color: #81A1C1">=</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Yes</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> No</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> PrettyMuch</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">areYouCrushingIt</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Yes</span></span>
+<span class="line"></span></code></pre>
+    <p>hello enums, my old friend.</p>
+    <p>But then comes the superpowers, a variant that can contain constructors arguments separated by a comma. e.g:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">type</span><span style="color: #D8DEE9FF"> account </span><span style="color: #81A1C1">=</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> None</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Instagram(</span><span style="color: #81A1C1">string</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Facebook</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">string</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">int</span><span style="color: #ECEFF4">)</span></span></code></pre>
+    <p>so then for the same type variant, we could use:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">myAccount</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Facebook</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Josh</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">26</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">friendAccount</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Instagram</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Jenny</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>it can also receive a record (object):</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">type</span><span style="color: #D8DEE9FF"> user </span><span style="color: #81A1C1">=</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Number(int)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Id(</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF">name</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">string</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> password</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">string</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">me</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Id</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span><span style="color: #88C0D0">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Joe</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">password</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">123</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p><code>me</code> still from type user, but a different variant. Using pattern matching down the line and variants
+      is such a powerful technique, and can even avoid a few performance issues like you can see <a
+        href="https://rescript-lang.org/docs/manual/latest/variant#design-decisions">here</a> where we reduced our
+      program complexity from 0(n) to 0(1).</p>
+    <h2>Pattern matching</h2>
+    <p>If variants are enums with superpowers, pattern matching is the switch with superpowers. Mixing both are 🤯</p>
+    <p>We can destruct any data using a switch to match patterns (pattern matching) in many different ways, the example
+      below is matching the type used as any <code>Number(id)</code>, or <code>Id({ name: "Joe" })</code> an Id with the
+      name equal Joe or any <code>Id(options)</code>.</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"></span>
+<span class="line"><span style="color: #81A1C1">type</span><span style="color: #D8DEE9FF"> user </span><span style="color: #81A1C1">=</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Number(int)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> Id(</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF">name</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">string</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> password</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">string</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">me</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Id</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span><span style="color: #88C0D0">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Joe</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">password</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">123</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">switch</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">me</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Number</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">id</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Your id is => </span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">++</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">Int</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">toString</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">id</span><span style="color: #D8DEE9FF">))</span></span>
+<span class="line"><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Id</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span><span style="color: #88C0D0">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Joe</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Welcome Joe!</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Id</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">option</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Welcome =></span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">++</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">option</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">name</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Pattern matching can be used to match any type, lists, arrays, tuples, variants, and more. And as it wasn't
+      enough it is also exhaustive. This means that every time you are matching a type you should check for every
+      different pattern that the type you are checking might be, and, if you forget about it, the compiler will remind
+      you. Let's suppose in the example above I forgot to handle the Id variant, then the compiler would say:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">Warning</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">number</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">8</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">Users</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">dielduarte</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">localhost</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">test</span><span style="color: #81A1C1">-</span><span style="color: #D8DEE9">rescript</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">src</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">ExternalLibs</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">res</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">7</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">1</span><span style="color: #81A1C1">-</span><span style="color: #B48EAD">9</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">5</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">me</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Id</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span><span style="color: #88C0D0">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Joe</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">password</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">123</span><span style="color: #ECEFF4">"</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">6</span><span style="color: #D8DEE9FF"> │</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">7</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">switch</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">me</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">8</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Number</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">id</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Your id is => </span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">++</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">Int</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">toString</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">id</span><span style="color: #D8DEE9FF">))</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">9</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">You</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">forgot</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">to</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">handle</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">possible</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">case</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">here</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">for</span><span style="color: #D8DEE9FF"> example</span><span style="color: #ECEFF4">:</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">Id</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">_</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">>>>></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Finish</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">compiling</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">128</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">mseconds</span></span></code></pre>
+    <h2>Curried by default</h2>
+    <p>This is one of the curiosities about Rescript language that I most enjoyed. All functions in Rescript are curried
+      by default, which means that you can apply partial application whenever you feel that is required and write less
+      code.</p>
+    <p>In javascript, to create that example we saw above we would need to use closures or use a helper like <a
+        href="https://lodash.com/docs/4.17.15#curry">Lodash curry</a>:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span><span style="color: #D8DEE9FF"> </span><span style="color: #616E88">//closure</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">addTwo</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">test</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">addTwo</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">10</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">// 12</span></span></code></pre>
+    <p>In Rescript we would need to just create a regular function and use partially:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">addTwo</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">test</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">addTwo</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">10</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">// 12</span></span></code></pre>
+    <h2>Labeled arguments</h2>
+    <p>In Javascript/Typescript we are used to using an object argument in order to know the arguments' names when using
+      the function and also to not care about its order when passing arguments. something like:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">updateUser</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">userOptions</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">.</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #616E88">//using the function</span></span>
+<span class="line"><span style="color: #88C0D0">updateUser</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">name</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">Diel</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">age</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">26</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>In Rescript it is also possible to use an object, BUT, there is something called labeled arguments that is
+      basically using arguments as we would use normally setting a name for it, and then when using the function it
+      would be just a matter of using the name in any order. example:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">updateUser</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> (</span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">name</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">age</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">...</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #616E88">//using the function</span></span>
+<span class="line"><span style="color: #88C0D0">updateUser</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">age</span><span style="color: #81A1C1">=</span><span style="color: #B48EAD">26</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">name</span><span style="color: #81A1C1">=</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">Diel</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">// here you can set the arguments in any order</span></span></code></pre>
+    <p>Remember all functions are curried by default? with labeled arguments we can create a new function using any
+      arguments order we want, e.g:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">add</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> (</span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">a</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">b</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">b</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">addTwoToA</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">add</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">b</span><span style="color: #81A1C1">=</span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">test</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">addTwoToA</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">~</span><span style="color: #D8DEE9">a</span><span style="color: #81A1C1">=</span><span style="color: #B48EAD">10</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <h2>It doesn't have null neither undefined</h2>
+    <p>That is definitely great! We don't need to care about a whole category of bugs, however, the idea of a
+      potentially nonexistent value is still useful and that is why Rescript has Option.</p>
+    <p>An Option can be represented by Some(value) or None variants, and whenever you need to use a variable from type
+      Option. Rescript will force you to handle both cases due to its exhaustive pattern matching system.</p>
+    <p>For example, a user avatar is potentially nonexistent in many applications:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">userAvatar</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Some</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">url...</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">switch</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">userAvatar</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">None</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">The user doesn't have an avatar, let's show initials</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Some</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">url</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">The user's avatar is </span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">++</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">url</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>and if you forgot to handle one of the Option variants, the compiler would say:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"></span>
+<span class="line"><span style="color: #D8DEE9">Warning</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">number</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">8</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">Users</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">dielduarte</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">localhost</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">testing</span><span style="color: #81A1C1">-</span><span style="color: #D8DEE9">rescript</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">src</span><span style="color: #81A1C1">/</span><span style="color: #D8DEE9">ExternalLibs</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">res</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">1</span><span style="color: #81A1C1">-</span><span style="color: #B48EAD">5</span><span style="color: #D8DEE9FF">:</span><span style="color: #B48EAD">1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">1</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">let</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">userAvatar</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Some</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">url...</span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">2</span><span style="color: #D8DEE9FF"> │</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">3</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">switch</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">userAvatar</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">4</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #81A1C1">|</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">Some</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">url</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Js</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">log</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">"</span><span style="color: #A3BE8C">The user's avatar is </span><span style="color: #ECEFF4">"</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">++</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">url</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #B48EAD">5</span><span style="color: #D8DEE9FF"> │ </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">You</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">forgot</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">to</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">handle</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">a</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">possible</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">case</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">here</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">for</span><span style="color: #D8DEE9FF"> example</span><span style="color: #ECEFF4">:</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">None</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">>>>></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">Finish</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">compiling</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">82</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">mseconds</span></span></code></pre>
+    <p>😍 sometimes I feel like I would kiss the Rescript compiler.</p>
+    <h2>Easy to use with any build tool</h2>
+    <p>Since rescript compiles to JS, you can use Rescript with any build tool, create-react-app, Snowpack, Webpack,
+      Babel, Rome, and more... anything that works for JS would work for Rescript because the idea is:</p>
+    <p>Rescript compiles to JS ⇒ then any tool you are using understands the JS files generated and starts working, they
+      don't necessarily need to know you are using Rescript. To prove that, I created this template to use Rescript with
+      snowpack you can check here:</p>
+    <p><a
+        href="https://github.com/dielduarte/react-snowpack-rescript-template">dielduarte/react-snowpack-rescript-template</a>
+    </p>
+    <p>You can see that to start the snowpack dev server, I just imported the index.bs.js file generated by the Rescript
+      compiler within the index.html file <a
+        href="https://github.com/dielduarte/react-snowpack-rescript-template/blob/main/index.html#L13">here</a></p>
+    <h2>The end</h2>
+    <p>As I told at the beginning of the post, the idea here was to talk about points that I considered important to
+      take the decision of study more about the language, so I didn't cover many great things about the language and its
+      benefits, yet, I hope it helps you to at least be interested in learning more!</p>
+    <p>and for you, does it worth it?</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

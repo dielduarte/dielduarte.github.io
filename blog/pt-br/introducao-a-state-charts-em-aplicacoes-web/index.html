@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Introdução a state charts em aplicações web</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/pt-br/introducao-a-state-charts-em-aplicacoes-web/">
+  <meta name="description"
+    content="Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito &#34;simples&#34;...">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Introdução a state charts em aplicações web">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image"
+    content="https://dielduarte.dev/images/pt-br-introducao-a-state-charts-em-aplicacoes-web.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/pt-br/introducao-a-state-charts-em-aplicacoes-web/">
+  <meta content="https://dielduarte.dev/images/pt-br-introducao-a-state-charts-em-aplicacoes-web.png"
+    name="twitter:image">
+  <meta content="Introdução a state charts em aplicações web" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito &#34;simples&#34;..."
+    name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Introdução a state charts em aplicações web</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 8 minutos</p>
+    <p>Era uma vez um Front-end que não conhecia State Charts e tinha uma tarefa muito "simples", construir um
+      componente de input. O "simples" input para edição de um nome tinha algumas variações de estados:</p>
+    <p><code>inicial</code>: O input aparece desabilitado, o usuário pode então clicar no ícone de editar.</p>
+    <p><code>editando</code>: O input está habilitado para receber o novo valor de nome, o usuário pode então clicar no
+      ícone de salvar.</p>
+    <p><code>salvando</code>: No lugar dos ícones de editar/salvar mostramos um loading sinalizando que alguma ação
+      assíncrona está acontecendo, nesse caso, estamos salvando o novo valor de nome.</p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-1.jpeg"
+        alt="imagem mostrando o component de input e seus estados."></p>
+    <h2 class="subtitle--separator"></h2>
+    <p>Nosso querido Front-end começou a implementação com duas variáveis boleanas:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span></code></pre>
+    <p>E uma função de <em><strong>onClick</strong></em> que recebia por parametro os valores de <code>isEditing</code>
+      e <code>isSaving</code>. Seu pensamento foi: A primeira vez que a função de onClick for chamada, estamos no estado
+      inicial, logo preciso enviar o usuário para o estado de <em><strong>editando</strong></em>:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p><img src="/images/web-development-with-state-charts-intro/image-2.jpeg"
+        alt="imagem mostrando o component de input em seu estado inicial e mostrando que o ícone editar possui um evento de on click.">
+    </p>
+    <p>Ao chegar no estado de edição e sabendo que o usuário poderia novamente clicar no ícone que dessa vez se
+      transformava no ícone para salvar, o mesmo continuou sua implementação adicionando mais um trecho código na função
+      de <em><strong>onClick</strong></em>:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>O trecho de código adicionado primeiro testa se o usuário está no estado de <em><strong>edição</strong></em>,
+      caso verdadeiro, faz o switch das variáveis para levar o usuário para o estado de
+      <em><strong>salvando</strong></em>, e logo em seguida faz um request na api para salvar o novo valor de nome. Ao
+      receber um retorno da api, resetamos as duas variáveis boleanas para false, pois agora, o usuário não está
+      editando e nem salvando um novo valor, o que supostamente levaria o usuário para o estado
+      <em><strong>inicial</strong></em>.</p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-3.png"
+        alt="imagem mostrando o component de input saindo do esado de editando para salvando, e depois de salvando para inicial.">
+    </p>
+    <p>Não muito confiante na solução, deu a task como terminada e seguiu sua vida.</p>
+    <p><img src="/images/web-development-with-state-charts-intro/gif-1.gif" alt="gif de um menino nerd dando joinha.">
+    </p>
+    <h2 class="subtitle--separator"></h2>
+    <p>...Era uma vez um designer, que esqueceu de trabalhar no estado de erro do "simples" componente de input.</p>
+    <p><em><strong>“Hey dev, Esqueci de um detalhe, não tratamos o estado de erro do input. Quando der erro, volta pro
+          estado de edição por que o cliente pode tentar salvar novamente.”</strong></em></p>
+    <p>Mesmo sabendo que a solução atual não era a ideal, continuou com a mesma implementação para adicionar o estado de
+      erro, agora, ao invés de 2 variáveis boleanas, seriam três:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span></code></pre>
+    <p>Essa pequena adição resultou na função de onClick abaixo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isError</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">catch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Task concluida novamente.
+      Desconfortável com a solução final, foi pesquisar. Afinal, qual o problema com variáveis boleanas?</p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-4.png"
+        alt="imagem mostrando que podemos ter 8 variações usando 3 variáveis booleanas."></p>
+    <p>O problema é que como na imagem acima, apesar de parecer inofensiva e óbvio, 1 variável boleana representa duas
+      variações. O porém que ninguém lembra é que adicionando mais de uma variável, suas variações crescem
+      exponencialmente. Com três variáveis boleanas como no exemplo acima, temos 8 variações.</p>
+    <p>E aí, você acha que o código acima está preparado para lidar com 8 variações? A resposta infelizmente é: não. Seu
+      código pode parecer simples e estar 99% vunerável a bugs.</p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-5.jpg"
+        alt="meme de um homem tampando a placa do carro pela metada na primeira parte da foto, e na segunda parte tampando a outra.">
+    </p>
+    <p>Sabendo disso, podemos fazer diferente, podemos mapear todos os estados em uma constante:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">IDLE</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">IDLE</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">EDITING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">EDITING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">SAVING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">SAVING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">ERROR</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">ERROR</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #81A1C1">;</span></span></code></pre>
+    <p>Podemos também criar um objeto que nos diga qual o estado atual e qual o próximo estado, exemplo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">ERROR</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">ERROR</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span></span>
+<span class="line"><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Limitaremos então o estado do input para apenas UM estado por vez:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">inputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span></span></code></pre>
+    <p>E nossa função de onClick receberia apenas o nosso estado atual por parâmetro, e usando o objecto nextState,
+      saberiamos qual o próximo estado deveríamos mover nosso componente. Exemplo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">saving</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">success</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">catch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">saving</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">else</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF">]</span><span style="color: #81A1C1">;</span><span style="color: #D8DEE9FF">  </span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Podemos resumir nossa história em problema e solução:</p>
+    <p><code>Problema:</code></p>
+    <p>Manter o estado usando variáveis condicionais ficou confuso, além de obrigar a tratar todos os edge cases e rezar
+      para que o estado não caísse em possíveis combinações que não foram tratadas.</p>
+    <p><code>Solução:</code></p>
+    <p>Ter um único estado por vez e definir as transições entre estados através de um evento.</p>
+    <h2 class="subtitle--separator"></h2>
+    <p>Nossa solução tem um nome: <code>Finite State Machines</code>, mas a final oq é Finite State Machines?</p>
+    <blockquote>
+      <p>Uma Máquina de estados finita (Finite State Machines ou FSM) é um modelo matemático usado para representar
+        programas de computadores ou circuitos lógicos. O conceito é concebido como uma máquina abstrata que deve estar
+        em <strong>UM</strong> de um número finito de estados.</p>
+    </blockquote>
+    <p>source: <a
+        href="https://pt.wikipedia.org/wiki/M%C3%A1quina_de_estados_finita">https://pt.wikipedia.org/wiki/Máquina_de_estados_finita</a>
+    </p>
+    <p>Uma forma bem simples de representar FSM é usando um diagrama de transição de estados, onde o conseguimos
+      vizualizar todo o fluxo de transição de estados por exemplo:</p>
+    <p><em><strong>começando em um estado A ⇒ um vento X aconteceu ⇒ vamos para um estado B</strong></em></p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-6.png"
+        alt="imagem mostrando um diagrama de transição de estados"></p>
+    <h3 id="finite-state-machines-state-charts-que-confusão">Finite State Machines? State charts? que confusão!</h3>
+    <p>Quando começamos a estudar mais sobre Finete State Machines vamos sempre nos deparar com um outro nome que é
+      <code>State Charts</code>, mas a propósito qual a grande diferença entre eles?</p>
+    <p>Como qualquer solução, Finite State Machines por sí só tem alguns problemas, geralmente acabam com um grande
+      número de estados, muitos deles com transições idênticas, tornando muito verboso e de difícil manutenção. Este é o
+      famoso problema conhecido como explosão de estados.</p>
+    <p>State Charts por sua vez, apareceu pouco tempo depois adicionando soluções para que FSM fossem mais escalável a
+      medida que o seu sistema fosse crescendo e ficando mais complexo. Além de novas ideias para tornar sua vida mais
+      fácil.</p>
+    <p><img src="/images/web-development-with-state-charts-intro/image-7.png"
+        alt="imagem mostrando alguns dos conceitos que state charts contém, como activity, actions, paralel states entre outros...">
+    </p>
+    <p>Vale lembrar que a ideia foi apresentada há mais de 20 anos atrás, além de ser uma das bases da computação, é
+      usada largamente em hardware embarcados e games! Com o aparecimento da lib Xstate que vamos descobrir no próximo
+      post, o uso na web e pricipalmente usando Javascript está crescendo cada vez mais. Apenas para deixar um gostinho
+      do que vamos ver no próximo artigo e também sobre uma das maiores vantagens de se usar State Charts que é o poder
+      de vizualizar seu código, dá uma olhada como ficaria nosso codigo do componente de input usando Xstate:</p>
+    <p><a
+        href="https://xstate.js.org/viz/?gist=d73e129d583ac4a0ba956736e68dbdd2">https://xstate.js.org/viz/?gist=d73e129d583ac4a0ba956736e68dbdd2</a>
+    </p>
+    <p>Não se preocupe se não entendeu o código, vamos aprender tudo sobre o uso de Xstate e State Charts em uma
+      aplicação real no próximo artigo!</p>
+    <h3 id="estado-é-tipo-redux">Estado? É tipo redux?</h3>
+    <p>Quando trabalhamos com State Charts, os famosos estados não são os estados dinâmicos ou relacionados a dados de
+      uma aplicação e sim em qual cenário de uma possibilidade finita e pré estabelecida uma aplicação está, lembre-se
+      da regra de ouro, uma aplicação pode estar em UM único estado por vez. Exemplo:</p>
+    <p>Sua aplicação pode estar no estado de loading e ter um contexto <code>user=null</code>, em uma próximo momento
+      sua aplicação estaria em um estado de logado e ter um contexto <code>user={ id: 1, name:  'Diel' }</code>. Com
+      esse exemplo fica fácil assimilar que o estado como estamos acostumados no Redux ou outras opções são chamados de
+      contexto no mundo dos statecharts.</p>
+    <p>Te vejo no próximo post, onde vamos aprender a como modelar uma aplicação utilizando State Charts e Xstate.</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

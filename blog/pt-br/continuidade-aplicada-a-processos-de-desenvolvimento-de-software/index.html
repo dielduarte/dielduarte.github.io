@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Continuidade aplicada aos processos de engenharia de software</title>
+  <link rel="canonical"
+    href="https://dielduarte.dev/blog/pt-br/continuidade-aplicada-a-processos-de-desenvolvimento-de-software/">
+  <meta name="description" content="A continuidade aplicada aos processos de engenharia de software">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Continuidade aplicada aos processos de engenharia de software">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image"
+    content="https://dielduarte.dev/images/pt-br-continuidade-aplicada-a-processos-de-desenvolvimento-de-software.png">
+  <meta property="og:url"
+    content="https://dielduarte.dev/blog/pt-br/continuidade-aplicada-a-processos-de-desenvolvimento-de-software/">
+  <meta
+    content="https://dielduarte.dev/images/pt-br-continuidade-aplicada-a-processos-de-desenvolvimento-de-software.png"
+    name="twitter:image">
+  <meta content="Continuidade aplicada aos processos de engenharia de software" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="A continuidade aplicada aos processos de engenharia de software" name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Continuidade aplicada aos processos de engenharia de software</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 5 minutos</p>
+    <p>Não faz muito tempo que me tornei líder técnico pela primeira vez em minha carreira e, logo em seguida, também
+      fui considerado staff engineer. Isso mudou tudo, de alguém imerso na programação (ainda porque eu amo isso) para a
+      pessoa que representa a visão técnica de uma equipe e tenta levar o grupo a um lugar melhor, tecnicamente falando.
+    </p>
+    <p>Me encontro mais frequentemente pensando no futuro e nos processos do que eu estava acostumado, longas discussões
+      com equipes de produto e design, idas e vindas de ideias, Provas de Conceito (POCs) e a coisa mais terrível que
+      todo engenheiro odeia, negociar tempo para trabalhar em débitos técnicos e melhorias.</p>
+    <p>Tem sido interessante! Aprendi muito, e embora não tenha sido tanto tempo assim nesta posição, já me vi em
+      situações bastante complicadas e tenho pensado muito sobre continuidade a longo prazo. Acho que posso elaborar uma
+      fórmula matemática para provar que a continuidade a longo prazo pode ajudar nos processos de desenvolvimento de
+      software. Isso não seria uma tese de mestrado ou algo assim? Talvez eu devesse voltar à vida acadêmica.</p>
+    <h2 class="subtitle--separator">Os casos de sucesso e os processos de continuidade ocultos</h2>
+    <p>Você pode se perguntar, "Por que Diel está falando sobre isso agora?" As situações mais complicadas em que estive
+      relacionam-se à negociação de tempo, e se há algo com que sou obrigado a concordar com os coachs de negócios do
+      YouTube é que o tempo é finito, o recurso mais desejado e caro.</p>
+    <p>Então, por que algumas áreas têm sucesso e outras não? Não posso simplesmente aceitar que seja apenas porque elas
+      têm tempo para se focar. Sejamos honestos; muitos erros são cometidos ao longo do caminho, mesmo quando se dedica
+      tempo integral a algo, o que pode ser traduzido como "tempo perdido", e nós perdemos muito tempo. O tempo é
+      essencial, mas não é o único fator de sucesso a ser considerado.</p>
+    <p>Você sabe já sabe onde quero chegar, a continuidade aplicada ao tempo é um fator de sucesso. Dê uma olhada rápida
+      ao seu redor:</p>
+    <ul>
+      <li>Um produto só oferece novos recursos por causa de um processo contínuo de entrega de novos recursos.</li>
+      <li>O mesmo vale para os bugs, espero. O produto continua a arrumar bugs por meio de um processo de resolução
+        contínua de bugs.</li>
+      <li>Você mantém todos na empresa alinhados por meio de um processo de manutenção contínua do alinhamento.</li>
+      <li>Seu software usa as dependências mais atualizadas por meio do processo contínuo de atualização delas.</li>
+    </ul>
+    <p>Experimente você mesmo:</p>
+    <p>{A ação desejada é bem-sucedida}, por causa de um processo contínuo de fazer {ação desejada}.</p>
+    <h2>O gráfico de continuidade e seus surpreendentes efeitos colaterais</h2>
+    <p>Desmond Tutu disse com sabedoria: "Há apenas uma maneira de comer um elefante: uma mordida de cada vez." Ele quis
+      dizer que tudo que parece assustador, avassalador ou até mesmo impossível pode ser realizado gradualmente,
+      assumindo um pouco de cada vez.</p>
+    <p>Um pouco de cada vez... continuidade.</p>
+    <p>Sempre teremos grandes projetos para trabalhar, o que é ótimo. Eu odiaria não ter nenhum problema impactante ou
+      complexo para resolver, o que geralmente se traduz em muito trabalho em muitas frentes diferentes. Como podemos
+      progredir em várias áreas enquanto mantemos um bom ritmo na entrega de novos recursos, melhorias na experiência do
+      usuário/desenvolvedor, manutenção, correção de bugs e mais?</p>
+    <p>Não estou advogando ter uma equipe que se concentre em todas essas coisas ao mesmo tempo, mas ser crítico e
+      pensar sobre o que pode ser paralelizado, levando em consideração a capacidade da equipe para que possamos ter
+      progresso contínuo e saudável em áreas que terão um impacto positivo, mas nunca seriam priorizadas.</p>
+    <p>Sua empresa não irá à falência se a equipe levar três semanas a mais para entregar aquele grande recurso e, ainda
+      assim, corrigir alguns bugs e melhorar a experiência do desenvolvedor ao longo do caminho. Mas você só pode
+      começar com pessoas que acreditam que a empresa lhes dá espaço para ter sucesso e apoia um processo sólido e
+      saudável.</p>
+    <h2>Aplicando a fórmula de continuidade</h2>
+    <math display="inline">
+      <mfrac>
+        <msup>
+          <mi>Trabalho que precisa ser feito</mi>
+        </msup>
+        <mn>Tempo disponível/desejado</mn>
+      </mfrac>
+    </math>
+    <p>Vamos supor que temos um trabalho de migração para fazer, nós iríamos:</p>
+    <ul>
+      <li>dividir e ter uma compreensão clara do trabalho necessário.</li>
+      <li>Aplicar e dividir groupos deste trabalho em cima do tempo disponível ou desejado.</li>
+    </ul>
+    <p>Esta lista de ações nos dá uma linha constante muito chata:</p>
+    <img src="/images/continuity-applied-to-software-development-processes/graph-1.png" alt="gráfico linear">
+    <p>Ninguém vê o efeito colateral dessa representação visual constante; nós comemos o elefante uma mordida de cada
+      vez. O efeito colateral é que você começará com muito trabalho a ser feito, mas também diminuirá linearmente este
+      número e se aproximará de zero no final. Isso não é como tudo funciona em desenvolvimento de software?</p>
+    <img src="/images/continuity-applied-to-software-development-processes/graph-2.png" alt="gráfico linear">
+    <h2>Os efeitos colaterais não mensuráveis</h2>
+    <p>Como tudo que envolve seres humanos, haverá alguns efeitos colaterais que gosto de chamar de não mensuráveis;
+      eles são não mensuráveis porque estamos falando de sentimentos humanos, motivações e crenças.</p>
+    <p>Pense nisso: se sua equipe vem mencionando e pedindo para trabalhar em uma longa migração que se tornou um
+      problema significativo para a velocidade e qualidade da equipe por anos, isso afetará diretamente a felicidade e
+      motivação da equipe. Não abordar grandes preocupações/projetos como esse pode diminuir drasticamente a confiança
+      da equipe na capacidade da empresa de apoiar um processo sólido e saudável.</p>
+    <p>Os efeitos colaterais também se estendem além das métricas de produtividade. Isso pode aumentar a inovação e a
+      resolução criativa de problemas aplicando continuidade e devolvendo tempo às equipes, já que elas não estão
+      gastando todo o tempo e energia tentando descobrir como comer o elefante.</p>
+    <p>No final, todos nós temos um objetivo: produzir com qualidade e mais rápido.</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

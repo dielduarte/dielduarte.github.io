@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>The easier way to understand identity functors</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/en/the-easier-way-to-understand-functors/">
+  <meta name="description" content="the easier way to understand functors in my humble opinion is the concept of...">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="The easier way to understand identity functors">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image" content="https://dielduarte.dev/images/en-the-easier-way-to-understand-functors.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/en/the-easier-way-to-understand-functors/">
+  <meta content="https://dielduarte.dev/images/en-the-easier-way-to-understand-functors.png" name="twitter:image">
+  <meta content="The easier way to understand identity functors" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="the easier way to understand functors in my humble opinion is the concept of..."
+    name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/en/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>The easier way to understand identity functors</h1>
+    <p class="text-center italic text-sm">3 min read</p>
+    <p>I really like functional programming, and have been studying it during last years, including elm and more
+      recently Reason, just for fun. Never shipped some production ready app in these languages but really fancy the
+      idea to bring some of their concepts to javascript. But somehow I always ended up frustrated with some functional
+      techniques explanations,</p>
+    <p>like functors.</p>
+    <h2 class="subtitle--separator">What are functors in fact?</h2>
+    <p>The easier way to understand functors in my humble opinion is the concept of:</p>
+    <ul>
+      <li>Functors are functions that return the value passed in a way that this value can be mapped over and over again
+        till you get the result expected. it will help you to visualize the flow of the value transformation instead of
+        creating multiple variables in memory in an imperative way, think like the <code>promise.then</code> method that
+        can be chained step by step.</li>
+    </ul>
+    <p><code>talk is cheap, show me the code.</code></p>
+    <p>Any type of value can be mappable with functors as we can see in the example below where money is a string:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">convertMoneyToNumber</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">functor</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">money</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">map</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">money</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">replace</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">/</span><span style="color: #EBCB8B">\$</span><span style="color: #ECEFF4">/</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">))</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">map</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">parseFloat</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">//same as .map(money => parseFloat(money))</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">value</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Considering we have a function like that previously:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">convertMoneyToNumber</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">moneyWithoutMask</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">replace</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">/</span><span style="color: #EBCB8B">\$</span><span style="color: #ECEFF4">/</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">parseFloat</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">moneyWithoutMask</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Let's create a functor helper first, this function accepts any value and makes it mappable like arrays, so now we
+      can chain .map transforming any value on the value desired:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">functor</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">anyValue</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> (</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">map</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">f</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">functor</span><span style="color: #D8DEE9FF">(</span><span style="color: #88C0D0">f</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">anyValue</span><span style="color: #D8DEE9FF">))</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">value</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">anyValue</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>As we can see, the functor helper receives <code>any value</code> and returns an object with:</p>
+    <ul>
+      <li>
+        <p>A method called <code>map</code> that receives a function and returns a functor of this function execution
+          value, making the new value mappable again.</p>
+      </li>
+      <li>
+        <p>A field called <code>value</code> that contains the final result of the last function execution, searching
+          you can find variants of this idea like a flatMap method that just returns the last function execution without
+          wrapping it in a functor, then in the last execution instead of using <code>.map().value</code> you can just
+          use <code>.flatMap(anyValue)</code>.</p>
+      </li>
+    </ul>
+    <p>Now with this helper, we can convert the convertMoneyToNumber to the first example:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">convertMoneyToNumber</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">functor</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">money</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">map</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">money</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">money</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">replace</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">/</span><span style="color: #EBCB8B">\$</span><span style="color: #ECEFF4">/</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">''</span><span style="color: #D8DEE9FF">))</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">map</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">parseFloat</span><span style="color: #D8DEE9FF">) </span><span style="color: #616E88">//same as .map(money => parseFloat(money))</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">value</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+    <p>Now we can map any type of value transforming its original value in a new value, not only arrays! Just to be
+      clear this is just the base of the functors idea, there are many more variants.</p>
+    <p>I hope you have learned something new today!</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Continuity Applied to software development processes</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/en/continuity-applied-to-software-development-processes/">
+  <meta name="description" content="The case for continuity applied to software engineering processes">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Continuity Applied to software development processes">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image"
+    content="https://dielduarte.dev/images/en-continuity-applied-to-software-development-processes.png">
+  <meta property="og:url"
+    content="https://dielduarte.dev/blog/en/continuity-applied-to-software-development-processes/">
+  <meta content="https://dielduarte.dev/images/en-continuity-applied-to-software-development-processes.png"
+    name="twitter:image">
+  <meta content="Continuity Applied to software development processes" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="The case for continuity applied to software engineering processes" name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/en/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Continuity Applied to software development processes</h1>
+    <p class="text-center italic text-sm">5 min read</p>
+    <p>It wasn't long ago that I became a tech lead for the first time in my career, and right after, I was also
+      considered a Staff engineer. That changed everything, from the person deep into coding (still cause I love it) to
+      the person who represents the technical vision of a team and tries to move the group to a better place,
+      technically speaking.</p>
+    <p>I find myself into future and process thinking more often than I was used to, long discussions with product and
+      design teams, back and forth on ideas, POCs, and the most terrible thing every engineer hates, fighting and
+      negotiating time to work on technical debt and improvements.</p>
+    <p>It has been interesting! I've learned a ton, and although it has not been that long in this position, I've been
+      exposed to quite some tricky situations already and have been thinking a lot about long-term continuity. I think I
+      can come up with a math formula to prove that long-term continuity can help with software development processes.
+      Isn't this a master's thesis or something? Perhaps I should return to academic life.</p>
+    <h2 class="subtitle--separator">The success cases and the hidden continuity processes</h2>
+    <p>You might wonder, "Why is Diel talking about this now?" The most tricky situations I have been in are related to
+      negotiating time, and if there is something I am obligated to agree with YouTube business coaches that time is
+      finite, the most wanted and expensive resource.</p>
+    <p>So why do some areas have success and others don't? I can't simply accept it is only because they have the time
+      to focus. Let's be honest; many mistakes are made along the way, even when focusing full-time on something, which
+      can be translated to "lost time," and we lost a lot of time. Time is essential, but not the only success factor to
+      take in.</p>
+    <p>You know where my hunting is, hence the article title. Continuity applied on top of time is a success factor.
+      Take a quick look around you:</p>
+    <ul>
+      <li>A product only delivers new features because of a process of continuing to deliver new features</li>
+      <li>Same for bugs, I hope. The product keeps up with bugs because of a process of continuing to solve bugs</li>
+      <li>You keep everyone in the company aligned because of a process of continuing to keep everyone aligned.</li>
+      <li>Your software uses the most updated dependencies because of the process of continuing to update them.</li>
+    </ul>
+    <p>Try it yourself:</p>
+    <p>{The desired action is successful}, because of a process of continuing doing {desired action}</p>
+    <h2>The boring continuity graph and its surprising side effects</h2>
+    <p>Desmond Tutu wisely said, "There is only one way to eat an elephant: a bite at a time." He meant that everything
+      that seems daunting, overwhelming, or even impossible can be accomplished gradually by taking on a little at a
+      time.</p>
+    <p>A little at a time... continuity.</p>
+    <p>We will always have big projects to work on, which is excellent. I would hate not to have any impactful or
+      complex problems to work on, which usually translates to lots of work on many different fronts. How can we
+      progress in multiple areas while keeping a good pace on delivering new features, UX/DX improvements, maintenance,
+      fixing bugs, and more?</p>
+    <p>I'm not advocating having a team that focuses on all of this stuff at the same time, but to be critical and think
+      about what can be parallelized, taking into account the team's capacity so that we can have continuous health
+      progress on areas that will have a positive impact but would never be prioritized.</p>
+    <p>Your company won't go bank corrupt if the team takes three weeks more to deliver that big feature and yet fixes
+      some bugs and improves DX along the way. But you can only start with people who believe you give them space to
+      succeed and support a solid/healthy process.</p>
+    <h3>Applying the continuity formula</h3>
+    <math display="inline">
+      <mfrac>
+        <msup>
+          <mi>Work that needs to get done</mi>
+        </msup>
+        <mn>Available/wanted Time</mn>
+      </mfrac>
+    </math>
+    <p>Let's suppose we have a migration work to get done, we would:</p>
+    <ul>
+      <li>breakdown and have a clear understanding of the work needed.</li>
+      <li>Apply and break down chunks of this work on top of available or wanted time.</li>
+    </ul>
+    <p>This list of actions gives us a very boring constant line:</p>
+    <img src="/images/continuity-applied-to-software-development-processes/graph-1.png" alt="linear graph">
+    <p>No one sees the side effect of that constant visual representation; we eat the elephant one bit at a time. The
+      side effect is that you will start with lots of work to get done but also linearly decrease this number and get
+      closer to the finish. Isn't this how everything works in software?</p>
+    <img src="/images/continuity-applied-to-software-development-processes/graph-2.png" alt="linear graph">
+    <h2>The unmeasurable side effects</h2>
+    <p>As with everything with humans involved, there will be some side effects that I like to call the unmeasurable
+      ones; they are unmeasurable because we are talking about human feelings, motivations, and beliefs.</p>
+    <p>Think about this: if your team has been mentioning and asking to work on a long migration that has become a
+      significant problem for the team's velocity and quality for years, this will directly affect the team's happiness
+      and motivation. Not addressing big concerns/projects like that can drastically decrease the team's trust in the
+      company's capacity to support a solid and healthy process.</p>
+    <p>Side effects also extend beyond productivity metrics. It can increase innovation and creative problem-solving by
+      applying continuity and giving back time to teams since they are not spending all the time and energy trying to
+      figure out how to eat the elephant.</p>
+    <p>Ultimately, we all have one goal: to ship with quality and faster.</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

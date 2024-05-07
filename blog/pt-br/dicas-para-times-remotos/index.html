@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Dicas para times remotos</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/pt-br/dicas-para-times-remotos/">
+  <meta name="description"
+    content="Comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Dicas para times remotos">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image" content="https://dielduarte.dev/images/pt-br-dicas-para-times-remotos.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/pt-br/dicas-para-times-remotos/">
+  <meta content="https://dielduarte.dev/images/pt-br-dicas-para-times-remotos.png" name="twitter:image">
+  <meta content="Dicas para times remotos" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta
+    content="Comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos."
+    name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Dicas para times remotos</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 10 minutos</p>
+    <p>Esse é um material sobre comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota
+      baseado em minha experiência e estudos. Não estamos falando de uma ciência exata e recomendo testar as dicas por
+      algumas semanas e avaliar os resultados com a ajuda de feedbacks da equipe.</p>
+    <h2 class="subtitle--separator">Async vs realtime</h2>
+    <p>Tente manter a comunicação assíncrona sempre que possível, assimilar que conversas em real time são como reuniões
+      pode ajudar. Já pensou ficar em reunião 8 horas por dia? Em uma situação de extrema desorganização remota isso
+      pode acontecer, como resultado, a produtividade do time cai.</p>
+    <p>Evitar usar ferramentas de chat em tempo real pode ajudar. No lugar tente ferramentas como Twist que basicamente
+      organiza toda a comunicação do time por thread.</p>
+    <p>Assim como todo time de desenvolvimento tem um cultura de fazer code review em alguns momentos do dia, também
+      será necessário implantar a mesma ideia para que a equipe dedique um tempo do dia para checar todas as threads em
+      que eles estão participando e responder/tomar ações se necessário.</p>
+    <p>Use chats em tempo real para situações de emergência como um bug em produção, assuntos que realmente precisam de
+      uma resposta em tempo real / situações do dia a dia como:</p>
+    <ul>
+      <li>Ei, não consigo achar onde esta documento X, pode me ajudar?</li>
+      <li>Estou com um problema que não consigo resolver, alguém livre para fazer um pair programming?</li>
+    </ul>
+    <p>E claro, para conversas informais em grupos ou privadas</p>
+    <h3>One Monday</h3>
+    <p>One monday é um conceito válido principalmente para times em múltiplos timezones. O conceito consiste em entender
+      que em uma comunicação assíncrona em um ambiente remoto estarei sujeito a ter que esperar até 24 horas para
+      receber uma resposta dependendo do timezone das pessoas envolvidas. Reafirmo a dica, em casos de situações
+      urgentes usem chats em tempo real ou ligações para parear com webcam ligada.</p>
+    <h2>Converse com as pessoas certas</h2>
+    <p>Se você precisa discutir algo sobre marketing, envie no grupo de marketing, crie thread apenas com as pessoas
+      relacionadas a marketing ou relacionadas ao assunto que você precisa resolver/discutir, dessa forma evitamos
+      distrações desnecessárias para o resto do time.</p>
+    <p>Receber notificações ou participar de todas as threads a todo momento sobre assuntos que o integrante do time não
+      precisa participar, além de ser uma distração desnecessária, muitas vezes força os integrantes a mutar ou ignorar
+      o canal de comunicação para que consigam focar no trabalho e como resultado, um gap de comunicação muito maior</p>
+    <h2>Crie grupos por time e/ou áreas de conhecimento</h2>
+    <p>Evite criar grupos para cada assunto ou cada tarefa que precisa ser discutida, em questão de dias isso pode virar
+      um caos e ninguém sabe em que grupo responder, mais uma vez aumentando o gap de comunicação.</p>
+    <p>Exemplo de grupos por time:</p>
+    <ul>
+      <li>time dashboard</li>
+      <li>time site</li>
+      <li>RH</li>
+      <li>Marketing</li>
+    </ul>
+    <p>Exemplo de grupos por áreas de conhecimento:</p>
+    <ul>
+      <li>Front-end</li>
+      <li>Back-end</li>
+      <li>Designers</li>
+    </ul>
+    <p>Use grupos por áreas de conhecimento para aumentar o engajamento e a troca de conhecimento ou ajudas rápidas. Faz
+      muito mais sentido um front-end perguntar uma dúvida ou dicas de CSS em um grupo focado sobre front-end ao invés
+      de perguntar no chat geral da empresa, para apenas uma pessoa ou mesmo no grupo de back-end.</p>
+    <h2>Status</h2>
+    <p>Uma ótima maneira saudável de saber quando alguém está online ou não é usando o próprio status de chats em real
+      time. Algumas ferramentas, como Slack, permitem aos usuários adicionarem status diferentes de apenas
+      online/offline. Uma ideia que meu time atual aplica e tem funcionado muito bem são os status:</p>
+    <p><img src="/images/status-1.png" alt="imagem mostrando status pré definidos além de online ou offline"></p>
+    <p>O status é exibido ao lado do nome do usuário:</p>
+    <p><img src="/images/status-2.png" alt="imagem mostrando status ao lado do nome do usário"></p>
+    <p><img src="/images/status-3.png" alt="imagem mostrando status ao lado do nome do usário em uma conversa real"></p>
+    <p>No exemplo acima, eu sei que o usuário Magdiel Duarte está offline no momento, isso quer dizer que, mesmo ao
+      enviar uma mensagem direta para ele a resposta não vai ser instantânea, e tudo bem, mande a mensagem da mesma
+      forma e espere. Se precisar realmente de uma resposta urgente sempre mande em grupos onde mais pessoas podem
+      ajudar.</p>
+    <h2>Reuniões</h2>
+    <p>Sempre faça reuniões com a webcam ligada, isso gera um engajamento maior na equipe, faz as pessoas se sentirem
+      confortáveis com aquele momento e manterem o foco.</p>
+    <h3>C-Levels meetings</h3>
+    <p>Uma das técnicas apresentadas pelo livro "It doesn't have to be crazy at work" é um conceito onde, 1 ou 2 dias na
+      semana os C-levels ficam por algumas horas disponíveis para reuniões com qualquer pessoa/time da empresa, os
+      horários ficam públicos no calendário e qualquer time/pessoa pode marcar uma reunião nesse horário para disctuir
+      sobre algum assunto. Fora desse horário fica restrigindo apenas para assuntos urgentes.</p>
+    <p>Tive a oportunidade de trabalhar em uma empresa anterior a atual, onde aplicavam esse conceito e era muito bacana
+      pois os C-levels dessa empresa participavam muito de todas as decisões. Lembra do conceito sobre chat em real time
+      ser considerado reunião? Imagine o dia-a-dia de um C-level tendo que responder a todo momento dúvidas via chat,
+      eles simplesmente não vão conseguir produzir nada além de responder o chat.</p>
+    <h3>Daily Reports</h3>
+    <p>Daily reports podem ser feitas por calls com a webcam ligada ou via texto.</p>
+    <p>Em um time distribuído em múltiplos timezones texto acaba sendo uma boa opção. Ferramentas como o <a
+        href="https://statushero.com/">Status Hero</a> ajudam as pessoas a não esquecerem de mandarem os reports e
+      automatiza esse processo, além de trazer alguns insights como produtividade geral da equipe e deixar todas as
+      Dailys Reports documentadas em um dashboard bem interessantes.</p>
+    <p>Optar por Dailys Reports via calls pode trazer ainda mais engajamento, principalmente se o dia a dia do time não
+      envolve em ter muitas reuniões.</p>
+    <p>Nesse caso realmente vai depender de qual opção vai deixar o time mais confortável, recomendo testar as duas
+      formas.</p>
+    <h2>TIL - Today I learned</h2>
+    <p>Uma das maiores reclamações quando se migra para um regime remoto é a troca de conhecimento, o <strong>Today I
+        learned</strong> é um canal onde as pessoas da empresas compartilham conhecimento, algum post bacana sobre uma
+      tecnologia nova, uma técnica que pode ajudar em algum momento, um vídeo sobre uma palestra interessante.
+      Literalmente qualquer coisa que o integrante da empresa achar que vale a pena ser compartilhado com os colegas.
+    </p>
+    <p>Apesar do nome ser <strong>Today I learned</strong>, não é necessariamente obrigatório postar algo novo todos os
+      dias, mas sim, quando achar que vale a pena ser compartilhado.</p>
+    <h2>Thanks</h2>
+    <p>Uma das maiores preocupações pessoais quando uma pessoa migra para um trabalho remoto é sobre visibilidade,
+      afinal, no regime remoto é muito díficil ter alguém observando como você se comporta no trabalho além das suas
+      entregas. É válido lembrar que o trabalho de uma pessoa e o quão importante ela é para a empresa vai muito além de
+      apenas entregas relacionadas diretamente ao seu cargo, aqui pode ser o lugar perfeito para aprender mais sobre as
+      soft skills de uma pessoa de forma remota.</p>
+    <p>O canal <strong>Thanks,</strong> é um conceito que algumas empresas aplicam onde as pessoas agradecem umas as
+      outras publicamente por algum feito que um colega fez e a ajudou no seu trabalho. Dessa forma fica registrado de
+      forma pública ações que as vezes fica muito díficil observar remotamente, como ajudar um colega com um bug de
+      forma privada, ensinar algo novo, e várias outras coisas.</p>
+    <p>Além de criar um ambiente muito bom para se trabalhar onde as pessoas são gratas umas as outras, aumentanto ainda
+      mais o engajamento do todo como um time.</p>
+    <h2>Hero</h2>
+    <p>Hero é um conceito válido se o time precisa prestar suporte, seja interno ou externo. O conceito consiste em a
+      cada período de tempo determinado pela equipe uma pessoa é o <strong>hero,</strong> essa pessoa é responsável por
+      conversar diretamenta com o time de suporte, analizar e organizar tarefas relacionadas no backlog e trabalhar para
+      resolver os problemas.</p>
+    <p>Com uma pessoa focada nisso, o resto do time pode focar em trabalhar em novas features ou grandes refactors sem
+      interrupções para prestar suporte. Isso é usado para organizar melhor o tempo da equipe entre Deep e Shalow Work
+      outros conceitos bem importantes de se estudar.</p>
+    <p>Uma das minhas referências em trabalho remoto e Deep Work é a empresa Doist onde aplicam esses conceitos. Eles
+      tem um blog muito bom e super recomendo a leitura principalmente dos posts sobre Deep Work e Hero + House Keeping.
+    </p>
+    <p><a
+        href="https://doist.com/blog/deep-work/?utm_source=doist_blog&#x26;utm_medium=referral&#x26;utm_campaign=heroes_housekeeping_days">https://doist.com/blog/deep-work</a>
+    </p>
+    <p><a href="https://doist.com/blog/heroes-housekeeping-days/">https://doist.com/blog/heroes-housekeeping-days/</a>
+    </p>
+    <h2>Calendário</h2>
+    <p>Uma das melhores formas de se ter uma big picture sobre tudo que está acontecendo na empresa é usando o
+      calendário.</p>
+    <p>Especialmente recomendo o Google Calendar, nele é possível fazer com que todo mundo tenha acesso ao calendário de
+      todos e que de forma fácil consiga mandar convites para reuniões, por exemplo sem ter que previamente perguntar
+      para todo mundo qual o melhor horário. Algumas empresas pedem para o time colocarem no calendário principalmente
+      quando não estão disponíveis, por exemplo:</p>
+    <p>Maria sempre vai a academia as 2 pm, ela pode então nesse caso adicionar no calendário um evento dizendo que não
+      está disponível no horário de 2 pm - 3 pm todos os dias, ficando ao critério da Maria colocar o porque caso se
+      sinta a vontade para ou apenas "Ocupado".</p>
+    <h2>Micro-managment</h2>
+    <p>Muito cuidado com micro gerenciamento de pessoas, se você precisa perguntar há uma pessoa o que ela está
+      trabalhando temos com certeza algum gap de comunicação acontecendo. O ideal é usar algum software de gerenciamento
+      de tarefas ou até mesmo planilhas (o que o time achar melhor). Onde cada pessoa pode estar fazendo apenas uma
+      tarefa por vez, que fique claro qual o status atual e de forma pública para todos do time.</p>
+    <h2>FOMO - medo de estar perdendo algo</h2>
+    <p>Esse é um problema pessoal, que pode acontecer ou não e varia muito de pessoa para pessoa. Mas a postura da
+      empresa relacionada a isso pode ajudar a diminuir os casos a 0. Ser firme com 8 horas trabalhadas por dia e nada
+      mais - com excessão a casos urgentes - é um ótimo começo!</p>
+    <p>Um cultura onde pessoas da equipe ficam online 24 horas por dia, trabalham até nos finais de semana não pode
+      nunca ser visto com bons olhos pela empresa e pelos líderes das equipes, isso leva a um alto risco de burnout que
+      é um problema sério de saúde, e para empresa representa uma queda brusca de produtividade a médio e longo prazo.
+    </p>
+    <p>Para a equipe:</p>
+    <ul>
+      <li>Tenham seus horários de trabalho e sigam a risca, manter uma rotina é muito importante em um regime remoto.
+      </li>
+      <li>Se possível não baixem o chat da empresa em seus celulares pessoais.</li>
+      <li>Configure para receber notificações apenas nos horários em que você esteja trabalhando.</li>
+      <li>Tenha em mente que trabalho é um processo contínuo, você pode continuar amanhã.</li>
+    </ul>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

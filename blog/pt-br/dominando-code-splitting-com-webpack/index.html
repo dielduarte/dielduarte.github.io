@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Dominando code splitting com webpack</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/pt-br/dominando-code-splitting-com-webpack/">
+  <meta name="description"
+    content="Vamos conversar sobre como Webpack pode ajudar no processo de code splitting para atingir a meta de um site mais performático.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Dominando code splitting com webpack">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image" content="https://dielduarte.dev/images/pt-br-dominando-code-splitting-com-webpack.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/pt-br/dominando-code-splitting-com-webpack/">
+  <meta content="https://dielduarte.dev/images/pt-br-dominando-code-splitting-com-webpack.png" name="twitter:image">
+  <meta content="Dominando code splitting com webpack" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta
+    content="Vamos conversar sobre como Webpack pode ajudar no processo de code splitting para atingir a meta de um site mais performático."
+    name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Dominando code splitting com webpack</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 6 minutos</p>
+    <p>Code Splitting é um processo em build time que quebra parte do seu código em pequenos pedaços que são
+      requisitados de forma assíncrona, apenas quando necessário. Vamos conversar sobre como Webpack pode ajudar no
+      processo de Code Splitting para atingir a meta de um site mais performático.</p>
+    <h2 class="subtitle--separator">Mas primeiro, como saber quando eu tenho que quebrar o meu código em pequenos
+      pedaços (chunks)?</h2>
+    <p>Os processos mais caros quando falamos sobre renderizar um Website são os processos de download e parsing do
+      Javascript e CSS. Sabendo desse fato, se nós não precisamos de uma parte específica do código no primeiro render,
+      esse código é um ótimo candidato para ser quebrado em uma outra parte e ser baixado sobre demanda.</p>
+    <p>O Google Chrome tem uma ótima ferramenta chamada <code>coverage</code> que nos mostra qual porcentagem do código
+      baixado está ou não está sendo usado. Isso pode ser usado como uma métrica para seguir e saber o quanto do código
+      baixado poderia ser quebrado em partes assíncronas.</p>
+    <p>Para usar essa ferramenta abra o dev tools do Chrome, <code>cmd/ctrl + p</code>, e digite
+      <code>show coverage</code>:</p>
+    <p><img src="/images/coverage.png" alt="imagem mostrando como acessar a janela coverage no dev tools do Chrome"></p>
+    <p>Uma vez que abrimos a opção coverage, clique no botão de reload e espere até que nosso site seja completamente
+      carregado. Os resultados vão nos motrar o quanto do código carregado por arquivo está sendo usado. É maravilhoso!
+      </p>
+    <p><img src="/images/result.png"
+        alt="imagem mostrando a tab coverage, onde nos podemos ver a lista de arquivos baixados e o quanto do código de cada arquivo está sendo usado.">
+    </p>
+    <p>No exemplo abaixo, 46% do código entregue <code>não</code> está sendo usado, essa métrica também é relativa,
+      dependende do tamanho do arquivo e de muitas outras variáveis. Então é sempre bom entender o contexto que estamos
+      trabalhando quando estivermos usando essas ferramentas.</p>
+    <h2 id="code-splitting-e-webpack">Code splitting e webpack</h2>
+    <p>Com Webpack nos temos duas formas de trabalhar com Code Splitting, imports estáticos e dinâmicos. As duas formas
+      usam <a href="https://v8.dev/features/dynamic-import">dynamic imports, uma feature do es2020</a></p>
+    <h3 id="imports-estáticos">Imports estáticos</h3>
+    <ul>
+      <li>É bom para ser usado quanto estivermos importando bibliotecas/módulos de Javascript pesados.</li>
+      <li>Qualquer parte do código que chamamos de temporal, ou seja, coisas que não são vísiveis todo o tempo na sua
+        página, exemplos: tooltips, modais/alertas.</li>
+      <li>Rotas.</li>
+    </ul>
+    <p>Para usar imports estáticos no seu código, é muito simples:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">module</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Ou ainda melhor, criando uma função que importa o módulo quando necessário. O import do arquivo é feito apenas
+      uma vez, depois da primeira é cacheado e na próxima vez que usar a função o módulo é retornado instantaneamente,
+      exemplo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">getModule</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> () ⇒ </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">getModule</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">module</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <h3 id="imports-dinamicos">Imports Dinamicos</h3>
+    <p>Imports dinâmicos não são de verdade dinâmicos, porque eles acontecem em build time. Ao usar imports dinâmicos
+      estamos dizendo para o Webpack: Ei Webpack, por favor, crie todos os chunks possíveis para o caminho que eu estou
+      te passando, seja uma pasta, ou várias em build time. Dessa forma nos conseguimos usar variáveis o que torna esse
+      processo de import "dinâmico".</p>
+    <p>Vamos considerar que nós temos uma pasta de temas, ex:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #D8DEE9">themes</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  └── </span><span style="color: #D8DEE9">dark</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">js</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  └── </span><span style="color: #D8DEE9">light</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">js</span></span></code></pre>
+    <p>Como exemplo nós poderiamos importar os temas assim:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">getTheme</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">theme</span><span style="color: #D8DEE9FF">) ⇒ </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">getTheme</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">dark</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">theme</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Dessa forma o Webpack vai criar todos os possíveis chunks em build time para cada tema dentro da pasta
+      <code>themes</code>, essa técnica é chamada de <code>ContextModule</code> dentro do código do Webpack.</p>
+    <h2 id="comentários-mágicos">Comentários Mágicos</h2>
+    <h3 id="webpackchunkname">webpackChunkName</h3>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackChunkName: "my-chunk-name" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Por default o Webpack cria os nomes dos chunks seguindo uma ordem numérica, 1.js, 2.js, 3.js, o que torna o
+      processo de reconhecer quais arquivos foram importados difícil. Usando <code>webpackChunkName</code> nós podemos
+      renomear o chunk, é importante lembrar que para esse comentário mágico funcionar nós devemos estar usando
+      <code>output.chunkFileName: [name].whateverDoYouWantHere.js</code> no arquivo de configuração do Webpack.</p>
+    <p>Isso é útil apenas no modo de desenvolvimento, então podemos fazer algo do tipo ao importar o arquivo:</p>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">process</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">NODE_ENV</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">development</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackChunkName: "my-chunk-name" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">else</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span></code></pre>
+    <p>O <code>if</code> vai ser removido se o build estiver sendo rodado em modo de produção, e o <code>else</code> se
+      estiver rodando em modo de desenvolvimento. Isso é conhecido como <code>dead-code elimination</code> ou em pt-br
+      eliminação do código morto, ferramentas como Uglify.js e outras usam isso para reduzir o tamanho do arquivo final.
+    </p>
+    <h3 id="webpackmode">webpackMode</h3>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackMode: "lazy" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>O comentário mágico <code>webpackMode</code> pode receber 4 tipos de valores:</p>
+    <ul>
+      <li>lazy: gera um chunk para cada arquivo importado dinamicamente, melhor opção para ser usado em produção.</li>
+      <li>lazy-once: gera um chunk apenas que pode satisfazer a condição do import dinâmico, melhor opção para o modo de
+        desenvolvimento reduzindo o tempo de de gerar os arquivos finais do Webpack.</li>
+      <li>eager: não gera nenhum chunk extra, todos os módulos são gerados em apenas um arquivo e nenhum request extra é
+        feito.</li>
+      <li>weak: útil para universal rendering / ou server side rendering, onde os arquivos são servidos manualmente no
+        primeiro render. O que acontece é que ao requisitar um módulo uma promisse é sempre retornada, mas essa promisse
+        só retorna com sucesso se requisitada pelo client side. Um novo request nunca é feito, pois os arquivos já estão
+        no client pois foram servidos pelo servidor.</li>
+    </ul>
+    <h3 id="prefetch-e-preload">Prefetch e Preload</h3>
+    <pre is:raw="" class="astro-code nord" style="background-color: #2e3440ff; overflow-x: auto;"
+      tabindex="0"><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackPrefetch: true */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackLoad: true */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+    <p>Os dois comentários mágicos, irão criar uma tag link com <code>rel=prefetch</code> ou <code>rel=preload</code>
+      automaticamente para você fazer o prefetching ou preloading dos seus chunks dependendo da implementação. Se você
+      não sabe o que prefetch e preload links fazem, eu recomendo
+      a leitura do post <a
+        href="https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf">Preload, Prefetch And
+        Priorities in Chrome</a>.</p>
+    <p>Essas foram minhas anotações do curso <a href="https://frontendmasters.com/courses/performance-webpack/">Web
+        performance with webpack</a>. Espero que você tenha aprendido alguma coisa nova hoje, te vejo no próximo post!
+      ❤️</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>

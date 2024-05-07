@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap"
+    rel="stylesheet">
+  <title>Como descrever o seu pull request perfeito</title>
+  <link rel="canonical" href="https://dielduarte.dev/blog/pt-br/como-descrever-o-seu-pull-request-perfeito/">
+  <meta name="description" content="Compartilhando minhas experiências com pull requests">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Como descrever o seu pull request perfeito">
+  <meta property="og:type" content="A type.">
+  <meta property="og:image"
+    content="https://dielduarte.dev/images/pt-br-como-descrever-o-seu-pull-request-perfeito.png">
+  <meta property="og:url" content="https://dielduarte.dev/blog/pt-br/como-descrever-o-seu-pull-request-perfeito/">
+  <meta content="https://dielduarte.dev/images/pt-br-como-descrever-o-seu-pull-request-perfeito.png"
+    name="twitter:image">
+  <meta content="Como descrever o seu pull request perfeito" name="twitter:title">
+  <meta content="@diel_duarte" name="twitter:site">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="Compartilhando minhas experiências com pull requests" name="twitter:description">
+  <link rel="stylesheet" href="/lang_.fa5748ad.css" />
+  <style type="text/css">
+    .content {
+      padding-bottom: 60px;
+      margin: 0 auto
+    }
+
+    .content * {
+      font-family: Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.58em
+    }
+
+    .content p {
+      margin: 30px 0
+    }
+
+    .content pre {
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: Fira Code, monospace
+    }
+
+    .content h1,
+    .content h2,
+    .content h3,
+    .content h4,
+    .content h5,
+    .content h6 {
+      font-family: "Press Start 2P", cursive;
+      margin: 30px 0
+    }
+
+    .content h1 {
+      font-size: 24px;
+      text-align: center;
+      line-height: 34px;
+      margin: 0
+    }
+
+    .content h2 {
+      font-size: 20px
+    }
+
+    .content h3 {
+      font-size: 14px
+    }
+
+    .subtitle--separator:before {
+      content: "•••";
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 50px;
+      margin-top: 50px;
+      color: #484a4b
+    }
+
+    .content a {
+      display: inline-block;
+      color: #d78838
+    }
+
+    .content ul,
+    .content ol {
+      margin: 20px 0;
+      list-style: none
+    }
+
+    .content ul li {
+      margin-bottom: 10px
+    }
+
+    .content ul li:before {
+      content: "=>";
+      font-family: "Press Start 2P", cursive;
+      font-size: 10px;
+      padding-right: 10px;
+      color: #d78838
+    }
+
+    .content blockquote {
+      border-left: 4px solid #3e7068;
+      padding-left: 10px;
+      margin: 40px 0 40px 18px
+    }
+
+    .content img,
+    .content video {
+      max-width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto
+    }
+
+  </style>
+  <script type="module">const l = () => { const t = document.getElementById("js-scroll-counter"); if (!t) return; const e = t.getTotalLength(), n = document.body.scrollHeight - window.innerHeight; t.style["stroke-dasharray"] = e + 1, t.style["stroke-dashoffset"] = e + 1, window.addEventListener("scroll", () => { const o = (document.documentElement.scrollTop + document.body.scrollTop) / n, s = e * o; t.style["stroke-dashoffset"] = (o === 0 ? e + 1 : e) - s }) }; window.addEventListener("load", l);
+  </script>
+</head>
+
+<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">
+  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8"><a
+      class="border-white border text-xs py-3.5 px-3" href="/blog/pt-br/"
+      aria-label="close article and go back to home"><span aria-hidden="true">x</span></a></div>
+  <article class="max-w-3xl content w-full">
+    <h1>Como descrever o seu pull request perfeito</h1>
+    <p class="text-center italic text-sm">Tempo de leitura 4 minutos</p>
+    <p>Ao longo de toda a minha carreira, tenho recebido feedbacks muito positivos sobre como descrevo e organizo meus
+      pull requests de colegas e gestores. Não sou especial ou melhor do que ninguém, na verdade, a maioria das equipes
+      com as quais tive a oportunidade de trabalhar tinha um guia passo a passo bem estabelecido sobre como escrever
+      descrições. Então, por que tantos feedbacks positivos? O que faço de diferente? Há algumas semanas, comecei a
+      pensar sobre isso e decidi escrever este post com alguns pontos sobre como vejo os PRs como parte do meu trabalho.
+    </p>
+    <h2 class="subtitle--separator">Trate PRs como documentação</h2>
+    <p>Imagine que sua equipe recebeu uma notificação de bug, e uma pull request que foi mergeada há 6 meses está
+      causando o problema. Sua primeira reação é abrir a pull request para obter mais contexto. O código foi alterado em
+      apenas 1 linha, sem testes, e a descrição parece algo próximo disso:</p>
+    <ul>
+      <li>Corrige o bug #12123 &#x3C;- link para o ticket.</li>
+    </ul>
+    <p>Neste ponto, você quer chorar, eu sei! Eu também iria. <img
+        src="/images/how-to-describe-your-really-good-pr/hide-the-pain.jpeg" alt="meme do escondendo a dor"
+        style="display: inline-block; width: 25px;"></p>
+    <p>Enfrentei essa situação muitas vezes ao longo da minha carreira, seja um bug ou uma funcionalidade, e comecei a
+      ver as descrições das minhas pull requests como documentação e economia de tempo. Em uma documentação realmente
+      boa, minha expectativa é que ela responda o máximo de perguntas possível em qualquer momento, tais como:</p>
+    <ul>
+      <li>Qual era o cenário/ambiente naquele momento</li>
+      <li>Estratégias consideradas, mas não escolhidas, e o porquê</li>
+      <li>Estratégia usada e porquê</li>
+      <li>Como revisar o código</li>
+      <li>Como garantir que o que você fez funcione / como testá-lo</li>
+      <li>Efeitos colaterais esperados</li>
+      <li>O máximo de links externos possível para acrescentar contexto, como threads no Slack, documentação de APIs,
+        links do Stack Overflow e tickets internos.</li>
+    </ul>
+    <p>Quando penso em uma boa documentação, as melhores que li me colocaram no contexto certo ao me contar o "porquê" e
+      o "como", assumindo que sou um estranho e não o criador da criatura. Sempre assuma que quem está lendo não sabe
+      tanto quanto você.</p>
+    <h2>Engaje seus leitores</h2>
+    <p>Este ponto requer tempo para compreender sua audiência/equipe, mas assim que souber o que envolve mais, vá em
+      frente! Com o tempo e feedback, você começa a entender as preferências da sua equipe e melhora com base nelas.
+      Será que minha audiência prefere textos longos ou vídeos? Ou talvez eles gostem de gráficos explicando fluxos.
+      Seja o que for, faça!</p>
+    <p>Documentações envolventes são bem organizadas, não exigem horas de atenção ininterrupta, mostram seu valor desde
+      o início e fazem com que as pessoas queiram terminar porque são fáceis de seguir. Recentemente, recebi um feedback
+      muito legal, e nem foi relacionado às minhas pull requests, mas à forma como me comunico. Acho relevante
+      compartilhar:</p>
+    <p>"Verifiquei aquele link de suporte que você postou. Sempre adoro ler suas soluções e o formato de
+      perguntas/respostas, é como uma conversa lol" - de uma pessoa incrível com quem tenho o prazer de trabalhar. ❤️
+    </p>
+    <h2>Seja o seu pior revisor - do jeito bom.</h2>
+    <p>Sempre revise suas pull requests antes de compartilhá-las com sua equipe e seja crítico; afinal, no final do dia,
+      você é a pessoa que melhor conhece seus limites e quão bem pode entregar algo. Sempre questione suas decisões:
+      este código realmente faz sentido? O que eu poderia fazer melhor aqui? O que eu sugeriria se este código não fosse
+      meu, e se eu sugeriria, por que ainda não fiz?</p>
+    <p>Adicione comentários nas linhas/funções/arquivos nos quais você acha que sua equipe terá perguntas. Use essa
+      estratégia para orientar os revisores aos pontos do código sobre os quais você pode não ter certeza e deseja
+      feedback. Esteja à frente deles e respeite o tempo de seus colegas, usando-o sabiamente.</p>
+    <p>Sejamos honestos, <b>todos estão ocupados</b>, e muitas vezes o tempo de revisão de código não é considerado ao
+      discutir a capacidade da equipe de se comprometer a entregar uma funcionalidade ou corrigir um bug. Evitar idas e
+      vindas e ser o mais claro possível é uma maneira de mostrar que você respeita seus revisores e está tentando fazer
+      o melhor trabalho possível.</p>
+    <p>Espero que eu tenha lhe dado algumas ideias para melhorar seu trabalho diário com as pull requests. 👋</p>
+  </article>
+  <div class="bottom-5 right-5 fixed"><svg class="absolute h-20 w-20 top-[-12px] left-[-12px]" viewBox="25 25 50 50">
+      <circle id="js-scroll-counter" cx="50" cy="50" r="20" fill="none" stroke="#5eb6ae" stroke-width="2"></circle>
+    </svg><img src="/images/diel.jpeg"
+      alt="Diel's avatar, the image contains a border that will be full when the scroll of the page is done"
+      class="rounded-full w-14 h-14"></div>
+</body>
+
+</html>
