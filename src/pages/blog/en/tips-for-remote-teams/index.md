@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Tips for remote teams
 date: "2020-04-19"
+pubDate: "2020-04-19"
 description: This is a post about async communication, tools, and tips to keep a remote team based on my experiêncie and studies.
 languageKey: en
 languageLink: /pt-br/dicas-para-times-remotos

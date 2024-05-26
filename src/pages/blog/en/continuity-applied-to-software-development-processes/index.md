@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Continuity Applied to software development processes
 date: "2024-02-13"
+pubDate: "2024-02-13"
 description: The case for continuity applied to software engineering processes
 languageKey: en
 languageLink: /pt-br/continuidade-aplicada-a-processos-de-desenvolvimento-de-software

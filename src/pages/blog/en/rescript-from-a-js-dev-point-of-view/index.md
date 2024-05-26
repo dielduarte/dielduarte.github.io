@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Rescript from a JS dev point of view
 date: "2021-04-27"
+pubDate: "2021-04-27"
 description: A few opinions about Rescript language.
 languageKey: en
 languageLink: /pt-br/rescript-sob-o-ponto-de-vista-de-um-dev-js

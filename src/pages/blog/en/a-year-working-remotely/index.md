@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: A year working remotely
 date: "2020-01-20"
+pubDate: "2020-01-20"
 description: Working remotely has been one of the best decisions that I have made up to this point. I hope you can learn something from my experience.
 languageKey: en
 languageLink: /pt-br/um-ano-trabalhando-remoto

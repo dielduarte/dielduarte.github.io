@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Criando sua primeira aplicação com React e Xstate
 date: "2020-11-24"
+pubDate: "2020-11-24"
 description: Construindo sua primeira aplicação com react e xstate...
 languageKey: pt-br
 languageLink: /en/creating-your-first-application-with-react-and-xstate

@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Introdução a state charts em aplicações web
 date: "2020-11-01"
+pubDate: "2020-11-01"
 description: Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito "simples"...
 languageKey: pt-br
 languageLink: /en/web-development-with-state-charts-intro

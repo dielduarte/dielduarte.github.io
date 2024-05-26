@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: The easier way to understand identity functors
 date: "2020-07-14"
+pubDate: "2020-07-14"
 description: the easier way to understand functors in my humble opinion is the concept of...
 languageKey: en
 languageLink: /pt-br/o-jeito-mais-simples-de-entender-functors

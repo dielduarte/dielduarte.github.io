@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Como descrever o seu pull request perfeito
 date: "2023-09-07"
+pubDate: "2023-09-07"
 description: Compartilhando minhas experiências com pull requests
 languageKey: pt-br
 languageLink: en/how-to-describe-your-really-good-pull-request

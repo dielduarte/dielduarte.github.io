@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: O jeito mais simples de entender identity functors
 date: "2020-07-14"
+pubDate: "2020-07-14"
 description: O jeito mais fácil de entender functors na minha humilde opinião é o conceito...
 languageKey: pt-br
 languageLink: /en/the-easier-way-to-understand-functors

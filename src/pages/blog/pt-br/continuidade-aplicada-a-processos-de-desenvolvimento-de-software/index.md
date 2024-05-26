@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Continuidade aplicada aos processos de engenharia de software
 date: "2024-02-13"
+pubDate: "2024-02-13"
 description: A continuidade aplicada aos processos de engenharia de software
 languageKey: pt-br
 languageLink: /en/continuity-applied-to-software-development-processes

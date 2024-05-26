@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Mastering code splitting with webpack
 date: "2019-07-17"
+pubDate: "2019-07-17"
 description: let's talk about how Webpack can help us to code splitting and achieve the goal of better website performance.
 languageKey: en
 languageLink: /pt-br/dominando-code-splitting-com-webpack

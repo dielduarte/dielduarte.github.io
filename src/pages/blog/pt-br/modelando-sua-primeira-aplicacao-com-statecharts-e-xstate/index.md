@@ -2,6 +2,7 @@
 layout: '../../../../layouts/Post.astro'
 title: Modelando sua primeira aplicação com Statecharts e Xstate
 date: "2020-11-22"
+pubDate: "2020-11-22"
 description: Nesse e nos próximos posts vamos contruir uma aplicação utilizando Statecharts e a ajuda da lib Xstate...
 languageKey: pt-br
 languageLink: /en/modeling-your-first-application-using-statecharts-and-xstate
