@@ -15,7 +15,7 @@ export async function GET(context) {
     // `<title>` field in output xml
     title: 'Diel Duarte Blog',
     // `<description>` field in output xml
-    description: 'Pensanmentos randômicos e humildes sobre tecnologias web',
+    description: 'Pensamentos randômicos sobre tecnologias web',
     // Pull in your project "site" from the endpoint context
     // https://docs.astro.build/en/reference/api-reference/#contextsite
     site: context.site,
