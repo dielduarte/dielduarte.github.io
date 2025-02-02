@@ -143,16 +143,15 @@ const socialImage = Astro.site + frontmatter.socialImage
   </style>
 </head>
 
-<body class="bg-black flex w-full text-white justify-center flex-col items-center pt-20 font-pressStart px-10 md:px-0">  
-  <div class="flex justify-end align-middle font-pressStart w-full max-w-3xl mb-8">
-    <a class="border-white border text-xs py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`} aria-label="close article and go back to home"><span aria-hidden="true">x</span></a>
+<body class="bg-white flex w-full text-black dark:bg-black dark:text-white justify-center flex-col items-center pt-20 font-roboto px-10 md:px-0">  
+  <div class="flex justify-end align-middle font-roboto w-full max-w-3xl mb-8">
+    <a class="text-md py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`} aria-label="close article and go back to home"><span aria-hidden="true">x</span></a>
   </div>
   <article class="max-w-3xl content w-full">
     <h1>{frontmatter.title}</h1>
     <p class="text-center italic text-sm">{totalTime}</p>
     <slot />
   </article>
-  <ScrollCounter />
 </body>
 
 </html>
