@@ -42,10 +42,8 @@ const sortedPosts = [...posts].sort((prevPost, nextPost) => {
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-white text-black  dark:bg-black dark:text-white font-roboto px-10 md:px-0 w-max mx-auto my-0 flex gap-4 flex-col">
-  <div class="text-sm flex flex-row gap-1 mt-28 mb-10 items-center">
-    <h1 class="font-roboto">@dielduarte</h1>
-    <span class="mx-2">-</span>
+<body class="bg-white text-black  dark:bg-black dark:text-white font-roboto px-10 md:px-0 mx-auto my-0 flex gap-4 flex-col w-max">
+  <div class="text-sm flex flex-row gap-1 mt-28 mb-10 items-center w-full flex-wrap">
     <a href="https://github.com/dielduarte" target="_blank" rel="noopener" aria-label="visit my github" class="hover:underline">
       Github
     </a>
@@ -61,7 +59,7 @@ const sortedPosts = [...posts].sort((prevPost, nextPost) => {
     <a href="mailto:magdiel.kesller@gmail.com" class="hover:underline">email me</a>
   </div>
 
-  <h2 class="text-xl p-0">Blog</h2>
+  <h1 class="text-xl p-0">Blog</h1>
 
   <div class="flex gap-2 mb-8 text-sm">
     <a href="/blog/pt-br" aria-label="portuguese version" class="hover:underline">
@@ -73,7 +71,7 @@ const sortedPosts = [...posts].sort((prevPost, nextPost) => {
     </a>
   </div>
 
-  <nav class="flex flex-col gap-2 text-left max-w-2xl w-screen">
+  <nav class="flex flex-col gap-2 text-left max-w-2xl">
     {sortedPosts.map(post =>
       <a href={`/blog/${post.frontmatter.slug}/`} class="text-md hover:opacity-75 block overflow-hidden text-ellipsis whitespace-nowrap">
           {format(new Date(post.frontmatter.date), 'yyyy/MM')} <span class="mx-2">-</span> <span class="underline">{post.frontmatter.title}</span>
