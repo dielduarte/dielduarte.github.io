@@ -78,6 +78,18 @@ const socialImage = Astro.site + frontmatter.socialImage
     .content h6 {
       font-family: 'Press Start 2P', cursive;
       margin: 30px 0;
+      transition: all 0.2s ease;
+    }
+
+    .content h1:hover,
+    .content h2:hover,
+    .content h3:hover,
+    .content h4:hover,
+    .content h5:hover,
+    .content h6:hover {
+      color: #5eb6ae;
+      text-shadow: 0 0 10px #5eb6ae;
+      cursor: default;
     }
     
     .content h1 {
@@ -89,10 +101,12 @@ const socialImage = Astro.site + frontmatter.socialImage
 
     .content h2 {
       font-size: 20px;
+      line-height: 1.6em;
     }
 
     .content h3 {
       font-size: 14px;
+      line-height: 1.6em;
     }
 
     .subtitle--separator:before {
