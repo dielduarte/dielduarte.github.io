@@ -83,8 +83,7 @@ export default defineConfig({
   })],
   site: 'https://dielduarte.dev',
   redirects: {
-    '/': '/blog/en',
-    '/blog': '/blog/en',
+    '/blog': '/',
   },
   compressHTML: true,
   markdown: {
