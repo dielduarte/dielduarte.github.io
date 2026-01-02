@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diel Duarte | Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://www.dielduarte.dev/lang.2be5c1e8.css"
+    />
+    <style type="text/css">
+      .scanlines {
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.15) 0px,
+          rgba(0, 0, 0, 0.15) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      }
+      .pixel-frame {
+        box-shadow: inset 0 0 0 2px #181818, inset 0 0 0 4px #3a3a3a,
+          8px 8px #0000004d;
+      }
+      .pixel-frame:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        box-shadow: inset 0 0 60px #5eb6ae1a;
+      }
+      .avatar-container {
+        image-rendering: pixelated;
+        box-shadow: 0 0 0 3px #181818, 0 0 0 6px #5eb6ae, 6px 6px #0006;
+      }
+      .glow-orange {
+        text-shadow: 0 0 8px rgb(215, 136, 56);
+      }
+      .glow-teal {
+        text-shadow: 0 0 8px #5eb6ae;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: #181818;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #3a3a3a;
+        border: 1px solid #5eb6ae;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #5eb6ae;
+      }
+      .content {
+        padding-bottom: 60px;
+        margin: 0 auto;
+      }
+      .content * {
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        line-height: 1.58em;
+      }
+      .content p {
+        margin: 30px 0;
+      }
+      .content pre {
+        padding: 10px 20px;
+        border-radius: 2px;
+        font-family: Fira Code, monospace;
+      }
+      .content h1,
+      .content h2,
+      .content h3,
+      .content h4,
+      .content h5,
+      .content h6 {
+        font-family: "Press Start 2P", cursive;
+        margin: 30px 0;
+        transition: all 0.2s ease;
+      }
+      .content h1:hover,
+      .content h2:hover,
+      .content h3:hover,
+      .content h4:hover,
+      .content h5:hover,
+      .content h6:hover {
+        color: #5eb6ae;
+        text-shadow: 0 0 10px #5eb6ae;
+        cursor: default;
+      }
+      .content h1 {
+        font-size: 24px;
+        text-align: center;
+        line-height: 34px;
+        margin: 0;
+      }
+      .content h2 {
+        font-size: 20px;
+        line-height: 1.6em;
+      }
+      .content h3 {
+        font-size: 14px;
+        line-height: 1.6em;
+      }
+      .subtitle--separator:before {
+        content: "•••";
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 50px;
+        margin-top: 50px;
+        color: #484a4b;
+      }
+      .content a {
+        display: inline-block;
+        color: #d78838;
+      }
+      .content ul,
+      .content ol {
+        margin: 20px 0;
+        list-style: none;
+      }
+      .content ul li {
+        margin-bottom: 10px;
+      }
+      .content ul li:before {
+        content: "=>";
+        font-family: "Press Start 2P", cursive;
+        font-size: 10px;
+        padding-right: 10px;
+        color: #d78838;
+      }
+      .content blockquote {
+        border-left: 4px solid #3e7068;
+        padding-left: 10px;
+        margin: 40px 0 40px 18px;
+      }
+      .content img,
+      .content video {
+        max-width: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = Array.from(document.querySelectorAll(".nav-item"));
+        let e = -1;
+        document.addEventListener("keydown", (n) => {
+          n.key === "ArrowDown" || n.key === "ArrowUp"
+            ? (n.preventDefault(),
+              n.key === "ArrowDown"
+                ? (e = e < t.length - 1 ? e + 1 : 0)
+                : (e = e > 0 ? e - 1 : t.length - 1),
+              t[e].focus())
+            : n.key === "Enter" && e >= 0 && t[e].click();
+        }),
+          t.forEach((n, r) => {
+            n.addEventListener("focus", () => {
+              e = r;
+            });
+          });
+      });
+    </script>
+  </head>
+  <body
+    class="bg-game-dark text-game-text font-pressStart min-h-screen flex items-center justify-center p-4 md:p-8"
+  >
+    <!-- Scanline overlay -->
+    <div
+      class="scanlines fixed inset-0 z-50 pointer-events-none"
+      aria-hidden="true"
+    ></div>
+    <!-- Main game frame -->
+    <main
+      class="pixel-frame bg-game-dark w-full max-w-4xl p-6 md:p-10 relative border-4 border-game-text"
+    >
+      <!-- Header: Avatar + Title -->
+      <header
+        class="flex flex-col md:flex-row items-center gap-6 md:gap-8 mb-10 md:mb-12"
+      >
+        <!-- Avatar -->
+        <div
+          class="avatar-container rounded-sm overflow-hidden flex-shrink-0 animate-float border-[3px] border-game-orange"
+        >
+          <img
+            src="/images/diel.jpeg"
+            alt="Diel Duarte"
+            class="w-24 h-24 md:w-28 md:h-28 object-cover"
+          />
+        </div>
+        <!-- Title section -->
+        <div class="text-center md:text-left">
+          <h1 class="text-lg md:text-xl text-game-orange mb-3 leading-relaxed">
+            DIEL DUARTE
+          </h1>
+          <p class="text-xs md:text-sm text-game-teal mb-2">
+            SOFTWARE ENGINEER
+          </p>
+          <p class="text-[10px] text-game-text opacity-60 leading-relaxed">
+            Construindo coisas para a web
+          </p>
+        </div>
+      </header>
+      <!-- About Section -->
+      <section class="mb-10 md:mb-12" aria-label="About">
+        <h2 class="text-xs text-game-text opacity-50 mb-4 tracking-wider">
+          [ SOBRE ]
+        </h2>
+        <div
+          class="font-roboto text-sm leading-relaxed text-game-text space-y-3"
+        >
+          <p>
+            Engenheiro de software com mais de 10 anos de experiência
+            full-stack, especializado em web e JavaScript. Como Principal
+            Engineer na Appcues, foco em equilibrar agilidade e qualidade. Moldo
+            a arquitetura frontend e o DX para garantir que o time avance rápido
+            e mantenha um alto padrão de entrega.
+          </p>
+        </div>
+      </section>
+      <!-- Navigation Menu -->
+      <nav class="mb-10 md:mb-12" aria-label="Social links">
+        <h2 class="text-xs text-game-text opacity-50 mb-4 tracking-wider">
+          [ CONECTAR ]
+        </h2>
+        <ul class="flex flex-col gap-3 text-xs md:text-sm">
+          <li>
+            <a
+              href="https://github.com/dielduarte"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="nav-item group inline-flex items-center gap-2 transition-all duration-150 outline-none focus:outline-none hover:text-game-orange focus:text-game-orange hover:glow-orange focus:glow-orange"
+              aria-label="Visit my github"
+              ><span
+                class="text-game-orange opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150"
+                aria-hidden="true"
+                >&gt;</span
+              ><span>GITHUB</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/in/dielduarte/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="nav-item group inline-flex items-center gap-2 transition-all duration-150 outline-none focus:outline-none hover:text-game-orange focus:text-game-orange hover:glow-orange focus:glow-orange"
+              aria-label="Visit my linkedin"
+              ><span
+                class="text-game-orange opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150"
+                aria-hidden="true"
+                >&gt;</span
+              ><span>LINKEDIN</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://twitter.com/diel_duarte"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="nav-item group inline-flex items-center gap-2 transition-all duration-150 outline-none focus:outline-none hover:text-game-orange focus:text-game-orange hover:glow-orange focus:glow-orange"
+              aria-label="Visit my twitter"
+              ><span
+                class="text-game-orange opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150"
+                aria-hidden="true"
+                >&gt;</span
+              ><span>TWITTER</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="mailto:magdiel.kesller@gmail.com"
+              class="nav-item group inline-flex items-center gap-2 transition-all duration-150 outline-none focus:outline-none hover:text-game-orange focus:text-game-orange hover:glow-orange focus:glow-orange"
+              aria-label="email"
+              ><span
+                class="text-game-orange opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150"
+                aria-hidden="true"
+                >&gt;</span
+              ><span>EMAIL</span></a
+            >
+          </li>
+        </ul>
+      </nav>
+      <!-- Blog Posts Section -->
+      <section aria-label="Blog posts">
+        <div class="flex items-center gap-4 mb-6">
+          <h2 class="text-xs text-game-text opacity-50 tracking-wider">
+            [ ARTIGOS ]
+          </h2>
+          <div class="flex-1 h-px bg-game-border opacity-50"></div>
+          <span class="text-[10px] text-game-teal">10&nbsp;ENTRADAS</span>
+        </div>
+        <nav
+          class="flex flex-col gap-3 max-h-[40vh] overflow-y-auto pr-2"
+          aria-label="Blog posts list"
+        >
+          <a
+            href="/blog/pt-br/continuidade-aplicada-a-processos-de-desenvolvimento-de-software/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2024.02.12</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Continuidade aplicada aos processos de engenharia de
+                software</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/como-descrever-o-seu-pull-request-perfeito/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2023.09.06</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Como descrever o seu pull request perfeito</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/rescript-sob-o-ponto-de-vista-de-um-dev-js/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2021.04.26</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Rescript sob o ponto de vista de um dev JS</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/criando-sua-primeira-aplicacao-com-react-e-xstate/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.11.23</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Criando sua primeira aplicação com React e Xstate</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/modelando-sua-primeira-aplicacao-com-statecharts-e-xstate/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.11.21</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Modelando sua primeira aplicação com Statecharts e Xstate</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/introducao-a-state-charts-em-aplicacoes-web/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.10.31</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Introdução a state charts em aplicações web</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/o-jeito-mais-simples-de-entender-functors/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.07.13</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >O jeito mais simples de entender identity functors</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/dicas-para-times-remotos/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.04.18</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Dicas para times remotos</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/um-ano-trabalhando-remoto/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2020.01.19</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Um ano trabalhando remoto</span
+              ></span
+            ></a
+          ><a
+            href="/blog/pt-br/dominando-code-splitting-com-webpack/"
+            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+            ><span
+              class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0"
+              aria-hidden="true"
+              >&gt;</span
+            ><span
+              class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4"
+              ><span
+                class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap"
+                >2019.07.16</span
+              ><span
+                class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed"
+                >Dominando code splitting com webpack</span
+              ></span
+            ></a
+          >
+        </nav>
+      </section>
+      <!-- Footer: Language Switcher & Hint -->
+      <footer class="mt-10 md:mt-12 pt-6 border-t border-game-border">
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-4"
+        >
+          <!-- Language switcher -->
+          <div class="flex items-center gap-2 text-[10px]">
+            <span class="text-game-text opacity-50">LANG:</span
+            ><a
+              href="/"
+              class="transition-all duration-150 hover:text-game-orange focus:text-game-orange focus:outline-none hover:glow-orange focus:glow-orange"
+              aria-label="Switch to English"
+            >
+              EN </a
+            ><span class="text-game-border">|</span
+            ><a
+              href="/pt-br"
+              class="transition-all duration-150 hover:text-game-orange focus:text-game-orange focus:outline-none hover:glow-orange focus:glow-orange text-game-orange underline underline-offset-4 glow-orange"
+              aria-label="Switch to Portuguese"
+            >
+              PT-BR
+            </a>
+          </div>
+          <!-- Hint text -->
+          <p class="text-[10px] text-game-text opacity-40 animate-blink-slow">
+            [ PASSE O MOUSE PARA SELECIONAR ]
+          </p>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
