@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{const t=document.getElementById("progress-bar"),e=document.querySelector("article");if(t&&e){const o=()=>{const s=window.scrollY,n=e.offsetHeight+e.offsetTop-window.innerHeight,r=Math.min(Math.max(s/n*100,0),100);t.style.width=`${r}%`};window.addEventListener("scroll",o,{passive:!0}),o()}});
