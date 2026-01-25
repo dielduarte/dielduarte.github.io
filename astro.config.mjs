@@ -82,6 +82,10 @@ export default defineConfig({
     }
   })],
   site: 'https://dielduarte.dev',
+  trailingSlash: 'always',
+  build: {
+    assets: '_astro',
+  },
   redirects: {
     '/blog': '/',
   },

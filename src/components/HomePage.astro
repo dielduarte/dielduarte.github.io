@@ -21,19 +21,39 @@ interface Props {
 const { posts, lang } = Astro.props;
 
 const sortedPosts = [...posts].sort((prevPost, nextPost) => {
-  return new Date(nextPost.frontmatter.date).getTime() > new Date(prevPost.frontmatter.date).getTime() 
-    ? 1 
+  return new Date(nextPost.frontmatter.date).getTime() > new Date(prevPost.frontmatter.date).getTime()
+    ? 1
     : -1;
 });
 
-const menuItems = [
-  { label: 'GITHUB', href: 'https://github.com/dielduarte', external: true },
-  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/dielduarte/', external: true },
-  { label: 'TWITTER', href: 'https://twitter.com/diel_duarte', external: true },
-  { label: 'EMAIL', href: 'mailto:magdiel.kesller@gmail.com', external: false },
+const socialLinks = [
+  { label: 'GitHub', href: 'https://github.com/dielduarte', icon: 'github' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dielduarte/', icon: 'linkedin' },
+  { label: 'Twitter', href: 'https://twitter.com/diel_duarte', icon: 'twitter' },
 ];
 
 const isEnglish = lang === 'en';
+
+const content = {
+  en: {
+    role: 'Principal Engineer at Appcues',
+    bio: "I'm a software engineer with over a decade of experience across the stack, though my heart is in web development and JavaScript. My mission is to bridge the gap between speed and quality—shaping frontend architecture and developer experience so teams can ship great work without friction.",
+    writings: 'Writings',
+    connect: 'Connect',
+    readMore: 'Read article',
+    langSwitch: 'Ler em Português',
+  },
+  'pt-br': {
+    role: 'Principal Engineer na Appcues',
+    bio: "Engenheiro de software com mais de 10 anos de experiência full-stack, especializado em web e JavaScript. Como Principal Engineer na Appcues, foco em equilibrar agilidade e qualidade. Moldo a arquitetura frontend e o DX para garantir que o time avance rápido e mantenha um alto padrão de entrega.",
+    writings: 'Artigos',
+    connect: 'Conectar',
+    readMore: 'Ler artigo',
+    langSwitch: 'Read in English',
+  }
+};
+
+const t = content[lang];
 ---
 
 <html lang={lang}>
@@ -42,227 +62,250 @@ const isEnglish = lang === 'en';
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Diel Duarte | Software Engineer</title>
+  <meta name="description" content={t.bio}>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style is:global>
-    /* CRT Scanline Effect - requires repeating gradient */
-    .scanlines {
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15) 0px,
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 2px
-      );
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* Pixel frame - complex box-shadow */
-    .pixel-frame {
-      box-shadow: 
-        inset 0 0 0 2px #181818,
-        inset 0 0 0 4px #3a3a3a,
-        8px 8px 0 0 rgba(0, 0, 0, 0.3);
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .pixel-frame::before {
+    /* Accent underline animation */
+    .accent-link {
+      position: relative;
+      text-decoration: none;
+    }
+    .accent-link::after {
       content: '';
       position: absolute;
-      inset: 0;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .accent-link:hover::after {
+      width: 100%;
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.025;
       pointer-events: none;
-      box-shadow: inset 0 0 60px rgba(94, 182, 174, 0.1);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 100;
     }
-
-    /* Avatar - complex box-shadow */
-    .avatar-container {
-      image-rendering: pixelated;
-      box-shadow: 
-        0 0 0 3px #181818,
-        0 0 0 6px #5eb6ae,
-        6px 6px 0 0 rgba(0, 0, 0, 0.4);
-    }
-
-    /* Glow effects - text-shadow not in Tailwind */
-    .glow-orange { text-shadow: 0 0 8px rgb(215, 136, 56); }
-    .glow-teal { text-shadow: 0 0 8px #5eb6ae; }
-
-    /* Scrollbar styling - browser-specific */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background-color: #181818; }
-    ::-webkit-scrollbar-thumb { background-color: #3a3a3a; border: 1px solid #5eb6ae; }
-    ::-webkit-scrollbar-thumb:hover { background-color: #5eb6ae; }
   </style>
 </head>
 
-<body class="bg-game-dark text-game-text font-pressStart min-h-screen flex items-center justify-center p-4 md:p-8">
-  <!-- Scanline overlay -->
-  <div class="scanlines fixed inset-0 z-50 pointer-events-none" aria-hidden="true"></div>
+<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 text-ink-700 dark:text-ivory-200 font-body min-h-screen transition-colors duration-300">
 
-  <!-- Main game frame -->
-  <main class="pixel-frame bg-game-dark w-full max-w-4xl p-6 md:p-10 relative border-4 border-game-text">
-    
-    <!-- Header: Avatar + Title -->
-    <header class="flex flex-col md:flex-row items-center gap-6 md:gap-8 mb-10 md:mb-12">
-      <!-- Avatar -->
-      <div class="avatar-container rounded-sm overflow-hidden flex-shrink-0 animate-float border-[3px] border-game-orange">
-        <img 
-          src="/images/diel.jpeg" 
-          alt="Diel Duarte" 
-          class="w-24 h-24 md:w-28 md:h-28 object-cover"
-        />
-      </div>
+  <!-- Subtle accent line at top -->
+  <div class="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-400 to-transparent opacity-60" aria-hidden="true"></div>
 
-      <!-- Title section -->
-      <div class="text-center md:text-left">
-        <h1 class="text-lg md:text-xl text-game-orange mb-3 leading-relaxed">
-          DIEL DUARTE
-        </h1>
-        <p class="text-xs md:text-sm text-game-teal mb-2">
-          SOFTWARE ENGINEER
-        </p>
-        <p class="text-[10px] text-game-text opacity-60 leading-relaxed">
-          {isEnglish ? 'Building things for the web' : 'Construindo coisas para a web'}
-        </p>
+  <div class="max-w-4xl mx-auto px-6 md:px-8 py-16 md:py-24">
+
+    <!-- Header / Hero Section -->
+    <header class="mb-20 md:mb-28">
+      <!-- Language Switcher -->
+      <nav class="flex justify-end mb-12 opacity-0 animate-fade-up" aria-label="Language">
+        <a
+          href={isEnglish ? '/pt-br/' : '/'}
+          class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200 flex items-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+          </svg>
+          {t.langSwitch}
+        </a>
+      </nav>
+
+      <!-- Hero Content -->
+      <div class="flex flex-col md:flex-row md:items-start gap-8 md:gap-16">
+        <!-- Avatar with subtle ring -->
+        <div class="opacity-0 animate-fade-up-delay-1 flex-shrink-0">
+          <div class="relative group w-28 h-28 md:w-36 md:h-36">
+            <div class="w-full h-full rounded-full overflow-hidden ring-2 ring-accent-400/30 dark:ring-accent-500/30">
+              <img
+                src="/images/diel.jpeg"
+                alt="Diel Duarte"
+                class="w-full h-full object-cover animate-subtle-float"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Name & Bio -->
+        <div class="flex-1">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-ink-800 dark:text-ivory-100 mb-3 tracking-tight opacity-0 animate-fade-up-delay-1">
+            Diel Duarte
+          </h1>
+          <p class="text-lg md:text-xl text-accent-500 dark:text-accent-400 font-medium mb-6 opacity-0 animate-fade-up-delay-2">
+            {t.role}
+          </p>
+          <p class="text-base md:text-lg text-ink-500 dark:text-ivory-300 leading-relaxed max-w-2xl opacity-0 animate-fade-up-delay-3">
+            {t.bio}
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex items-center gap-6 mt-8 opacity-0 animate-fade-up-delay-3">
+            {socialLinks.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200"
+                aria-label={link.label}
+              >
+                {link.icon === 'github' && (
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                )}
+                {link.icon === 'linkedin' && (
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                )}
+                {link.icon === 'twitter' && (
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                )}
+              </a>
+            ))}
+            <span class="text-ink-300 dark:text-ink-600">|</span>
+            <a
+              href="mailto:magdiel.kesller@gmail.com"
+              class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 accent-link transition-colors duration-200"
+            >
+              magdiel.kesller@gmail.com
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <!-- About Section -->
-    <section class="mb-10 md:mb-12" aria-label="About">
-      <h2 class="text-xs text-game-text opacity-50 mb-4 tracking-wider">
-        {isEnglish ? '[ ABOUT ]' : '[ SOBRE ]'}
-      </h2>
-      <div class="font-roboto text-sm leading-relaxed text-game-text space-y-3">
-        <p>
-          {isEnglish 
-            ? "I'm a software engineer with over a decade of experience across the stack, though my heart is in web development and JavaScript. Currently, I'm a Principal Engineer at Appcues. My mission is to bridge the gap between speed and quality—shaping our frontend architecture and developer experience so our team can ship great work without friction."
-            : "Engenheiro de software com mais de 10 anos de experiência full-stack, especializado em web e JavaScript. Como Principal Engineer na Appcues, foco em equilibrar agilidade e qualidade. Moldo a arquitetura frontend e o DX para garantir que o time avance rápido e mantenha um alto padrão de entrega."}
-        </p>
-      </div>
-    </section>
-
-    <!-- Navigation Menu -->
-    <nav class="mb-10 md:mb-12" aria-label="Social links">
-      <h2 class="text-xs text-game-text opacity-50 mb-4 tracking-wider">
-        {isEnglish ? '[ CONNECT ]' : '[ CONECTAR ]'}
-      </h2>
-      <ul class="flex flex-col gap-3 text-xs md:text-sm">
-        {menuItems.map((item) => (
-          <li>
-            <a 
-              href={item.href}
-              target={item.external ? '_blank' : undefined}
-              rel={item.external ? 'noopener noreferrer' : undefined}
-              class="nav-item group inline-flex items-center gap-2 transition-all duration-150 outline-none focus:outline-none hover:text-game-orange focus:text-game-orange hover:glow-orange focus:glow-orange"
-              aria-label={`${item.external ? 'Visit my ' : ''}${item.label.toLowerCase()}`}
-            >
-              <span class="text-game-orange opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150" aria-hidden="true">&gt;</span>
-              <span>{item.label}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-
     <!-- Blog Posts Section -->
-    <section aria-label="Blog posts">
-      <div class="flex items-center gap-4 mb-6">
-        <h2 class="text-xs text-game-text opacity-50 tracking-wider">
-          {isEnglish ? '[ BLOG POSTS ]' : '[ ARTIGOS ]'}
+    <section aria-labelledby="writings-heading">
+      <!-- Section Header -->
+      <div class="flex items-center gap-4 mb-10">
+        <h2 id="writings-heading" class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-widest">
+          {t.writings}
         </h2>
-        <div class="flex-1 h-px bg-game-border opacity-50"></div>
-        <span class="text-[10px] text-game-teal">
-          {sortedPosts.length}&nbsp;{isEnglish ? 'ENTRIES' : 'ENTRADAS'}
+        <div class="flex-1 h-px bg-gradient-to-r from-ink-200 dark:from-ink-700 to-transparent"></div>
+        <span class="text-xs text-ink-400 dark:text-ivory-400 font-mono">
+          {sortedPosts.length}&nbsp;{isEnglish ? 'articles' : 'artigos'}
         </span>
       </div>
 
-      <nav class="flex flex-col gap-3 max-h-[40vh] overflow-y-auto pr-2" aria-label="Blog posts list">
+      <!-- Posts Grid -->
+      <div class="space-y-4">
         {sortedPosts.map((post, index) => (
-          <a 
-            href={`/blog/${post.frontmatter.slug}/`} 
-            class="nav-item group flex items-baseline gap-2 text-xs transition-all duration-150 outline-none focus:outline-none hover:text-game-teal focus:text-game-teal"
+          <article
+            class="group relative"
+            style={`animation-delay: ${index * 0.05}s`}
           >
-            <span class="text-game-teal opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-150 flex-shrink-0" aria-hidden="true">&gt;</span>
-            <span class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
-              <span class="text-game-text opacity-40 font-roboto text-[10px] md:text-xs whitespace-nowrap">
-                {format(new Date(post.frontmatter.date), 'yyyy.MM.dd')}
-              </span>
-              <span class="text-game-text group-hover:text-game-teal group-focus:text-game-teal group-hover:glow-teal group-focus:glow-teal transition-colors leading-relaxed">
+            <a
+              href={`/blog/${post.frontmatter.slug}/`}
+              class="block p-6 md:p-8 -mx-6 md:-mx-8 rounded-xl hover:bg-ivory-200/50 dark:hover:bg-ink-800/50 transition-all duration-300"
+            >
+              <!-- Date badge -->
+              <div class="flex items-center gap-4 mb-3">
+                <time
+                  datetime={post.frontmatter.date}
+                  class="text-xs font-mono text-accent-500 dark:text-accent-400"
+                >
+                  {format(new Date(post.frontmatter.date), 'MMM dd, yyyy')}
+                </time>
+              </div>
+
+              <!-- Title -->
+              <h3 class="text-xl md:text-2xl font-display font-semibold text-ink-800 dark:text-ivory-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200 mb-3 leading-snug">
                 {post.frontmatter.title}
+              </h3>
+
+              <!-- Description -->
+              <p class="text-ink-500 dark:text-ivory-300 leading-relaxed mb-4 line-clamp-2">
+                {post.frontmatter.description}
+              </p>
+
+              <!-- Read more link -->
+              <span class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 dark:text-ivory-400 group-hover:text-ink-700 dark:group-hover:text-ivory-100 transition-colors">
+                {t.readMore}
+                <svg
+                  class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
               </span>
-            </span>
-          </a>
+
+              <!-- Decorative corner -->
+              <div class="absolute top-6 right-6 w-8 h-8 border-t border-r border-transparent group-hover:border-ink-200 dark:group-hover:border-ink-700 rounded-tr-lg transition-colors duration-300" aria-hidden="true"></div>
+            </a>
+          </article>
         ))}
-      </nav>
+      </div>
     </section>
 
-    <!-- Footer: Language Switcher & Hint -->
-    <footer class="mt-10 md:mt-12 pt-6 border-t border-game-border">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <!-- Language switcher -->
-        <div class="flex items-center gap-2 text-[10px]">
-          <span class="text-game-text opacity-50">LANG:</span>
-          <a 
-            href="/" 
-            class:list={[
-              "transition-all duration-150 hover:text-game-orange focus:text-game-orange focus:outline-none hover:glow-orange focus:glow-orange",
-              { "text-game-orange underline underline-offset-4 glow-orange": isEnglish }
-            ]}
-            aria-label="Switch to English"
-          >
-            EN
-          </a>
-          <span class="text-game-border">|</span>
-          <a 
-            href="/pt-br" 
-            class:list={[
-              "transition-all duration-150 hover:text-game-orange focus:text-game-orange focus:outline-none hover:glow-orange focus:glow-orange",
-              { "text-game-orange underline underline-offset-4 glow-orange": !isEnglish }
-            ]}
-            aria-label="Switch to Portuguese"
-          >
-            PT-BR
-          </a>
-        </div>
-
-        <!-- Hint text -->
-        <p class="text-[10px] text-game-text opacity-40 animate-blink-slow">
-          {isEnglish ? '[ HOVER TO SELECT ]' : '[ PASSE O MOUSE PARA SELECIONAR ]'}
+    <!-- Footer -->
+    <footer class="mt-24 pt-8 border-t border-ivory-300 dark:border-ink-700">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-ink-400 dark:text-ivory-400">
+        <p>
+          &copy; {new Date().getFullYear()} Diel Duarte
+        </p>
+        <p class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-accent-500 rounded-full"></span>
+          {isEnglish ? 'Building things for the web' : 'Construindo coisas para a web'}
         </p>
       </div>
     </footer>
-  </main>
+
+  </div>
 
   <script>
-    // Keyboard navigation for menu and blog posts
+    // Intersection Observer for scroll animations
     document.addEventListener('DOMContentLoaded', () => {
-      const navItems = Array.from(document.querySelectorAll('.nav-item'));
-      let currentIndex = -1;
+      const articles = document.querySelectorAll('article');
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          
-          if (e.key === 'ArrowDown') {
-            currentIndex = currentIndex < navItems.length - 1 ? currentIndex + 1 : 0;
-          } else {
-            currentIndex = currentIndex > 0 ? currentIndex - 1 : navItems.length - 1;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
           }
-          
-          navItems[currentIndex].focus();
-        } else if (e.key === 'Enter' && currentIndex >= 0) {
-          navItems[currentIndex].click();
-        }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       });
 
-      // Update currentIndex when user focuses an item with tab or mouse
-      navItems.forEach((item, index) => {
-        item.addEventListener('focus', () => {
-          currentIndex = index;
-        });
+      articles.forEach((article, index) => {
+        article.style.opacity = '0';
+        article.style.transform = 'translateY(20px)';
+        article.style.transition = `opacity 0.5s ease ${index * 0.05}s, transform 0.5s ease ${index * 0.05}s`;
+        observer.observe(article);
       });
     });
   </script>
 </body>
 </html>
-

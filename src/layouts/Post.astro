@@ -2,16 +2,22 @@
 import ScrollCounter from '../components/ScrollCounter.astro';
 import readingTime from 'reading-time'
 import { SEO } from "astro-seo";
+import { format } from 'date-fns';
 import fs from 'fs'
 
 const {frontmatter, file} = Astro.props
 
 const fileText = fs.readFileSync(file, 'utf8')
 const stats = readingTime(fileText)
-const totalTime = frontmatter.languageKey === 'en' 
-  ? stats.text 
-  : `Tempo de leitura ${Math.ceil(stats.minutes)} minutos`
+const totalTime = frontmatter.languageKey === 'en'
+  ? stats.text
+  : `${Math.ceil(stats.minutes)} min de leitura`
 const socialImage = Astro.site + frontmatter.socialImage
+const formattedDate = format(new Date(frontmatter.date), 'MMMM dd, yyyy')
+
+const isEnglish = frontmatter.languageKey === 'en';
+const backLabel = isEnglish ? 'Back to all articles' : 'Voltar para artigos';
+const homeUrl = isEnglish ? '/' : '/pt-br/';
 ---
 
 <html lang={frontmatter.languageKey}>
@@ -21,7 +27,7 @@ const socialImage = Astro.site + frontmatter.socialImage
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Press+Start+2P&family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 
   <SEO
       title={frontmatter.title}
@@ -29,12 +35,11 @@ const socialImage = Astro.site + frontmatter.socialImage
       openGraph={{
         basic: {
           title: frontmatter.title,
-          type: "A type.",
+          type: "article",
           image: socialImage ?? ''
         }
       }}
       extend={{
-        // extending the default meta tags
         meta: [
           {
             name: "twitter:image",
@@ -49,123 +54,386 @@ const socialImage = Astro.site + frontmatter.socialImage
     />
 
   <style is:global>
-    .content { 
-      padding-bottom: 60px; 
-      margin: 0 auto;
+    html {
+      scroll-behavior: smooth;
     }
 
-    .content * {
-      font-family: 'Roboto', sans-serif;
-      font-size: 18px;
-      line-height: 1.58em;
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .content p {
-      margin: 30px 0;
-    }
-
-    .content pre {
-      padding: 10px 20px;
-      border-radius: 2px;
-      font-family: 'Fira Code', monospace;
-    }
-
-    .content h1, 
-    .content h2, 
-    .content h3, 
-    .content h4, 
-    .content h5, 
-    .content h6 {
-      font-family: 'Press Start 2P', cursive;
-      margin: 30px 0;
-      transition: all 0.2s ease;
-    }
-
-    .content h1:hover,
-    .content h2:hover,
-    .content h3:hover,
-    .content h4:hover,
-    .content h5:hover,
-    .content h6:hover {
-      color: #5eb6ae;
-      text-shadow: 0 0 10px #5eb6ae;
-      cursor: default;
-    }
-    
-    .content h1 {
-      font-size: 24px;
-      text-align: center;
-      line-height: 34px;
-      margin: 0;
-    }
-
-    .content h2 {
-      font-size: 20px;
-      line-height: 1.6em;
-    }
-
-    .content h3 {
-      font-size: 14px;
-      line-height: 1.6em;
-    }
-
-    .subtitle--separator:before {
-      content: '•••';
-      display: block;
+    /* Noise texture overlay */
+    .noise-overlay::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      text-align: center;
-      margin-bottom: 50px;
-      margin-top: 50px;
-      color: #484A4B;
+      height: 100%;
+      opacity: 0.025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 100;
     }
 
-    .content a {
-      display: inline-block;
-      color: rgb(215, 136, 56);
+    /* Article content styles - Light Mode */
+    .prose-article {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.25rem;
+      line-height: 1.75;
+      color: #3D3D3B;
     }
 
-    .content ul, .content ol {
-      margin: 20px 0 20px 0;
+    @media (prefers-color-scheme: dark) {
+      .prose-article {
+        color: #E0E0E0;
+      }
+    }
+
+    .prose-article p {
+      margin: 1.75rem 0;
+    }
+
+    .prose-article strong {
+      color: #1F1F1D;
+      font-weight: 600;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article strong {
+        color: #FAFAF8;
+      }
+    }
+
+    .prose-article a {
+      color: #7D6E5E;
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-size: 0% 1px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.3s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article a {
+        color: #B8A99A;
+      }
+    }
+
+    .prose-article a:hover {
+      background-size: 100% 1px;
+    }
+
+    .prose-article h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #171715;
+      margin: 3rem 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h2 {
+        color: #FAFAF8;
+      }
+    }
+
+    .prose-article h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: #1F1F1D;
+      margin: 2.5rem 0 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h3 {
+        color: #F5F5F2;
+      }
+    }
+
+    .prose-article h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1F1F1D;
+      margin: 2rem 0 0.75rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h4 {
+        color: #F5F5F2;
+      }
+    }
+
+    .prose-article pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      overflow-x: auto;
+      background: #171715 !important;
+      border: 1px solid #2A2A28;
+    }
+
+    .prose-article code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+    }
+
+    .prose-article :not(pre) > code {
+      background: rgba(125, 110, 94, 0.1);
+      color: #635850;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article :not(pre) > code {
+        background: rgba(184, 169, 154, 0.15);
+        color: #B8A99A;
+      }
+    }
+
+    .prose-article ul, .prose-article ol {
+      margin: 1.5rem 0;
+      padding-left: 0;
       list-style: none;
     }
 
-    .content ul li {
-      margin-bottom: 10px;
+    .prose-article ul li, .prose-article ol li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
     }
 
-    .content ul li:before {
-      content: '=>';
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      padding-right: 10px;
-      color: rgb(215, 136, 56);
+    .prose-article ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.75em;
+      width: 5px;
+      height: 5px;
+      background: #7D6E5E;
+      border-radius: 50%;
     }
 
-    .content blockquote {
-      margin-left: 18px;
-      border-left: 4px solid #3e7068;
-      padding-left: 10px;
-      margin: 40px 0 40px 18px;
+    @media (prefers-color-scheme: dark) {
+      .prose-article ul li::before {
+        background: #9A8B7A;
+      }
     }
 
-    .content img, .content video {
+    .prose-article ol {
+      counter-reset: list-counter;
+    }
+
+    .prose-article ol li {
+      counter-increment: list-counter;
+    }
+
+    .prose-article ol li::before {
+      content: counter(list-counter);
+      position: absolute;
+      left: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #7D6E5E;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article ol li::before {
+        color: #9A8B7A;
+      }
+    }
+
+    .prose-article blockquote {
+      margin: 2.5rem 0;
+      padding: 1.5rem 2rem;
+      background: rgba(125, 110, 94, 0.05);
+      border-left: 3px solid #9A8B7A;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article blockquote {
+        background: rgba(184, 169, 154, 0.05);
+        border-left-color: #7D6E5E;
+      }
+    }
+
+    .prose-article blockquote p {
+      margin: 0;
+      color: #5C5C5A;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article blockquote p {
+        color: #B8B8B5;
+      }
+    }
+
+    .prose-article img, .prose-article video {
       max-width: 100%;
-      object-fit: cover;
+      border-radius: 8px;
+      margin: 2.5rem auto;
       display: block;
-      margin: 0 auto;
+    }
+
+    .prose-article hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #DCDCD7, transparent);
+      margin: 3rem 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article hr {
+        background: linear-gradient(90deg, transparent, #2A2A28, transparent);
+      }
+    }
+
+    /* Reading progress bar */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: #7D6E5E;
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .reading-progress {
+        background: #9A8B7A;
+      }
     }
   </style>
 </head>
 
-<body class="bg-white flex w-full text-black dark:bg-black dark:text-white justify-center flex-col items-center pt-20 font-roboto px-10 md:px-0">  
-  <div class="flex justify-end align-middle font-roboto w-full max-w-3xl mb-8">
-    <a class="text-md py-3.5 px-3" href={`/blog/${frontmatter.languageKey}/`} aria-label="close article and go back to home"><span aria-hidden="true">x</span></a>
+<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 min-h-screen transition-colors duration-300">
+  <!-- Reading progress bar -->
+  <div class="reading-progress" id="progress-bar" style="width: 0%"></div>
+
+  <div class="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-20">
+    <!-- Back navigation -->
+    <nav class="mb-12">
+      <a
+        href={homeUrl}
+        class="inline-flex items-center gap-2 text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200 group"
+      >
+        <svg
+          class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+        </svg>
+        {backLabel}
+      </a>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="mb-12 md:mb-16">
+      <!-- Meta info -->
+      <div class="flex flex-wrap items-center gap-4 mb-6">
+        <time
+          datetime={frontmatter.date}
+          class="text-sm font-mono text-accent-500 dark:text-accent-400"
+        >
+          {formattedDate}
+        </time>
+        <span class="text-ink-300 dark:text-ink-600">·</span>
+        <span class="text-sm text-ink-400 dark:text-ivory-400 font-mono">{totalTime}</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 leading-tight tracking-tight mb-6">
+        {frontmatter.title}
+      </h1>
+
+      <!-- Description -->
+      {frontmatter.description && (
+        <p class="text-lg md:text-xl text-ink-500 dark:text-ivory-300 leading-relaxed">
+          {frontmatter.description}
+        </p>
+      )}
+
+      <!-- Decorative divider -->
+      <div class="mt-10 flex items-center gap-3">
+        <div class="w-12 h-px bg-accent-400 dark:bg-accent-500"></div>
+        <div class="w-1.5 h-1.5 bg-accent-400 dark:bg-accent-500 rounded-full"></div>
+      </div>
+    </header>
+
+    <!-- Article Content -->
+    <article class="prose-article">
+      <slot />
+    </article>
+
+    <!-- Article Footer -->
+    <footer class="mt-16 pt-10 border-t border-ivory-300 dark:border-ink-700">
+      <!-- Author card -->
+      <div class="flex items-center gap-5 mb-10">
+        <div class="relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-br from-accent-400 to-accent-600 dark:from-accent-500 dark:to-accent-700 rounded-full opacity-50 blur-sm"></div>
+          <img
+            src="/images/diel.jpeg"
+            alt="Diel Duarte"
+            class="relative w-14 h-14 rounded-full object-cover ring-2 ring-ivory-100 dark:ring-ink-900"
+          />
+        </div>
+        <div>
+          <p class="font-display font-semibold text-ink-800 dark:text-ivory-100">Diel Duarte</p>
+          <p class="text-sm text-ink-400 dark:text-ivory-400">Principal Engineer at Appcues</p>
+        </div>
+      </div>
+
+      <!-- Back to home -->
+      <a
+        href={homeUrl}
+        class="inline-flex items-center gap-3 px-5 py-2.5 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-ivory-300 hover:bg-ink-800 hover:text-ivory-100 dark:hover:bg-ivory-100 dark:hover:text-ink-800 rounded-lg transition-colors duration-200 text-sm font-medium"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+        </svg>
+        {backLabel}
+      </a>
+    </footer>
   </div>
-  <article class="max-w-3xl content w-full">
-    <h1>{frontmatter.title}</h1>
-    <p class="text-center italic text-sm">{totalTime}</p>
-    <slot />
-  </article>
+
+  <script>
+    // Reading progress indicator
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressBar = document.getElementById('progress-bar');
+      const article = document.querySelector('article');
+
+      if (progressBar && article) {
+        const updateProgress = () => {
+          const scrollTop = window.scrollY;
+          const docHeight = article.offsetHeight + article.offsetTop - window.innerHeight;
+          const progress = Math.min(Math.max((scrollTop / docHeight) * 100, 0), 100);
+          progressBar.style.width = `${progress}%`;
+        };
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
+    });
+  </script>
 </body>
 
 </html>
