@@ -73,20 +73,6 @@
   --font-prose:   "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond", Georgia, Cambria, "Times New Roman", serif;
 }
 
-/* Light mode inverts neutrals; accent stays */
-@media (prefers-color-scheme: light) {
-  :root {
-    --n-0:  #FAFAF8;
-    --n-1:  #F2F2EF;
-    --n-2:  #E8E8E4;
-    --n-3:  #D0D0CC;
-    --n-4:  #888888;
-    --n-5:  #555555;
-    --n-6:  #2A2A2A;
-    --n-7:  #0A0A0A;
-  }
-}
-
 /* Respect motion preferences */
 @media (prefers-reduced-motion: reduce) {
   :root {

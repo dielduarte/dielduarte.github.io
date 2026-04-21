@@ -69,15 +69,17 @@ const edgeSegments = spokes.map((s) => {
     role="img"
     aria-label="Site navigation as a tree"
   >
-    {edgeSegments.map((e) => (
-      <line
-        class={`edge e-${e.id}`}
-        x1={e.x1}
-        y1={e.y1}
-        x2={e.x2}
-        y2={e.y2}
-      />
-    ))}
+    <g aria-hidden="true">
+      {edgeSegments.map((e) => (
+        <line
+          class={`edge e-${e.id}`}
+          x1={e.x1}
+          y1={e.y1}
+          x2={e.x2}
+          y2={e.y2}
+        />
+      ))}
+    </g>
 
     {items.map((node) => {
       const isActive = node.id === activeId;
@@ -99,7 +101,7 @@ const edgeSegments = spokes.map((s) => {
 
       const inner = (
         <>
-          <circle class="hit" cx={node.cx} cy={node.cy} r={12} />
+          <circle class="hit" cx={node.cx} cy={node.cy} r={20} />
           <circle class="dot" cx={node.cx} cy={node.cy} r={4} />
           <text
             class="label"
@@ -213,6 +215,7 @@ const edgeSegments = spokes.map((s) => {
   .node-link {
     cursor: pointer;
     outline: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -238,8 +241,17 @@ const edgeSegments = spokes.map((s) => {
   }
 
   .node-link:focus-visible .dot {
+    fill: color-mix(in oklab, var(--accent) 35%, transparent);
     stroke: var(--accent);
-    stroke-width: 2;
+    stroke-width: 2.5;
+  }
+
+  .node-link:focus-visible .label {
+    fill: var(--n-7);
+  }
+
+  .node-link:focus-visible .node.reachable {
+    transform: scale(1.25);
   }
 
   .node-link:active .node.reachable {
@@ -261,6 +273,7 @@ const edgeSegments = spokes.map((s) => {
   @media (prefers-reduced-motion: reduce) {
     .edge, .dot, .label, .node { transition: none; }
     .node-link:hover .node.reachable,
+    .node-link:focus-visible .node.reachable,
     .node-link:active .node.reachable { transform: none; }
   }
 </style>

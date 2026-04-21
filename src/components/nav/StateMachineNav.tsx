@@ -26,7 +26,6 @@ export default function StateMachineNav({
 }: Props) {
   const [state, send] = useMachine(navMachine);
   const [hoverId, setHoverId] = useState<NavStateId | null>(null);
-  const [synced, setSynced] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -37,7 +36,6 @@ export default function StateMachineNav({
     if (detected !== state.value) {
       send({ type: eventForState(detected) } as any);
     }
-    setSynced(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,78 +77,98 @@ export default function StateMachineNav({
     return paths;
   }, [hoverId, currentId, nodeById]);
 
-  function navigate(node: NavNode) {
-    if (!node.href) return;
-    const href = node.href[lang] ?? node.href.en;
-    window.location.assign(href);
-  }
-
-  function onNodeKey(e: React.KeyboardEvent, node: NavNode) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      navigate(node);
-    }
-  }
-
   return (
-    <div className="smn">
-      <svg
-        viewBox="0 0 480 400"
-        role="img"
-        aria-label="Site navigation as a tree"
-      >
-        {edgePaths.map((p) => (
-          <path
-            key={p.key}
-            className={`edge${litEdges.has(p.key) ? ' lit' : ''}`}
-            d={p.d}
-          />
-        ))}
+    <nav className="smn" aria-label="Site navigation">
+      <span className="sr-only">
+        Interactive state-machine diagram. The lit node is the current page.
+        Tab between reachable states; press Enter to navigate.
+      </span>
+
+      <svg viewBox="0 0 480 400" focusable="false">
+        <g aria-hidden="true">
+          {edgePaths.map((p) => (
+            <path
+              key={p.key}
+              className={`edge${litEdges.has(p.key) ? ' lit' : ''}`}
+              d={p.d}
+            />
+          ))}
+        </g>
 
         {NODES.map((node) => {
           const isActive = node.id === currentId;
           const isReachable = node.href !== null && !isActive;
           const disabled = node.href === null;
-          return (
-            <g
-              key={node.id}
-              className={[
-                'node',
-                isActive ? 'active' : '',
-                isReachable ? 'reachable' : '',
-                disabled ? 'disabled' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              tabIndex={isReachable ? 0 : -1}
-              role={isReachable ? 'link' : undefined}
-              aria-label={
-                disabled
-                  ? `${node.label} (unreachable — future state)`
-                  : isActive
-                  ? `${node.label} (current state)`
-                  : `go to ${node.label}`
-              }
-              aria-disabled={disabled || undefined}
-              aria-current={isActive ? 'page' : undefined}
-              onMouseEnter={() => setHoverId(node.id)}
-              onMouseLeave={() => setHoverId((h) => (h === node.id ? null : h))}
-              onFocus={() => !disabled && setHoverId(node.id)}
-              onBlur={() => setHoverId((h) => (h === node.id ? null : h))}
-              onClick={() => isReachable && navigate(node)}
-              onKeyDown={(e) => isReachable && onNodeKey(e, node)}
-              style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-            >
+          const groupClass = [
+            'node',
+            isActive ? 'active' : '',
+            isReachable ? 'reachable' : '',
+            disabled ? 'disabled' : '',
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          const inner = (
+            <>
               <circle cx={node.x} cy={node.y} r={28} />
               <text x={node.x} y={node.y + 4} textAnchor="middle">
                 {node.label}
               </text>
+            </>
+          );
+
+          if (isReachable && node.href) {
+            const href = node.href[lang] ?? node.href.en;
+            return (
+              <a
+                key={node.id}
+                className={`node-link n-${node.id}`}
+                href={href}
+                aria-label={`go to ${node.label}`}
+                onMouseEnter={() => setHoverId(node.id)}
+                onMouseLeave={() =>
+                  setHoverId((h) => (h === node.id ? null : h))
+                }
+                onFocus={() => setHoverId(node.id)}
+                onBlur={() => setHoverId((h) => (h === node.id ? null : h))}
+              >
+                <circle
+                  className="hit"
+                  cx={node.x}
+                  cy={node.y}
+                  r={44}
+                />
+                <g
+                  className={groupClass}
+                  style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+                >
+                  {inner}
+                </g>
+              </a>
+            );
+          }
+
+          return (
+            <g
+              key={node.id}
+              className={`${groupClass} n-${node.id}`}
+              role="img"
+              aria-label={
+                disabled
+                  ? `${node.label} — future state, unreachable`
+                  : `${node.label} — current state`
+              }
+              aria-disabled={disabled || undefined}
+              aria-current={isActive ? 'page' : undefined}
+              style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+            >
+              {inner}
             </g>
           );
         })}
       </svg>
 
-      <div className="hint">
+      <div className="hint" aria-hidden="true">
         <span>
           <span className="dot" /> current state
         </span>
@@ -161,7 +179,7 @@ export default function StateMachineNav({
           <kbd>Tab</kbd> + <kbd>Enter</kbd> to navigate
         </span>
       </div>
-    </div>
+    </nav>
   );
 }
 

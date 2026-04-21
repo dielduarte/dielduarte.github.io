@@ -25,12 +25,22 @@
   stroke-width: 1.5;
 }
 
-.smn .node {
+.smn .node-link {
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.smn .hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.smn .node {
+  pointer-events: none;
   transition: transform var(--t-3) var(--ease);
   transform-box: fill-box;
   transform-origin: center;
-  outline: none;
 }
 
 .smn .node circle {
@@ -63,26 +73,22 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .smn .node.reachable:hover circle {
+  .smn .node-link:hover .node.reachable circle {
     stroke: var(--accent);
   }
-  .smn .node.reachable:hover text {
+  .smn .node-link:hover .node.reachable text {
     fill: var(--n-7);
   }
-  .smn .node.reachable:hover {
+  .smn .node-link:hover .node.reachable {
     transform: scale(1.05);
-  }
-  .smn .node.active.reachable:hover text {
-    fill: #ffffff;
   }
 }
 
-.smn .node.reachable:active {
+.smn .node-link:active .node.reachable {
   transform: scale(0.97);
 }
 
 .smn .node.disabled {
-  cursor: not-allowed;
   opacity: 0.45;
 }
 
@@ -90,18 +96,22 @@
   stroke-dasharray: 3 3;
 }
 
-.smn .node:focus-visible {
+.smn .node-link:focus-visible {
   outline: none;
 }
 
-.smn .node:focus-visible circle {
+.smn .node-link:focus-visible .node.reachable circle {
   stroke: var(--accent);
-  stroke-width: 2;
+  stroke-width: 3;
+  fill: color-mix(in oklab, var(--accent) 18%, var(--n-1));
 }
 
-.smn .node:focus-visible + .focus-ring,
-.smn .node.focused circle {
-  stroke: var(--accent);
+.smn .node-link:focus-visible .node.reachable text {
+  fill: var(--n-7);
+}
+
+.smn .node-link:focus-visible .node.reachable {
+  transform: scale(1.08);
 }
 
 .smn .hint {
@@ -147,6 +157,18 @@
   background: var(--n-3);
 }
 
+.smn .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .smn .node,
   .smn .node circle,
@@ -154,8 +176,9 @@
   .smn .edge {
     transition: none;
   }
-  .smn .node.reachable:hover,
-  .smn .node.reachable:active {
+  .smn .node-link:hover .node.reachable,
+  .smn .node-link:focus-visible .node.reachable,
+  .smn .node-link:active .node.reachable {
     transform: none;
   }
 }

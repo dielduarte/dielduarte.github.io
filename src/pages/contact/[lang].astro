@@ -78,19 +78,27 @@ const channels = [
     <div class="channels">
       <h2>{t.channelsHeading}</h2>
       <ul>
-        {channels.map((c) => (
-          <li class:list={['ch', c.primary && 'primary']}>
-            <a
-              href={c.href}
-              target={c.href.startsWith('mailto:') ? undefined : '_blank'}
-              rel={c.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-            >
-              <span class="ch-label">{c.label}</span>
-              <span class="ch-handle">{c.handle}</span>
-              <span class="ch-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
-        ))}
+        {channels.map((c) => {
+          const isExternal = !c.href.startsWith('mailto:');
+          return (
+            <li class:list={['ch', c.primary && 'primary']}>
+              <a
+                href={c.href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+              >
+                <span class="ch-label">{c.label}</span>
+                <span class="ch-handle">{c.handle}</span>
+                <span class="ch-arrow" aria-hidden="true">→</span>
+                {isExternal && (
+                  <span class="sr-only">
+                    {lang === 'en' ? ' (opens in new tab)' : ' (abre em nova aba)'}
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
 
