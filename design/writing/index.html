@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en" data-astro-cid-imgznsvu>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design · writing list — three options</title>
+    <meta
+      name="description"
+      content="Three exploratory layouts for the writing index."
+    />
+    <link rel="stylesheet" href="/writing.0533e992.css" />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.7c1bf1a0.css" />
+    <link rel="stylesheet" href="/TimelineFlow.a2412fcd.css" />
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = document.getElementById("progress-bar"),
+          e = document.querySelector("article");
+        if (!t || !e) return;
+        const o = () => {
+          const n = window.scrollY,
+            s = e.offsetHeight + e.offsetTop - window.innerHeight,
+            r = Math.min(Math.max(n / s, 0), 1);
+          t.style.transform = `scaleX(${r})`;
+        };
+        (window.addEventListener("scroll", o, { passive: !0 }), o());
+      });
+    </script>
+  </head>
+  <body data-astro-cid-imgznsvu>
+    <main class="shell" data-astro-cid-imgznsvu>
+      <header class="page-head" data-astro-cid-imgznsvu>
+        <p class="mono-note" data-astro-cid-imgznsvu>design · writing index</p>
+        <h1 data-astro-cid-imgznsvu>Three options.</h1>
+        <p class="lede" data-astro-cid-imgznsvu>
+          Pick a direction for the writing list. Each uses the same ten posts.
+          Hover to feel it. Same tokens, same typeface, same accent — very
+          different rhythms.
+        </p>
+      </header>
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION A — Spine (state-timeline, vertical)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="a" data-astro-cid-imgznsvu>
+        <div class="opt-head" data-astro-cid-imgznsvu>
+          <span class="opt-tag" data-astro-cid-imgznsvu>Option A</span>
+          <h2 data-astro-cid-imgznsvu>Spine</h2>
+          <p class="opt-desc" data-astro-cid-imgznsvu>
+            Vertical spine, each post a node on the machine. State ids.
+            Editorial display title, body description. Dot fills accent on
+            hover. Calmly on-brand — reads as a side-view of the writing state's
+            substates.
+          </p>
+        </div>
+        <div class="opt-body a-body" data-astro-cid-imgznsvu>
+          <ol class="a-entries" data-astro-cid-imgznsvu>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/continuity-applied-to-software-development-processes/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_01</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2024-02-13" data-astro-cid-imgznsvu
+                    >Feb 12, 2024</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Continuity Applied to software development processes
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  The case for continuity applied to software engineering
+                  processes
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/how-to-describe-your-really-good-pull-request/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_02</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2023-09-07" data-astro-cid-imgznsvu
+                    >Sep 06, 2023</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  How to describe your really good pull request
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  Sharing my vision on pull requests and best practices
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/rescript-from-a-js-dev-point-of-view/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_03</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2021-04-27" data-astro-cid-imgznsvu
+                    >Apr 26, 2021</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Rescript from a JS dev point of view
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  A few opinions about Rescript language.
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/creating-your-first-application-with-react-and-xstate/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_04</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-11-24" data-astro-cid-imgznsvu
+                    >Nov 23, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Creating your first application using React and Xstate
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  Building your first application with React and Xstate...
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/modeling-your-first-application-using-statecharts-and-xstate/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_05</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-11-22" data-astro-cid-imgznsvu
+                    >Nov 21, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Modeling your first application using Statecharts and Xstate
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  In this and the next posts we will build an application using
+                  Statecharts with the help of the Xstate library.
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/web-development-with-state-charts-intro/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_06</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-11-01" data-astro-cid-imgznsvu
+                    >Oct 31, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Web development with state charts intro
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  Once upon a time a front-end developer that didn&#39;t know
+                  about state charts was working on a simple task...
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/the-easier-way-to-understand-functors/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_07</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-07-14" data-astro-cid-imgznsvu
+                    >Jul 13, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  The easier way to understand identity functors
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  the easier way to understand functors in my humble opinion is
+                  the concept of...
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/tips-for-remote-teams/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_08</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-04-19" data-astro-cid-imgznsvu
+                    >Apr 18, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Tips for remote teams
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  This is a post about async communication, tools, and tips to
+                  keep a remote team based on my experiêncie and studies.
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/a-year-working-remotely/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_09</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2020-01-20" data-astro-cid-imgznsvu
+                    >Jan 19, 2020</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  A year working remotely
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  Working remotely has been one of the best decisions that I
+                  have made up to this point. I hope you can learn something
+                  from my experience.
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+            <li class="a-entry" data-astro-cid-imgznsvu>
+              <a
+                class="a-link"
+                href="/blog/en/mastering-code-splitting-with-webpack/"
+                data-astro-cid-imgznsvu
+                ><span
+                  class="a-dot"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span
+                ><span
+                  class="a-halo"
+                  aria-hidden="true"
+                  data-astro-cid-imgznsvu
+                ></span>
+                <div class="a-meta" data-astro-cid-imgznsvu>
+                  <span class="a-id" data-astro-cid-imgznsvu>s_10</span
+                  ><span class="a-sep" data-astro-cid-imgznsvu>·</span
+                  ><time datetime="2019-07-17" data-astro-cid-imgznsvu
+                    >Jul 16, 2019</time
+                  >
+                </div>
+                <h3 class="a-title" data-astro-cid-imgznsvu>
+                  Mastering code splitting with webpack
+                </h3>
+                <p class="a-desc" data-astro-cid-imgznsvu>
+                  let&#39;s talk about how Webpack can help us to code splitting
+                  and achieve the goal of better website performance.
+                </p>
+                <span class="a-read" data-astro-cid-imgznsvu>enter →</span></a
+              >
+            </li>
+          </ol>
+        </div>
+      </section>
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION B — Ledger (monospace log)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="b" data-astro-cid-imgznsvu>
+        <div class="opt-head" data-astro-cid-imgznsvu>
+          <span class="opt-tag" data-astro-cid-imgznsvu>Option B</span>
+          <h2 data-astro-cid-imgznsvu>Ledger</h2>
+          <p class="opt-desc" data-astro-cid-imgznsvu>
+            Monospace log output. Aligned columns: ISO date · state id · title.
+            Reads like a process journal or kernel log — dev-native, dense, very
+            distinctive. The pipe gutter keeps it feeling like a continuous
+            stream rather than discrete cards.
+          </p>
+        </div>
+        <div class="opt-body b-body" data-astro-cid-imgznsvu>
+          <div class="b-frame" data-astro-cid-imgznsvu>
+            <div class="b-frame-top" data-astro-cid-imgznsvu>
+              <span class="b-dot b-dot-r" data-astro-cid-imgznsvu></span
+              ><span class="b-dot b-dot-y" data-astro-cid-imgznsvu></span
+              ><span class="b-dot b-dot-g" data-astro-cid-imgznsvu></span
+              ><span class="b-title-bar" data-astro-cid-imgznsvu
+                >~/writing — state: writing · 10 entries</span
+              >
+            </div>
+            <ol class="b-entries" data-astro-cid-imgznsvu>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/continuity-applied-to-software-development-processes/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2024.02.12</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_01</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Continuity Applied to software development
+                      processes</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >The case for continuity applied to software engineering
+                      processes</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/how-to-describe-your-really-good-pull-request/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2023.09.06</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_02</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >How to describe your really good pull request</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >Sharing my vision on pull requests and best
+                      practices</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/rescript-from-a-js-dev-point-of-view/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2021.04.26</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_03</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Rescript from a JS dev point of view</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >A few opinions about Rescript language.</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/creating-your-first-application-with-react-and-xstate/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.11.23</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_04</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Creating your first application using React and
+                      Xstate</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >Building your first application with React and
+                      Xstate...</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/modeling-your-first-application-using-statecharts-and-xstate/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.11.21</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_05</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Modeling your first application using Statecharts and
+                      Xstate</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >In this and the next posts we will build an application
+                      using Statecharts with the help of the Xstate
+                      library.</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/web-development-with-state-charts-intro/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.10.31</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_06</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Web development with state charts intro</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >Once upon a time a front-end developer that didn&#39;t
+                      know about state charts was working on a simple
+                      task...</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/the-easier-way-to-understand-functors/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.07.13</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_07</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >The easier way to understand identity functors</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >the easier way to understand functors in my humble
+                      opinion is the concept of...</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/tips-for-remote-teams/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.04.18</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_08</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Tips for remote teams</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >This is a post about async communication, tools, and tips
+                      to keep a remote team based on my experiêncie and
+                      studies.</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/a-year-working-remotely/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2020.01.19</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_09</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >A year working remotely</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >Working remotely has been one of the best decisions that
+                      I have made up to this point. I hope you can learn
+                      something from my experience.</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li class="b-entry" data-astro-cid-imgznsvu>
+                <a
+                  class="b-link"
+                  href="/blog/en/mastering-code-splitting-with-webpack/"
+                  data-astro-cid-imgznsvu
+                  ><div class="b-row" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu
+                      >2019.07.16</span
+                    ><span class="b-arrow" data-astro-cid-imgznsvu>s_10</span
+                    ><span class="b-title" data-astro-cid-imgznsvu
+                      >Mastering code splitting with webpack</span
+                    >
+                  </div>
+                  <div class="b-row b-row-desc" data-astro-cid-imgznsvu>
+                    <span
+                      class="b-gutter"
+                      aria-hidden="true"
+                      data-astro-cid-imgznsvu
+                      >│</span
+                    ><span class="b-prompt" data-astro-cid-imgznsvu></span
+                    ><span class="b-arrow b-indent" data-astro-cid-imgznsvu
+                      >·</span
+                    ><span class="b-desc" data-astro-cid-imgznsvu
+                      >let&#39;s talk about how Webpack can help us to code
+                      splitting and achieve the goal of better website
+                      performance.</span
+                    >
+                  </div></a
+                >
+              </li>
+              <li
+                class="b-entry b-cursor-row"
+                aria-hidden="true"
+                data-astro-cid-imgznsvu
+              >
+                <div class="b-row" data-astro-cid-imgznsvu>
+                  <span class="b-gutter" data-astro-cid-imgznsvu>│</span
+                  ><span class="b-prompt" data-astro-cid-imgznsvu>&gt;</span
+                  ><span class="b-cursor" data-astro-cid-imgznsvu></span>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION C — Timeline (React Flow, zoomable canvas)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="c" data-astro-cid-imgznsvu>
+        <div class="opt-head" data-astro-cid-imgznsvu>
+          <span class="opt-tag" data-astro-cid-imgznsvu>Option C</span>
+          <h2 data-astro-cid-imgznsvu>Timeline — zoomable</h2>
+          <p class="opt-desc" data-astro-cid-imgznsvu>
+            Posts positioned on a 2D canvas by date. Titles dodge above and
+            below the chronology to avoid overlap; pan and zoom when clusters
+            get dense. Built on React Flow — same node/edge model as the nav
+            machine, just scaled to the archive. The MiniMap in the top right
+            gives you overview while you're zoomed in; the controls in the
+            bottom right reset the view.
+          </p>
+        </div>
+        <div class="opt-body c-body" data-astro-cid-imgznsvu>
+          <style>
+            astro-island,
+            astro-slot,
+            astro-static-slot {
+              display: contents;
+            }
+          </style>
+          <script>
+            (() => {
+              var e = async (t) => {
+                await (
+                  await t()
+                )();
+              };
+              (self.Astro || (self.Astro = {})).only = e;
+              window.dispatchEvent(new Event("astro:only"));
+            })();
+            (() => {
+              var b = Object.defineProperty;
+              var f = (a, s, i) =>
+                s in a
+                  ? b(a, s, {
+                      enumerable: !0,
+                      configurable: !0,
+                      writable: !0,
+                      value: i,
+                    })
+                  : (a[s] = i);
+              var d = (a, s, i) => (
+                f(a, typeof s != "symbol" ? s + "" : s, i),
+                i
+              );
+              var u;
+              {
+                let a = {
+                    0: (t) => m(t),
+                    1: (t) => i(t),
+                    2: (t) => new RegExp(t),
+                    3: (t) => new Date(t),
+                    4: (t) => new Map(i(t)),
+                    5: (t) => new Set(i(t)),
+                    6: (t) => BigInt(t),
+                    7: (t) => new URL(t),
+                    8: (t) => new Uint8Array(t),
+                    9: (t) => new Uint16Array(t),
+                    10: (t) => new Uint32Array(t),
+                  },
+                  s = (t) => {
+                    let [e, r] = t;
+                    return e in a ? a[e](r) : void 0;
+                  },
+                  i = (t) => t.map(s),
+                  m = (t) =>
+                    typeof t != "object" || t === null
+                      ? t
+                      : Object.fromEntries(
+                          Object.entries(t).map(([e, r]) => [e, s(r)]),
+                        );
+                customElements.get("astro-island") ||
+                  customElements.define(
+                    "astro-island",
+                    ((u = class extends HTMLElement {
+                      constructor() {
+                        super(...arguments);
+                        d(this, "Component");
+                        d(this, "hydrator");
+                        d(this, "hydrate", async () => {
+                          var l;
+                          if (!this.hydrator || !this.isConnected) return;
+                          let e =
+                            (l = this.parentElement) == null
+                              ? void 0
+                              : l.closest("astro-island[ssr]");
+                          if (e) {
+                            e.addEventListener("astro:hydrate", this.hydrate, {
+                              once: !0,
+                            });
+                            return;
+                          }
+                          let r = this.querySelectorAll("astro-slot"),
+                            c = {},
+                            h = this.querySelectorAll(
+                              "template[data-astro-template]",
+                            );
+                          for (let n of h) {
+                            let o = n.closest(this.tagName);
+                            o != null &&
+                              o.isSameNode(this) &&
+                              ((c[
+                                n.getAttribute("data-astro-template") ||
+                                  "default"
+                              ] = n.innerHTML),
+                              n.remove());
+                          }
+                          for (let n of r) {
+                            let o = n.closest(this.tagName);
+                            o != null &&
+                              o.isSameNode(this) &&
+                              (c[n.getAttribute("name") || "default"] =
+                                n.innerHTML);
+                          }
+                          let p;
+                          try {
+                            p = this.hasAttribute("props")
+                              ? m(JSON.parse(this.getAttribute("props")))
+                              : {};
+                          } catch (n) {
+                            let o =
+                                this.getAttribute("component-url") ||
+                                "<unknown>",
+                              y = this.getAttribute("component-export");
+                            throw (
+                              y && (o += ` (export ${y})`),
+                              console.error(
+                                `[hydrate] Error parsing props for component ${o}`,
+                                this.getAttribute("props"),
+                                n,
+                              ),
+                              n
+                            );
+                          }
+                          (await this.hydrator(this)(this.Component, p, c, {
+                            client: this.getAttribute("client"),
+                          }),
+                            this.removeAttribute("ssr"),
+                            this.dispatchEvent(
+                              new CustomEvent("astro:hydrate"),
+                            ));
+                        });
+                        d(this, "unmount", () => {
+                          this.isConnected ||
+                            this.dispatchEvent(
+                              new CustomEvent("astro:unmount"),
+                            );
+                        });
+                      }
+                      disconnectedCallback() {
+                        (document.removeEventListener(
+                          "astro:after-swap",
+                          this.unmount,
+                        ),
+                          document.addEventListener(
+                            "astro:after-swap",
+                            this.unmount,
+                            { once: !0 },
+                          ));
+                      }
+                      connectedCallback() {
+                        !this.hasAttribute("await-children") || this.firstChild
+                          ? this.childrenConnectedCallback()
+                          : new MutationObserver((e, r) => {
+                              (r.disconnect(),
+                                setTimeout(
+                                  () => this.childrenConnectedCallback(),
+                                  0,
+                                ));
+                            }).observe(this, { childList: !0 });
+                      }
+                      async childrenConnectedCallback() {
+                        let e = this.getAttribute("before-hydration-url");
+                        (e && (await import(e)), this.start());
+                      }
+                      start() {
+                        let e = JSON.parse(this.getAttribute("opts")),
+                          r = this.getAttribute("client");
+                        if (Astro[r] === void 0) {
+                          window.addEventListener(
+                            `astro:${r}`,
+                            () => this.start(),
+                            { once: !0 },
+                          );
+                          return;
+                        }
+                        Astro[r](
+                          async () => {
+                            let c = this.getAttribute("renderer-url"),
+                              [h, { default: p }] = await Promise.all([
+                                import(this.getAttribute("component-url")),
+                                c ? import(c) : () => () => {},
+                              ]),
+                              l =
+                                this.getAttribute("component-export") ||
+                                "default";
+                            if (!l.includes(".")) this.Component = h[l];
+                            else {
+                              this.Component = h;
+                              for (let n of l.split("."))
+                                this.Component = this.Component[n];
+                            }
+                            return ((this.hydrator = p), this.hydrate);
+                          },
+                          e,
+                          this,
+                        );
+                      }
+                      attributeChangedCallback() {
+                        this.hydrate();
+                      }
+                    }),
+                    d(u, "observedAttributes", ["props"]),
+                    u),
+                  );
+              }
+            })();
+          </script>
+          <astro-island
+            uid="1FLJlv"
+            component-url="/TimelineFlow.3d552c86.js"
+            component-export="default"
+            renderer-url="/client.0193e3b9.js"
+            props='{"posts":[1,[[0,{"title":[0,"Continuity Applied to software development processes"],"description":[0,"The case for continuity applied to software engineering processes"],"date":[0,"2024-02-13"],"slug":[0,"en/continuity-applied-to-software-development-processes"]}],[0,{"title":[0,"How to describe your really good pull request"],"description":[0,"Sharing my vision on pull requests and best practices"],"date":[0,"2023-09-07"],"slug":[0,"en/how-to-describe-your-really-good-pull-request"]}],[0,{"title":[0,"Rescript from a JS dev point of view"],"description":[0,"A few opinions about Rescript language."],"date":[0,"2021-04-27"],"slug":[0,"en/rescript-from-a-js-dev-point-of-view"]}],[0,{"title":[0,"Creating your first application using React and Xstate"],"description":[0,"Building your first application with React and Xstate..."],"date":[0,"2020-11-24"],"slug":[0,"en/creating-your-first-application-with-react-and-xstate"]}],[0,{"title":[0,"Modeling your first application using Statecharts and Xstate"],"description":[0,"In this and the next posts we will build an application using Statecharts with the help of the Xstate library."],"date":[0,"2020-11-22"],"slug":[0,"en/modeling-your-first-application-using-statecharts-and-xstate"]}],[0,{"title":[0,"Web development with state charts intro"],"description":[0,"Once upon a time a front-end developer that didn&#39;t know about state charts was working on a simple task..."],"date":[0,"2020-11-01"],"slug":[0,"en/web-development-with-state-charts-intro"]}],[0,{"title":[0,"The easier way to understand identity functors"],"description":[0,"the easier way to understand functors in my humble opinion is the concept of..."],"date":[0,"2020-07-14"],"slug":[0,"en/the-easier-way-to-understand-functors"]}],[0,{"title":[0,"Tips for remote teams"],"description":[0,"This is a post about async communication, tools, and tips to keep a remote team based on my experiêncie and studies."],"date":[0,"2020-04-19"],"slug":[0,"en/tips-for-remote-teams"]}],[0,{"title":[0,"A year working remotely"],"description":[0,"Working remotely has been one of the best decisions that I have made up to this point. I hope you can learn something from my experience."],"date":[0,"2020-01-20"],"slug":[0,"en/a-year-working-remotely"]}],[0,{"title":[0,"Mastering code splitting with webpack"],"description":[0,"let&#39;s talk about how Webpack can help us to code splitting and achieve the goal of better website performance."],"date":[0,"2019-07-17"],"slug":[0,"en/mastering-code-splitting-with-webpack"]}]]],"data-astro-cid-imgznsvu":[0,true]}'
+            ssr=""
+            client="only"
+            opts='{"name":"TimelineFlow","value":"react"}'
+          ></astro-island>
+        </div>
+      </section>
+      <footer class="foot" data-astro-cid-imgznsvu>
+        <span data-astro-cid-imgznsvu>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-imgznsvu
+          >·</span
+        ><span data-astro-cid-imgznsvu>design preview — pick one</span>
+      </footer>
+    </main>
+  </body>
+</html>

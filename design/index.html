@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design system · v2</title>
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/design.9478b382.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <section>
+        <p class="mono-note">v2 · committed · 2026-04-21</p>
+        <h1 style="margin-top: var(--s-3)">Diel Duarte, in states.</h1>
+        <p class="lede">
+          Geist Sans for display and body. Geist Mono for code and UI labels.
+          <code style="color: var(--accent); font-family: var(--font-mono)"
+            >#3B82F6</code
+          >
+          as the single accent. Near-black (<code
+            style="color: var(--n-6); font-family: var(--font-mono)"
+            >#0A0A0A</code
+          >) page. One easing curve,
+          <code style="color: var(--n-6); font-family: var(--font-mono)"
+            >cubic-bezier(0.32, 0.72, 0, 1)</code
+          >, on every transition. Self-hosted — no Google Fonts in production.
+        </p>
+      </section>
+      <section>
+        <h2>Typography — Geist Variable</h2>
+        <div class="specimen">
+          <div class="label">Geist Sans · display + body</div>
+          <div class="display">Thinking in states.</div>
+          <p class="body">
+            The site models itself as an explicit tree. Navigation is a diagram;
+            clicking a node follows a branch; the current position is always
+            visible. The copy is second person, present tense, slightly playful
+            — "you're at the writing branch."
+          </p>
+          <div class="mono-sample">
+            // Geist Mono — const machine = createMachine({ initial:
+            &#39;home&#39; })
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Accent — #3B82F6</h2>
+        <div class="accent-block">
+          <div class="swatch-large">#3B82F6</div>
+          <div>
+            <p class="lede" style="margin-top: 0">
+              One accent, four derivations. Used for: the active node in the
+              tree, lit branches, link color, focus rings, primary buttons, the
+              mono-note at the top of every section.
+            </p>
+            <div class="accent-derived" style="margin-top: var(--s-4)">
+              <div class="derived d-accent">accent · primary</div>
+              <div class="derived d-muted">accent-muted · quiet</div>
+              <div class="derived d-border">border · 1px accent</div>
+              <div class="derived d-text">text · accent on n-1</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Type scale — perfect-fourth</h2>
+        <div class="scale">
+          <div class="scale-row">
+            <code>--fs-xs 12</code
+            ><span style="font-size: var(--fs-xs)"
+              >The smallest legible label.</span
+            >
+          </div>
+          <div class="scale-row">
+            <code>--fs-sm 14</code
+            ><span style="font-size: var(--fs-sm)">Meta, captions, UI.</span>
+          </div>
+          <div class="scale-row">
+            <code>--fs-base 16</code
+            ><span style="font-size: var(--fs-base)"
+              >Default reading size.</span
+            >
+          </div>
+          <div class="scale-row">
+            <code>--fs-md 20</code
+            ><span style="font-size: var(--fs-md)"
+              >Lede paragraphs, callouts.</span
+            >
+          </div>
+          <div class="scale-row">
+            <code>--fs-lg 24</code
+            ><span style="font-size: var(--fs-lg)"
+              >Sub-headings, card titles.</span
+            >
+          </div>
+          <div class="scale-row">
+            <code>--fs-xl 32</code
+            ><span style="font-size: var(--fs-xl)">Section headings.</span>
+          </div>
+          <div class="scale-row">
+            <code>--fs-2xl 44</code
+            ><span style="font-size: var(--fs-2xl)">Article titles.</span>
+          </div>
+          <div class="scale-row">
+            <code>--fs-3xl 60</code
+            ><span style="font-size: var(--fs-3xl)">Page-level display.</span>
+          </div>
+          <div class="scale-row">
+            <code>--fs-4xl 80</code
+            ><span style="font-size: var(--fs-4xl)">Home hero — use once.</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Spacing — golden-ratio</h2>
+        <div class="spacing">
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-1</code>
+            <div class="bar" style="width: 4px"></div>
+            4px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-2</code>
+            <div class="bar" style="width: 8px"></div>
+            8px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-3</code>
+            <div class="bar" style="width: 12px"></div>
+            12px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-4</code>
+            <div class="bar" style="width: 20px"></div>
+            20px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-5</code>
+            <div class="bar" style="width: 32px"></div>
+            32px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-6</code>
+            <div class="bar" style="width: 52px"></div>
+            52px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-7</code>
+            <div class="bar" style="width: 84px"></div>
+            84px
+          </div>
+          <div class="spacing-row">
+            <code style="min-width: 80px">--s-8</code>
+            <div class="bar" style="width: 136px"></div>
+            136px
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Motion — one curve</h2>
+        <p class="lede">
+          <code style="font-family: var(--font-mono); color: var(--accent)"
+            >cubic-bezier(0.32, 0.72, 0, 1)</code
+          >
+          — iOS drawer. Hover. Press. Same curve, different durations. Every
+          interaction in the whole system uses this ease.
+        </p>
+        <div class="motion-demo">
+          <button class="btn primary">Transition &rarr; writing</button
+          ><button class="btn">Secondary action</button
+          ><button class="btn">Another</button>
+        </div>
+      </section>
+      <section>
+        <h2>Signature — the tree</h2>
+        <p class="lede">
+          Hover a node. Click one. This is a sketch; Phase 2 wires it to XState
+          so the URL and view follow the machine.
+        </p>
+        <div class="nav-sketch">
+          <svg
+            viewBox="0 0 520 260"
+            role="img"
+            aria-label="Tree navigation sketch"
+          >
+            <path class="edge lit" d="M 90 130 L 220 80"></path>
+            <path class="edge" d="M 90 130 L 220 180"></path>
+            <path class="edge" d="M 220 80 L 360 130"></path>
+            <path class="edge" d="M 220 180 L 360 130"></path>
+            <path class="edge" d="M 360 130 L 470 80"></path>
+            <path class="edge" d="M 360 130 L 470 180"></path>
+            <g class="node active">
+              <circle cx="90" cy="130" r="28"></circle>
+              <text x="90" y="134" text-anchor="middle">home</text>
+            </g>
+            <g class="node">
+              <circle cx="220" cy="80" r="28"></circle>
+              <text x="220" y="84" text-anchor="middle">writing</text>
+            </g>
+            <g class="node">
+              <circle cx="220" cy="180" r="28"></circle>
+              <text x="220" y="184" text-anchor="middle">cases</text>
+            </g>
+            <g class="node">
+              <circle cx="360" cy="130" r="28"></circle>
+              <text x="360" y="134" text-anchor="middle">lab</text>
+            </g>
+            <g class="node">
+              <circle cx="470" cy="80" r="28"></circle>
+              <text x="470" y="84" text-anchor="middle">about</text>
+            </g>
+            <g class="node">
+              <circle cx="470" cy="180" r="28"></circle>
+              <text x="470" y="184" text-anchor="middle">contact</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+      <section style="border: none">
+        <p class="mono-note">next — phase 2</p>
+        <p class="lede">
+          Scaffold the XState machine that drives the nav. Build the left-rail
+          diagram component. Wire URL ↔ state so deep links work and
+          back/forward feel native.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

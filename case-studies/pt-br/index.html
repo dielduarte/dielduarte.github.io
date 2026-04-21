@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diel Duarte | Estudos de Caso</title>
+    <meta
+      name="description"
+      content="Mergulhos profundos em desafios técnicos que enfrentei — decisões de arquitetura, ganhos de performance e lições aprendidas."
+    />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .noise-overlay:before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.025;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        z-index: 100;
+      }
+      .carousel-scroll {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .carousel-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      .accent-link {
+        position: relative;
+        text-decoration: none;
+      }
+      .accent-link:after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .accent-link:hover:after {
+          transform: scaleX(1);
+        }
+      }
+      :focus-visible {
+        outline: 2px solid #7d6e5e;
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.a3801613.css" />
+    <script type="module" src="/hoisted.12fd4507.js"></script>
+  </head>
+  <body
+    class="noise-overlay bg-ivory-100 dark:bg-ink-900 text-ink-700 dark:text-ivory-200 font-body min-h-screen transition-colors duration-200 ease-out-soft"
+  >
+    <!-- Subtle accent line at top -->
+    <div
+      class="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-400 to-transparent opacity-60"
+      aria-hidden="true"
+    ></div>
+    <div class="max-w-6xl mx-auto px-6 md:px-8 py-16 md:py-24">
+      <!-- Top Navigation -->
+      <div class="flex justify-between items-center mb-16">
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/pt-br/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <a
+              href="/blog/pt-br/"
+              class="node-link n-writing"
+              aria-label="go to writing"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 12px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="12"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="12"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="16"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  writing
+                </text>
+              </g>
+            </a>
+            <a
+              href="/about/pt-br/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/pt-br/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6>no active state</span>
+        </nav>
+        <a
+          href="/case-studies/en/"
+          class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.97] transition-[color,transform] duration-200 ease-out-soft flex items-center gap-2"
+          ><svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+            ></path></svg
+          >Read in English</a
+        >
+      </div>
+      <!-- Section Header -->
+      <header class="mb-12">
+        <p
+          class="text-xs font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-widest mb-3"
+        >
+          Estudos de Caso
+        </p>
+        <h1
+          class="text-4xl md:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 tracking-tight mb-4"
+        >
+          Mergulhos Técnicos
+        </h1>
+        <p
+          class="text-lg text-ink-500 dark:text-ivory-300 leading-relaxed max-w-2xl"
+        >
+          Mergulhos profundos em desafios técnicos que enfrentei — decisões de
+          arquitetura, ganhos de performance e lições aprendidas.
+        </p>
+      </header>
+      <!-- Carousel Section -->
+      <section class="relative" aria-label="Estudos de Caso">
+        <!-- Arrow buttons --><button
+          id="scroll-left"
+          class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-ivory-100 dark:bg-ink-800 border border-ivory-300 dark:border-ink-700 text-ink-500 dark:text-ivory-300 hover:bg-ivory-200 dark:hover:bg-ink-700 hover:scale-105 active:scale-95 transition-[background-color,transform,opacity] duration-200 ease-out-soft shadow-sm"
+          aria-label="Scroll left"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M15 19l-7-7 7-7"
+            ></path>
+          </svg></button
+        ><button
+          id="scroll-right"
+          class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-ivory-100 dark:bg-ink-800 border border-ivory-300 dark:border-ink-700 text-ink-500 dark:text-ivory-300 hover:bg-ivory-200 dark:hover:bg-ink-700 hover:scale-105 active:scale-95 transition-[background-color,transform,opacity] duration-200 ease-out-soft shadow-sm"
+          aria-label="Scroll right"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9 5l7 7-7 7"
+            ></path>
+          </svg></button
+        ><!-- Scrollable container -->
+        <div
+          id="carousel"
+          class="carousel-scroll flex gap-6 overflow-x-auto scroll-smooth pb-4"
+          style="scroll-snap-type: x mandatory"
+        >
+          <a
+            href="/case-studies/pt-br/reconstruindo-o-editor/"
+            class="group flex-shrink-0 w-[320px] md:w-[380px] scroll-snap-start active:scale-[0.99] transition-transform duration-200 ease-out-soft"
+            style="scroll-snap-align: start"
+            ><div
+              class="h-full p-6 rounded-xl border border-ivory-300 dark:border-ink-700 bg-ivory-50 dark:bg-ink-800/50 group-hover:border-accent-400/50 dark:group-hover:border-accent-500/40 group-hover:bg-ivory-200/30 dark:group-hover:bg-ink-800 transition-[background-color,border-color] duration-200 ease-out-soft"
+            >
+              <!-- Company -->
+              <p
+                class="text-xs font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-wider mb-3"
+              >
+                Appcues
+              </p>
+              <!-- Title -->
+              <h3
+                class="text-xl font-display font-bold text-ink-800 dark:text-ivory-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200 ease-out-soft mb-3 leading-snug"
+              >
+                Reconstruindo o Editor — De Lento para Relâmpago
+              </h3>
+              <!-- Description -->
+              <p
+                class="text-sm text-ink-500 dark:text-ivory-300 leading-relaxed mb-5 line-clamp-2"
+              >
+                Como reconstruímos um editor WYSIWYG do zero, reduzindo tempos
+                de renderização em 60% e uso de memória em 40% através de
+                mudanças arquiteturais e UI orientada por máquinas de estado.
+              </p>
+              <!-- Impact -->
+              <p
+                class="text-xs font-mono text-accent-500 dark:text-accent-400 mb-5"
+              >
+                60% mais rápido, 40% menos memória
+              </p>
+              <!-- Tech Stack -->
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2 py-0.5 text-[10px] font-mono font-medium text-ink-400 dark:text-ivory-400 bg-ivory-200/80 dark:bg-ink-700/80 rounded-full"
+                  >React</span
+                ><span
+                  class="px-2 py-0.5 text-[10px] font-mono font-medium text-ink-400 dark:text-ivory-400 bg-ivory-200/80 dark:bg-ink-700/80 rounded-full"
+                  >TypeScript</span
+                ><span
+                  class="px-2 py-0.5 text-[10px] font-mono font-medium text-ink-400 dark:text-ivory-400 bg-ivory-200/80 dark:bg-ink-700/80 rounded-full"
+                  >XState</span
+                ><span
+                  class="px-2 py-0.5 text-[10px] font-mono font-medium text-ink-400 dark:text-ivory-400 bg-ivory-200/80 dark:bg-ink-700/80 rounded-full"
+                  >Canvas API</span
+                >
+              </div>
+              <!-- Read link --><span
+                class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 dark:text-ivory-400 group-hover:text-ink-700 dark:group-hover:text-ivory-100 transition-colors duration-200 ease-out-soft"
+                >Ler estudo de caso<svg
+                  class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 ease-out-soft"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  ></path></svg
+              ></span></div
+          ></a>
+        </div>
+      </section>
+      <!-- Footer -->
+      <footer class="mt-24 pt-8 border-t border-ivory-300 dark:border-ink-700">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-ink-400 dark:text-ivory-400"
+        >
+          <p>&copy; 2026 Diel Duarte</p>
+          <p class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-accent-500 rounded-full"></span
+            >Construindo coisas para a web
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="pt-br" data-astro-cid-gvpn4u4b>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dicas para times remotos</title>
+    <link
+      rel="canonical"
+      href="https://dielduarte.dev/blog/pt-br/dicas-para-times-remotos/"
+    />
+    <meta
+      name="description"
+      content="Comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Dicas para times remotos" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:image"
+      content="https://dielduarte.dev/images/pt-br-dicas-para-times-remotos.png"
+    />
+    <meta
+      property="og:url"
+      content="https://dielduarte.dev/blog/pt-br/dicas-para-times-remotos/"
+    />
+    <meta
+      content="https://dielduarte.dev/images/pt-br-dicas-para-times-remotos.png"
+      name="twitter:image"
+    />
+    <meta content="Dicas para times remotos" name="twitter:title" />
+    <meta content="@diel_duarte" name="twitter:site" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta
+      content="Comunicação assíncrona, algumas ferramentas e dicas para manter uma equipe remota baseado em minha experiência e estudos."
+      name="twitter:description"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.7c1bf1a0.css" />
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = document.getElementById("progress-bar"),
+          e = document.querySelector("article");
+        if (!t || !e) return;
+        const o = () => {
+          const n = window.scrollY,
+            s = e.offsetHeight + e.offsetTop - window.innerHeight,
+            r = Math.min(Math.max(n / s, 0), 1);
+          t.style.transform = `scaleX(${r})`;
+        };
+        (window.addEventListener("scroll", o, { passive: !0 }), o());
+      });
+    </script>
+  </head>
+  <body data-astro-cid-gvpn4u4b>
+    <div
+      class="reading-progress"
+      id="progress-bar"
+      aria-hidden="true"
+      data-astro-cid-gvpn4u4b
+    ></div>
+    <a class="skip-link" href="#main" data-astro-cid-gvpn4u4b
+      >Pular para o conteúdo</a
+    >
+    <div class="shell" data-astro-cid-gvpn4u4b>
+      <header class="topbar" data-astro-cid-gvpn4u4b>
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/pt-br/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <g
+              class="node active n-writing"
+              aria-label="writing — current state"
+              aria-current="page"
+              style="transform-origin: 138px 12px"
+              data-astro-cid-454q6bj6
+            >
+              <circle
+                class="hit"
+                cx="138"
+                cy="12"
+                r="20"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <circle
+                class="dot"
+                cx="138"
+                cy="12"
+                r="4"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <text
+                class="label"
+                x="150"
+                y="16"
+                text-anchor="start"
+                data-astro-cid-454q6bj6
+              >
+                writing
+              </text>
+            </g>
+            <a
+              href="/about/pt-br/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/pt-br/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6
+            >current state — writing</span
+          >
+        </nav>
+        <a
+          class="lang"
+          href="/blog/en/tips-for-remote-teams/"
+          hreflang="en"
+          data-astro-cid-gvpn4u4b
+          ><span aria-hidden="true" data-astro-cid-gvpn4u4b>/</span>Read in
+          English</a
+        >
+      </header>
+      <main id="main" class="main" data-astro-cid-gvpn4u4b>
+        <article class="post" data-astro-cid-gvpn4u4b>
+          <header class="post-head" data-astro-cid-gvpn4u4b>
+            <div class="meta" data-astro-cid-gvpn4u4b>
+              <time datetime="2020-04-19" data-astro-cid-gvpn4u4b
+                >18 April 2020</time
+              ><span class="sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+                >·</span
+              ><span data-astro-cid-gvpn4u4b>10 min de leitura</span>
+            </div>
+            <h1 data-astro-cid-gvpn4u4b>Dicas para times remotos</h1>
+            <p class="dek" data-astro-cid-gvpn4u4b>
+              Comunicação assíncrona, algumas ferramentas e dicas para manter
+              uma equipe remota baseado em minha experiência e estudos.
+            </p>
+            <div class="rule" aria-hidden="true" data-astro-cid-gvpn4u4b>
+              <span class="rule-line" data-astro-cid-gvpn4u4b></span
+              ><span class="rule-dot" data-astro-cid-gvpn4u4b></span>
+            </div>
+          </header>
+          <div class="prose" data-astro-cid-gvpn4u4b>
+            <p>
+              Esse é um material sobre comunicação assíncrona, algumas
+              ferramentas e dicas para manter uma equipe remota baseado em minha
+              experiência e estudos. Não estamos falando de uma ciência exata e
+              recomendo testar as dicas por algumas semanas e avaliar os
+              resultados com a ajuda de feedbacks da equipe.
+            </p>
+            <h2 class="subtitle--separator">Async vs realtime</h2>
+            <p>
+              Tente manter a comunicação assíncrona sempre que possível,
+              assimilar que conversas em real time são como reuniões pode
+              ajudar. Já pensou ficar em reunião 8 horas por dia? Em uma
+              situação de extrema desorganização remota isso pode acontecer,
+              como resultado, a produtividade do time cai.
+            </p>
+            <p>
+              Evitar usar ferramentas de chat em tempo real pode ajudar. No
+              lugar tente ferramentas como Twist que basicamente organiza toda a
+              comunicação do time por thread.
+            </p>
+            <p>
+              Assim como todo time de desenvolvimento tem um cultura de fazer
+              code review em alguns momentos do dia, também será necessário
+              implantar a mesma ideia para que a equipe dedique um tempo do dia
+              para checar todas as threads em que eles estão participando e
+              responder/tomar ações se necessário.
+            </p>
+            <p>
+              Use chats em tempo real para situações de emergência como um bug
+              em produção, assuntos que realmente precisam de uma resposta em
+              tempo real / situações do dia a dia como:
+            </p>
+            <ul>
+              <li>
+                Ei, não consigo achar onde esta documento X, pode me ajudar?
+              </li>
+              <li>
+                Estou com um problema que não consigo resolver, alguém livre
+                para fazer um pair programming?
+              </li>
+            </ul>
+            <p>E claro, para conversas informais em grupos ou privadas</p>
+            <h3>One Monday</h3>
+            <p>
+              One monday é um conceito válido principalmente para times em
+              múltiplos timezones. O conceito consiste em entender que em uma
+              comunicação assíncrona em um ambiente remoto estarei sujeito a ter
+              que esperar até 24 horas para receber uma resposta dependendo do
+              timezone das pessoas envolvidas. Reafirmo a dica, em casos de
+              situações urgentes usem chats em tempo real ou ligações para
+              parear com webcam ligada.
+            </p>
+            <h2>Converse com as pessoas certas</h2>
+            <p>
+              Se você precisa discutir algo sobre marketing, envie no grupo de
+              marketing, crie thread apenas com as pessoas relacionadas a
+              marketing ou relacionadas ao assunto que você precisa
+              resolver/discutir, dessa forma evitamos distrações desnecessárias
+              para o resto do time.
+            </p>
+            <p>
+              Receber notificações ou participar de todas as threads a todo
+              momento sobre assuntos que o integrante do time não precisa
+              participar, além de ser uma distração desnecessária, muitas vezes
+              força os integrantes a mutar ou ignorar o canal de comunicação
+              para que consigam focar no trabalho e como resultado, um gap de
+              comunicação muito maior
+            </p>
+            <h2>Crie grupos por time e/ou áreas de conhecimento</h2>
+            <p>
+              Evite criar grupos para cada assunto ou cada tarefa que precisa
+              ser discutida, em questão de dias isso pode virar um caos e
+              ninguém sabe em que grupo responder, mais uma vez aumentando o gap
+              de comunicação.
+            </p>
+            <p>Exemplo de grupos por time:</p>
+            <ul>
+              <li>time dashboard</li>
+              <li>time site</li>
+              <li>RH</li>
+              <li>Marketing</li>
+            </ul>
+            <p>Exemplo de grupos por áreas de conhecimento:</p>
+            <ul>
+              <li>Front-end</li>
+              <li>Back-end</li>
+              <li>Designers</li>
+            </ul>
+            <p>
+              Use grupos por áreas de conhecimento para aumentar o engajamento e
+              a troca de conhecimento ou ajudas rápidas. Faz muito mais sentido
+              um front-end perguntar uma dúvida ou dicas de CSS em um grupo
+              focado sobre front-end ao invés de perguntar no chat geral da
+              empresa, para apenas uma pessoa ou mesmo no grupo de back-end.
+            </p>
+            <h2>Status</h2>
+            <p>
+              Uma ótima maneira saudável de saber quando alguém está online ou
+              não é usando o próprio status de chats em real time. Algumas
+              ferramentas, como Slack, permitem aos usuários adicionarem status
+              diferentes de apenas online/offline. Uma ideia que meu time atual
+              aplica e tem funcionado muito bem são os status:
+            </p>
+            <p>
+              <img
+                src="/images/status-1.png"
+                alt="imagem mostrando status pré definidos além de online ou offline"
+              />
+            </p>
+            <p>O status é exibido ao lado do nome do usuário:</p>
+            <p>
+              <img
+                src="/images/status-2.png"
+                alt="imagem mostrando status ao lado do nome do usário"
+              />
+            </p>
+            <p>
+              <img
+                src="/images/status-3.png"
+                alt="imagem mostrando status ao lado do nome do usário em uma conversa real"
+              />
+            </p>
+            <p>
+              No exemplo acima, eu sei que o usuário Magdiel Duarte está offline
+              no momento, isso quer dizer que, mesmo ao enviar uma mensagem
+              direta para ele a resposta não vai ser instantânea, e tudo bem,
+              mande a mensagem da mesma forma e espere. Se precisar realmente de
+              uma resposta urgente sempre mande em grupos onde mais pessoas
+              podem ajudar.
+            </p>
+            <h2>Reuniões</h2>
+            <p>
+              Sempre faça reuniões com a webcam ligada, isso gera um engajamento
+              maior na equipe, faz as pessoas se sentirem confortáveis com
+              aquele momento e manterem o foco.
+            </p>
+            <h3>C-Levels meetings</h3>
+            <p>
+              Uma das técnicas apresentadas pelo livro "It doesn't have to be
+              crazy at work" é um conceito onde, 1 ou 2 dias na semana os
+              C-levels ficam por algumas horas disponíveis para reuniões com
+              qualquer pessoa/time da empresa, os horários ficam públicos no
+              calendário e qualquer time/pessoa pode marcar uma reunião nesse
+              horário para disctuir sobre algum assunto. Fora desse horário fica
+              restrigindo apenas para assuntos urgentes.
+            </p>
+            <p>
+              Tive a oportunidade de trabalhar em uma empresa anterior a atual,
+              onde aplicavam esse conceito e era muito bacana pois os C-levels
+              dessa empresa participavam muito de todas as decisões. Lembra do
+              conceito sobre chat em real time ser considerado reunião? Imagine
+              o dia-a-dia de um C-level tendo que responder a todo momento
+              dúvidas via chat, eles simplesmente não vão conseguir produzir
+              nada além de responder o chat.
+            </p>
+            <h3>Daily Reports</h3>
+            <p>
+              Daily reports podem ser feitas por calls com a webcam ligada ou
+              via texto.
+            </p>
+            <p>
+              Em um time distribuído em múltiplos timezones texto acaba sendo
+              uma boa opção. Ferramentas como o
+              <a href="https://statushero.com/">Status Hero</a> ajudam as
+              pessoas a não esquecerem de mandarem os reports e automatiza esse
+              processo, além de trazer alguns insights como produtividade geral
+              da equipe e deixar todas as Dailys Reports documentadas em um
+              dashboard bem interessantes.
+            </p>
+            <p>
+              Optar por Dailys Reports via calls pode trazer ainda mais
+              engajamento, principalmente se o dia a dia do time não envolve em
+              ter muitas reuniões.
+            </p>
+            <p>
+              Nesse caso realmente vai depender de qual opção vai deixar o time
+              mais confortável, recomendo testar as duas formas.
+            </p>
+            <h2>TIL - Today I learned</h2>
+            <p>
+              Uma das maiores reclamações quando se migra para um regime remoto
+              é a troca de conhecimento, o <strong>Today I learned</strong> é um
+              canal onde as pessoas da empresas compartilham conhecimento, algum
+              post bacana sobre uma tecnologia nova, uma técnica que pode ajudar
+              em algum momento, um vídeo sobre uma palestra interessante.
+              Literalmente qualquer coisa que o integrante da empresa achar que
+              vale a pena ser compartilhado com os colegas.
+            </p>
+            <p>
+              Apesar do nome ser <strong>Today I learned</strong>, não é
+              necessariamente obrigatório postar algo novo todos os dias, mas
+              sim, quando achar que vale a pena ser compartilhado.
+            </p>
+            <h2>Thanks</h2>
+            <p>
+              Uma das maiores preocupações pessoais quando uma pessoa migra para
+              um trabalho remoto é sobre visibilidade, afinal, no regime remoto
+              é muito díficil ter alguém observando como você se comporta no
+              trabalho além das suas entregas. É válido lembrar que o trabalho
+              de uma pessoa e o quão importante ela é para a empresa vai muito
+              além de apenas entregas relacionadas diretamente ao seu cargo,
+              aqui pode ser o lugar perfeito para aprender mais sobre as soft
+              skills de uma pessoa de forma remota.
+            </p>
+            <p>
+              O canal <strong>Thanks,</strong> é um conceito que algumas
+              empresas aplicam onde as pessoas agradecem umas as outras
+              publicamente por algum feito que um colega fez e a ajudou no seu
+              trabalho. Dessa forma fica registrado de forma pública ações que
+              as vezes fica muito díficil observar remotamente, como ajudar um
+              colega com um bug de forma privada, ensinar algo novo, e várias
+              outras coisas.
+            </p>
+            <p>
+              Além de criar um ambiente muito bom para se trabalhar onde as
+              pessoas são gratas umas as outras, aumentanto ainda mais o
+              engajamento do todo como um time.
+            </p>
+            <h2>Hero</h2>
+            <p>
+              Hero é um conceito válido se o time precisa prestar suporte, seja
+              interno ou externo. O conceito consiste em a cada período de tempo
+              determinado pela equipe uma pessoa é o <strong>hero,</strong> essa
+              pessoa é responsável por conversar diretamenta com o time de
+              suporte, analizar e organizar tarefas relacionadas no backlog e
+              trabalhar para resolver os problemas.
+            </p>
+            <p>
+              Com uma pessoa focada nisso, o resto do time pode focar em
+              trabalhar em novas features ou grandes refactors sem interrupções
+              para prestar suporte. Isso é usado para organizar melhor o tempo
+              da equipe entre Deep e Shalow Work outros conceitos bem
+              importantes de se estudar.
+            </p>
+            <p>
+              Uma das minhas referências em trabalho remoto e Deep Work é a
+              empresa Doist onde aplicam esses conceitos. Eles tem um blog muito
+              bom e super recomendo a leitura principalmente dos posts sobre
+              Deep Work e Hero + House Keeping.
+            </p>
+            <p>
+              <a
+                href="https://doist.com/blog/deep-work/?utm_source=doist_blog&#x26;utm_medium=referral&#x26;utm_campaign=heroes_housekeeping_days"
+                >https://doist.com/blog/deep-work</a
+              >
+            </p>
+            <p>
+              <a href="https://doist.com/blog/heroes-housekeeping-days/"
+                >https://doist.com/blog/heroes-housekeeping-days/</a
+              >
+            </p>
+            <h2>Calendário</h2>
+            <p>
+              Uma das melhores formas de se ter uma big picture sobre tudo que
+              está acontecendo na empresa é usando o calendário.
+            </p>
+            <p>
+              Especialmente recomendo o Google Calendar, nele é possível fazer
+              com que todo mundo tenha acesso ao calendário de todos e que de
+              forma fácil consiga mandar convites para reuniões, por exemplo sem
+              ter que previamente perguntar para todo mundo qual o melhor
+              horário. Algumas empresas pedem para o time colocarem no
+              calendário principalmente quando não estão disponíveis, por
+              exemplo:
+            </p>
+            <p>
+              Maria sempre vai a academia as 2 pm, ela pode então nesse caso
+              adicionar no calendário um evento dizendo que não está disponível
+              no horário de 2 pm - 3 pm todos os dias, ficando ao critério da
+              Maria colocar o porque caso se sinta a vontade para ou apenas
+              "Ocupado".
+            </p>
+            <h2>Micro-managment</h2>
+            <p>
+              Muito cuidado com micro gerenciamento de pessoas, se você precisa
+              perguntar há uma pessoa o que ela está trabalhando temos com
+              certeza algum gap de comunicação acontecendo. O ideal é usar algum
+              software de gerenciamento de tarefas ou até mesmo planilhas (o que
+              o time achar melhor). Onde cada pessoa pode estar fazendo apenas
+              uma tarefa por vez, que fique claro qual o status atual e de forma
+              pública para todos do time.
+            </p>
+            <h2>FOMO - medo de estar perdendo algo</h2>
+            <p>
+              Esse é um problema pessoal, que pode acontecer ou não e varia
+              muito de pessoa para pessoa. Mas a postura da empresa relacionada
+              a isso pode ajudar a diminuir os casos a 0. Ser firme com 8 horas
+              trabalhadas por dia e nada mais - com excessão a casos urgentes -
+              é um ótimo começo!
+            </p>
+            <p>
+              Um cultura onde pessoas da equipe ficam online 24 horas por dia,
+              trabalham até nos finais de semana não pode nunca ser visto com
+              bons olhos pela empresa e pelos líderes das equipes, isso leva a
+              um alto risco de burnout que é um problema sério de saúde, e para
+              empresa representa uma queda brusca de produtividade a médio e
+              longo prazo.
+            </p>
+            <p>Para a equipe:</p>
+            <ul>
+              <li>
+                Tenham seus horários de trabalho e sigam a risca, manter uma
+                rotina é muito importante em um regime remoto.
+              </li>
+              <li>
+                Se possível não baixem o chat da empresa em seus celulares
+                pessoais.
+              </li>
+              <li>
+                Configure para receber notificações apenas nos horários em que
+                você esteja trabalhando.
+              </li>
+              <li>
+                Tenha em mente que trabalho é um processo contínuo, você pode
+                continuar amanhã.
+              </li>
+            </ul>
+          </div>
+          <footer class="post-foot" data-astro-cid-gvpn4u4b>
+            <a class="back" href="/blog/pt-br/" data-astro-cid-gvpn4u4b
+              ><span aria-hidden="true" data-astro-cid-gvpn4u4b>←</span>Voltar
+              para artigos</a
+            >
+          </footer>
+        </article>
+      </main>
+      <footer class="foot" data-astro-cid-gvpn4u4b>
+        <span data-astro-cid-gvpn4u4b>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+          >·</span
+        ><span data-astro-cid-gvpn4u4b>o site inteiro é uma árvore</span>
+      </footer>
+    </div>
+  </body>
+</html>

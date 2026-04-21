@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="pt-br" data-astro-cid-peba26ng>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sobre — Diel Duarte</title>
+    <meta
+      name="description"
+      content="Principal Engineer na Appcues. Escreve sobre state charts, XState e a arquitetura de UIs legíveis."
+    />
+    <link rel="alternate" hreflang="en" href="/about/en/" />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .about[data-astro-cid-qtdxrh3v] {
+        max-width: 62ch;
+      }
+      .mono-note[data-astro-cid-qtdxrh3v] {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 var(--s-4) 0;
+      }
+      h1[data-astro-cid-qtdxrh3v] {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        color: var(--n-7);
+        margin: 0 0 var(--s-6) 0;
+        font-weight: 600;
+      }
+      .prose[data-astro-cid-qtdxrh3v] {
+        font-family: var(--font-prose);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        color: var(--n-6);
+        letter-spacing: -0.003em;
+      }
+      .prose[data-astro-cid-qtdxrh3v] p[data-astro-cid-qtdxrh3v] {
+        margin: 0 0 1.6em;
+      }
+      .prose[data-astro-cid-qtdxrh3v] p[data-astro-cid-qtdxrh3v]:last-child {
+        margin-bottom: 0;
+      }
+      .now[data-astro-cid-qtdxrh3v] {
+        margin-top: var(--s-6);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+      }
+      .now[data-astro-cid-qtdxrh3v] h2[data-astro-cid-qtdxrh3v] {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 var(--s-4) 0;
+        font-weight: 400;
+      }
+      dl[data-astro-cid-qtdxrh3v] {
+        margin: 0;
+        display: grid;
+        gap: var(--s-3);
+      }
+      .row[data-astro-cid-qtdxrh3v] {
+        display: grid;
+        grid-template-columns: minmax(120px, 160px) 1fr;
+        gap: var(--s-4);
+        align-items: baseline;
+      }
+      dt[data-astro-cid-qtdxrh3v] {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        letter-spacing: 0.02em;
+      }
+      dd[data-astro-cid-qtdxrh3v] {
+        font-size: var(--fs-sm);
+        color: var(--n-6);
+        margin: 0;
+      }
+      @media (max-width: 540px) {
+        .row[data-astro-cid-qtdxrh3v] {
+          grid-template-columns: 1fr;
+          gap: var(--s-1);
+        }
+        dt[data-astro-cid-qtdxrh3v] {
+          font-size: var(--fs-xs);
+        }
+      }
+      .shell[data-astro-cid-peba26ng] {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: var(--s-5) var(--s-5) var(--s-6);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .topbar[data-astro-cid-peba26ng] {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        color: var(--n-5);
+        padding-bottom: var(--s-4);
+        gap: var(--s-4);
+        flex-wrap: wrap;
+      }
+      .lang[data-astro-cid-peba26ng] {
+        color: var(--n-5);
+        transition: color var(--t-3) var(--ease);
+      }
+      .lang[data-astro-cid-peba26ng]:hover {
+        color: var(--n-7);
+      }
+      .lang[data-astro-cid-peba26ng]:active {
+        transform: scale(0.97);
+      }
+      .page[data-astro-cid-peba26ng] {
+        flex: 1;
+        padding: var(--s-5) 0 var(--s-6);
+      }
+      .foot[data-astro-cid-peba26ng] {
+        display: flex;
+        align-items: center;
+        gap: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+      }
+      .foot-sep[data-astro-cid-peba26ng] {
+        color: var(--n-4);
+      }
+      @media (max-width: 640px) {
+        .shell[data-astro-cid-peba26ng] {
+          padding: var(--s-4) var(--s-4) var(--s-5);
+        }
+      }
+      :root {
+        color-scheme: dark;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--n-0);
+        color: var(--n-6);
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: var(--r-sm);
+      }
+      .skip-link {
+        position: absolute;
+        top: var(--s-2);
+        left: var(--s-2);
+        padding: var(--s-2) var(--s-3);
+        background: var(--accent);
+        color: var(--n-0);
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        border-radius: var(--r-sm);
+        transform: translateY(-200%);
+        transition: transform var(--t-3) var(--ease);
+        z-index: 1000;
+      }
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body data-astro-cid-peba26ng>
+    <a class="skip-link" href="#main" data-astro-cid-peba26ng
+      >Pular para o conteúdo</a
+    >
+    <div class="shell" data-astro-cid-peba26ng>
+      <header class="topbar" data-astro-cid-peba26ng>
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/pt-br/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <a
+              href="/blog/pt-br/"
+              class="node-link n-writing"
+              aria-label="go to writing"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 12px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="12"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="12"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="16"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  writing
+                </text>
+              </g>
+            </a>
+            <g
+              class="node active n-about"
+              aria-label="about — current state"
+              aria-current="page"
+              style="transform-origin: 138px 36px"
+              data-astro-cid-454q6bj6
+            >
+              <circle
+                class="hit"
+                cx="138"
+                cy="36"
+                r="20"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <circle
+                class="dot"
+                cx="138"
+                cy="36"
+                r="4"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <text
+                class="label"
+                x="150"
+                y="40"
+                text-anchor="start"
+                data-astro-cid-454q6bj6
+              >
+                about
+              </text>
+            </g>
+            <a
+              href="/contact/pt-br/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6
+            >current state — about</span
+          >
+        </nav>
+        <a class="lang" href="/about/en/" hreflang="en" data-astro-cid-peba26ng
+          ><span aria-hidden="true" data-astro-cid-peba26ng>/</span>Read in
+          English</a
+        >
+      </header>
+      <main id="main" class="page" data-astro-cid-peba26ng>
+        <section class="about" data-astro-cid-qtdxrh3v>
+          <p class="mono-note" data-astro-cid-qtdxrh3v>o autor · no nó about</p>
+          <h1 data-astro-cid-qtdxrh3v>Sobre.</h1>
+          <div class="prose" data-astro-cid-qtdxrh3v>
+            <p data-astro-cid-qtdxrh3v>
+              Sou Diel Duarte — Software Engineer, trabalhando quase sempre no
+              navegador. Meus dias se passam desenhando arquitetura e
+              experiências de desenvolvimento.
+            </p>
+            <p data-astro-cid-qtdxrh3v>
+              Ao longo dos anos saí de um papel full-stack generalista para uma
+              especialização em frontend. Me importo com a arquitetura de UIs
+              legíveis: dividir código pela estrutura natural do produto,
+              modelar interações como estado explícito, e deixar as partes
+              invisíveis do sistema legíveis para quem vem depois.
+            </p>
+            <p data-astro-cid-qtdxrh3v>
+              Ultimamente escrevo sobre tudo que me interessa e estou
+              aprendendo. Este site é ele próprio estruturado como uma árvore:
+              home na raiz, alguns galhos, um deles renderizado como diagrama na
+              home.
+            </p>
+            <p data-astro-cid-qtdxrh3v>
+              Fora do trabalho, dirijo, corro, treino, tomo café bom e tento ler
+              mais do que tuito. Moro no Brasil.
+            </p>
+          </div>
+          <div class="now" data-astro-cid-qtdxrh3v>
+            <h2 data-astro-cid-qtdxrh3v>No momento</h2>
+            <dl data-astro-cid-qtdxrh3v>
+              <div class="row" data-astro-cid-qtdxrh3v>
+                <dt data-astro-cid-qtdxrh3v>Trabalhando em</dt>
+                <dd data-astro-cid-qtdxrh3v>Open source na Resend</dd>
+              </div>
+              <div class="row" data-astro-cid-qtdxrh3v>
+                <dt data-astro-cid-qtdxrh3v>Escrevendo sobre</dt>
+                <dd data-astro-cid-qtdxrh3v>
+                  Tudo sobre software e aprendizados
+                </dd>
+              </div>
+              <div class="row" data-astro-cid-qtdxrh3v>
+                <dt data-astro-cid-qtdxrh3v>Baseado em</dt>
+                <dd data-astro-cid-qtdxrh3v>Belo Horizonte, Brasil</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+      </main>
+      <footer class="foot" data-astro-cid-peba26ng>
+        <span data-astro-cid-peba26ng>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-peba26ng
+          >·</span
+        ><span data-astro-cid-peba26ng>o site inteiro é uma árvore</span>
+      </footer>
+    </div>
+  </body>
+</html>

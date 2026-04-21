@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en" data-astro-cid-gvpn4u4b>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mastering code splitting with webpack</title>
+    <link
+      rel="canonical"
+      href="https://dielduarte.dev/blog/en/mastering-code-splitting-with-webpack/"
+    />
+    <meta
+      name="description"
+      content="let's talk about how Webpack can help us to code splitting and achieve the goal of better website performance."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Mastering code splitting with webpack" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:image"
+      content="https://dielduarte.dev/images/en-mastering-code-splitting-with-webpack.png"
+    />
+    <meta
+      property="og:url"
+      content="https://dielduarte.dev/blog/en/mastering-code-splitting-with-webpack/"
+    />
+    <meta
+      content="https://dielduarte.dev/images/en-mastering-code-splitting-with-webpack.png"
+      name="twitter:image"
+    />
+    <meta
+      content="Mastering code splitting with webpack"
+      name="twitter:title"
+    />
+    <meta content="@diel_duarte" name="twitter:site" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta
+      content="let's talk about how Webpack can help us to code splitting and achieve the goal of better website performance."
+      name="twitter:description"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.7c1bf1a0.css" />
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = document.getElementById("progress-bar"),
+          e = document.querySelector("article");
+        if (!t || !e) return;
+        const o = () => {
+          const n = window.scrollY,
+            s = e.offsetHeight + e.offsetTop - window.innerHeight,
+            r = Math.min(Math.max(n / s, 0), 1);
+          t.style.transform = `scaleX(${r})`;
+        };
+        (window.addEventListener("scroll", o, { passive: !0 }), o());
+      });
+    </script>
+  </head>
+  <body data-astro-cid-gvpn4u4b>
+    <div
+      class="reading-progress"
+      id="progress-bar"
+      aria-hidden="true"
+      data-astro-cid-gvpn4u4b
+    ></div>
+    <a class="skip-link" href="#main" data-astro-cid-gvpn4u4b
+      >Skip to content</a
+    >
+    <div class="shell" data-astro-cid-gvpn4u4b>
+      <header class="topbar" data-astro-cid-gvpn4u4b>
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <g
+              class="node active n-writing"
+              aria-label="writing — current state"
+              aria-current="page"
+              style="transform-origin: 138px 12px"
+              data-astro-cid-454q6bj6
+            >
+              <circle
+                class="hit"
+                cx="138"
+                cy="12"
+                r="20"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <circle
+                class="dot"
+                cx="138"
+                cy="12"
+                r="4"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <text
+                class="label"
+                x="150"
+                y="16"
+                text-anchor="start"
+                data-astro-cid-454q6bj6
+              >
+                writing
+              </text>
+            </g>
+            <a
+              href="/about/en/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/en/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6
+            >current state — writing</span
+          >
+        </nav>
+        <a
+          class="lang"
+          href="/blog/pt-br/dominando-code-splitting-com-webpack/"
+          hreflang="pt-br"
+          data-astro-cid-gvpn4u4b
+          ><span aria-hidden="true" data-astro-cid-gvpn4u4b>/</span>Ler em
+          português</a
+        >
+      </header>
+      <main id="main" class="main" data-astro-cid-gvpn4u4b>
+        <article class="post" data-astro-cid-gvpn4u4b>
+          <header class="post-head" data-astro-cid-gvpn4u4b>
+            <div class="meta" data-astro-cid-gvpn4u4b>
+              <time datetime="2019-07-17" data-astro-cid-gvpn4u4b
+                >July 16, 2019</time
+              ><span class="sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+                >·</span
+              ><span data-astro-cid-gvpn4u4b>5 min read</span>
+            </div>
+            <h1 data-astro-cid-gvpn4u4b>
+              Mastering code splitting with webpack
+            </h1>
+            <p class="dek" data-astro-cid-gvpn4u4b>
+              let&#39;s talk about how Webpack can help us to code splitting and
+              achieve the goal of better website performance.
+            </p>
+            <div class="rule" aria-hidden="true" data-astro-cid-gvpn4u4b>
+              <span class="rule-line" data-astro-cid-gvpn4u4b></span
+              ><span class="rule-dot" data-astro-cid-gvpn4u4b></span>
+            </div>
+          </header>
+          <div class="prose" data-astro-cid-gvpn4u4b>
+            <p>
+              code splitting is a build time process that splits pieces of your
+              code into async chunks, let's talk about how Webpack can help us
+              to code split and achieve the goal of better website performance.
+            </p>
+            <h2 class="subtitle--separator">
+              But first, How to know when I have to split my code?
+            </h2>
+            <p>
+              The most expensive part of rendering websites is about
+              downloading, and parsing Javascript and css. That said, if we
+              don't need to render a specific piece of code on the first render,
+              this code is a good candidate to split and be downloaded by
+              demand, no secrets so far.
+            </p>
+            <p>
+              Google Chrome has a nice dev tool called
+              <code>coverage</code> that shows what percentage of the code
+              delivered it's being used. This might be used as a metric to
+              follow and know how much code might be split and downloaded by
+              demand.
+            </p>
+            <p>
+              To use the coverage tool just open your dev tools,
+              <code>cmd/ctrl + p</code>, and type <code>show coverage</code>:
+            </p>
+            <p>
+              <img
+                src="/images/coverage.png"
+                alt="image showing how to access coverage tab on chrome dev tools"
+              />
+            </p>
+            <p>
+              then, on the coverage tab click on the reload button and wait
+              until the website is reloaded, this will show you how much code
+              you are using on that specific page per asset downloaded. It's
+              AMAZING! 
+            </p>
+            <p>
+              <img
+                src="/images/result.png"
+                alt="image showing coverage tab, where we can see a list of assets downloaded and how much code is not being used in red."
+              />
+            </p>
+            <p>
+              In the example above, 46% of the code delivered is
+              <code>not</code> being used! but that metric is also relative,
+              depends on file size and many other variables, so the
+              context/scenario is super important when using these tools.
+            </p>
+            <h2 id="code-splitting-and-webpack">Code splitting and webpack</h2>
+            <p>
+              With webpack we have two ways to work with code splitting, static
+              and "dynamic" imports, both using
+              <a href="https://v8.dev/features/dynamic-import"
+                >dynamic imports es2020 feature</a
+              >
+            </p>
+            <h3 id="static-import">Static import</h3>
+            <ul>
+              <li>
+                Good to use when importing heavy javascript libraries/modules
+              </li>
+              <li>
+                Anything temporal - things that aren't visible all the time on
+                your page, tooltip, modal/dialog and even the rest of the page
+                that comes only on scroll could be considered temporal
+              </li>
+              <li>Routes</li>
+            </ul>
+            <p>To use static imports on your code just do:</p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">module</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <p>
+              Or, even better, making a function to import the module when
+              necessary, the import of the file itself is made just one time,
+              then is cached and the next time calling the function the module
+              is returned instantly, e.g:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">getModule</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> () ⇒ </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">getModule</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">module</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <h3 id="dynamic-import">Dynamic import</h3>
+            <p>
+              "Dynamic" imports aren't really dynamic since they are made at
+              build time. Using dynamic imports it's like saying to Webpack: Hey
+              Webpack, please do all possibilities of chunks in this specific
+              path at build time. So in this way, we can pass the chunk file
+              that we wanna import using variables which makes this process
+              kinda dynamic.
+            </p>
+            <p>Considering we have a folder of themes like:</p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #D8DEE9">themes</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  └── </span><span style="color: #D8DEE9">dark</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">js</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  └── </span><span style="color: #D8DEE9">light</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">js</span></span></code></pre>
+            <p>As an example we can do like:</p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">getTheme</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> (</span><span style="color: #D8DEE9">theme</span><span style="color: #D8DEE9FF">) ⇒ </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">getTheme</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">dark</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">theme</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #81A1C1">...</span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <p>
+              This way webpack will create chunks for each theme file inside the
+              themes folder, this technique is called
+              <code>ContextModule</code> into webpack code.
+            </p>
+            <h2 id="magic-comments">Magic comments</h2>
+            <h3 id="webpackchunkname">webpackChunkName</h3>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackChunkName: "my-chunk-name" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <p>
+              By default webpack creates chunk names following a numeral order,
+              1.js, 2.js, 3.js which makes the process of debugging harder to
+              recognize which file was imported. using
+              <code>webpackChunkName</code> we can rename the chunk file, it's
+              important to remember that for this magic comment work we should
+              be using the config
+              <code>output.chunkFileName: [name].whateverDoYouWantHere.js</code>
+              on webpack.config file.
+            </p>
+            <p>this is only helpful on dev mode, so we can do like:</p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">process</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">NODE_ENV</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">development</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackChunkName: "my-chunk-name" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">else</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">path/to/myModule.js</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span></code></pre>
+            <p>
+              The <code>if</code> part will be removed if the build is running
+              in production mode, and the <code>else</code> part if in dev mode.
+              This is known as dead-code elimination, tools like Uglify.js and
+              others do that to reduce bundle size.
+            </p>
+            <h3 id="webpackmode">webpackMode</h3>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackMode: "lazy" */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <p>the magic comment webpackMode has four types of value:</p>
+            <ul>
+              <li>
+                lazy: generate chunks for each dynamic imported module, perfect
+                choice to be used in production mode.
+              </li>
+              <li>
+                lazy-once: generate a single chunk that can satisfy all calls to
+                import statement, perfect choice to dev mode reducing the
+                "bundling" time.
+              </li>
+              <li>
+                eager: generates no extra chunk, all modules are included in the
+                current chunk and no additional network requests are made.
+              </li>
+              <li>
+                weak: this is useful for universal rendering when required
+                chunks are always manually served in initial requests, a Promise
+                is still returned, but only successfully resolves if the chunks
+                are already with the client. If the module is not available, the
+                Promise is rejected. A network request will never be performed
+              </li>
+            </ul>
+            <h3 id="prefetch-and-preload">Prefetch and Preload</h3>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackPrefetch: true */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #88C0D0">import</span><span style="color: #D8DEE9FF">(</span><span style="color: #616E88">/* webpackLoad: true */</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">`</span><span style="color: #A3BE8C">path/to/themes/</span><span style="color: #81A1C1">${</span><span style="color: #D8DEE9">theme</span><span style="color: #81A1C1">}</span><span style="color: #ECEFF4">`</span><span style="color: #D8DEE9FF">)</span></span></code></pre>
+            <p>
+              both comments above will create a link tag with
+              <code>rel=prefetch</code> or
+              <code>rel=preload</code> automatically for you, prefetching or
+              preloading your chunks depends on the situation. if you don't know
+              what prefetch and preload links do, I highly recommend you to read
+              that post
+              <a
+                href="https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf"
+                >Preload, Prefetch And Priorities in Chrome</a
+              >.
+            </p>
+            <p>
+              This were my notes of
+              <a href="https://frontendmasters.com/courses/performance-webpack/"
+                >Web performance with webpack</a
+              >
+              course, I hope you have learned something new today, see you next
+              time! ❤️
+            </p>
+          </div>
+          <footer class="post-foot" data-astro-cid-gvpn4u4b>
+            <a class="back" href="/blog/en/" data-astro-cid-gvpn4u4b
+              ><span aria-hidden="true" data-astro-cid-gvpn4u4b>←</span>Back to
+              writing</a
+            >
+          </footer>
+        </article>
+      </main>
+      <footer class="foot" data-astro-cid-gvpn4u4b>
+        <span data-astro-cid-gvpn4u4b>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+          >·</span
+        ><span data-astro-cid-gvpn4u4b>the whole thing is a tree</span>
+      </footer>
+    </div>
+  </body>
+</html>

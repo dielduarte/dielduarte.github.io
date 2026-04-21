@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="pt-br" data-astro-cid-gvpn4u4b>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Introdução a state charts em aplicações web</title>
+    <link
+      rel="canonical"
+      href="https://dielduarte.dev/blog/pt-br/introducao-a-state-charts-em-aplicacoes-web/"
+    />
+    <meta
+      name="description"
+      content="Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito &#34;simples&#34;..."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="Introdução a state charts em aplicações web"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:image"
+      content="https://dielduarte.dev/images/pt-br-introducao-a-state-charts-em-aplicacoes-web.png"
+    />
+    <meta
+      property="og:url"
+      content="https://dielduarte.dev/blog/pt-br/introducao-a-state-charts-em-aplicacoes-web/"
+    />
+    <meta
+      content="https://dielduarte.dev/images/pt-br-introducao-a-state-charts-em-aplicacoes-web.png"
+      name="twitter:image"
+    />
+    <meta
+      content="Introdução a state charts em aplicações web"
+      name="twitter:title"
+    />
+    <meta content="@diel_duarte" name="twitter:site" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta
+      content="Era uma vez um Front-end que não conhecia State Chartse e tinha uma tarefa muito &#34;simples&#34;..."
+      name="twitter:description"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.7c1bf1a0.css" />
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = document.getElementById("progress-bar"),
+          e = document.querySelector("article");
+        if (!t || !e) return;
+        const o = () => {
+          const n = window.scrollY,
+            s = e.offsetHeight + e.offsetTop - window.innerHeight,
+            r = Math.min(Math.max(n / s, 0), 1);
+          t.style.transform = `scaleX(${r})`;
+        };
+        (window.addEventListener("scroll", o, { passive: !0 }), o());
+      });
+    </script>
+  </head>
+  <body data-astro-cid-gvpn4u4b>
+    <div
+      class="reading-progress"
+      id="progress-bar"
+      aria-hidden="true"
+      data-astro-cid-gvpn4u4b
+    ></div>
+    <a class="skip-link" href="#main" data-astro-cid-gvpn4u4b
+      >Pular para o conteúdo</a
+    >
+    <div class="shell" data-astro-cid-gvpn4u4b>
+      <header class="topbar" data-astro-cid-gvpn4u4b>
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/pt-br/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <g
+              class="node active n-writing"
+              aria-label="writing — current state"
+              aria-current="page"
+              style="transform-origin: 138px 12px"
+              data-astro-cid-454q6bj6
+            >
+              <circle
+                class="hit"
+                cx="138"
+                cy="12"
+                r="20"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <circle
+                class="dot"
+                cx="138"
+                cy="12"
+                r="4"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <text
+                class="label"
+                x="150"
+                y="16"
+                text-anchor="start"
+                data-astro-cid-454q6bj6
+              >
+                writing
+              </text>
+            </g>
+            <a
+              href="/about/pt-br/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/pt-br/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6
+            >current state — writing</span
+          >
+        </nav>
+        <a
+          class="lang"
+          href="/blog/en/web-development-with-state-charts-intro/"
+          hreflang="en"
+          data-astro-cid-gvpn4u4b
+          ><span aria-hidden="true" data-astro-cid-gvpn4u4b>/</span>Read in
+          English</a
+        >
+      </header>
+      <main id="main" class="main" data-astro-cid-gvpn4u4b>
+        <article class="post" data-astro-cid-gvpn4u4b>
+          <header class="post-head" data-astro-cid-gvpn4u4b>
+            <div class="meta" data-astro-cid-gvpn4u4b>
+              <time datetime="2020-11-01" data-astro-cid-gvpn4u4b
+                >31 October 2020</time
+              ><span class="sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+                >·</span
+              ><span data-astro-cid-gvpn4u4b>8 min de leitura</span>
+            </div>
+            <h1 data-astro-cid-gvpn4u4b>
+              Introdução a state charts em aplicações web
+            </h1>
+            <p class="dek" data-astro-cid-gvpn4u4b>
+              Era uma vez um Front-end que não conhecia State Chartse e tinha
+              uma tarefa muito &quot;simples&quot;...
+            </p>
+            <div class="rule" aria-hidden="true" data-astro-cid-gvpn4u4b>
+              <span class="rule-line" data-astro-cid-gvpn4u4b></span
+              ><span class="rule-dot" data-astro-cid-gvpn4u4b></span>
+            </div>
+          </header>
+          <div class="prose" data-astro-cid-gvpn4u4b>
+            <p>
+              Era uma vez um Front-end que não conhecia State Charts e tinha uma
+              tarefa muito "simples", construir um componente de input. O
+              "simples" input para edição de um nome tinha algumas variações de
+              estados:
+            </p>
+            <p>
+              <code>inicial</code>: O input aparece desabilitado, o usuário pode
+              então clicar no ícone de editar.
+            </p>
+            <p>
+              <code>editando</code>: O input está habilitado para receber o novo
+              valor de nome, o usuário pode então clicar no ícone de salvar.
+            </p>
+            <p>
+              <code>salvando</code>: No lugar dos ícones de editar/salvar
+              mostramos um loading sinalizando que alguma ação assíncrona está
+              acontecendo, nesse caso, estamos salvando o novo valor de nome.
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-1.jpeg"
+                alt="imagem mostrando o component de input e seus estados."
+              />
+            </p>
+            <h2 class="subtitle--separator"></h2>
+            <p>
+              Nosso querido Front-end começou a implementação com duas variáveis
+              boleanas:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span></code></pre>
+            <p>
+              E uma função de <em><strong>onClick</strong></em> que recebia por
+              parametro os valores de <code>isEditing</code> e
+              <code>isSaving</code>. Seu pensamento foi: A primeira vez que a
+              função de onClick for chamada, estamos no estado inicial, logo
+              preciso enviar o usuário para o estado de
+              <em><strong>editando</strong></em
+              >:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-2.jpeg"
+                alt="imagem mostrando o component de input em seu estado inicial e mostrando que o ícone editar possui um evento de on click."
+              />
+            </p>
+            <p>
+              Ao chegar no estado de edição e sabendo que o usuário poderia
+              novamente clicar no ícone que dessa vez se transformava no ícone
+              para salvar, o mesmo continuou sua implementação adicionando mais
+              um trecho código na função de <em><strong>onClick</strong></em
+              >:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+            <p>
+              O trecho de código adicionado primeiro testa se o usuário está no
+              estado de <em><strong>edição</strong></em
+              >, caso verdadeiro, faz o switch das variáveis para levar o
+              usuário para o estado de <em><strong>salvando</strong></em
+              >, e logo em seguida faz um request na api para salvar o novo
+              valor de nome. Ao receber um retorno da api, resetamos as duas
+              variáveis boleanas para false, pois agora, o usuário não está
+              editando e nem salvando um novo valor, o que supostamente levaria
+              o usuário para o estado <em><strong>inicial</strong></em
+              >.
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-3.png"
+                alt="imagem mostrando o component de input saindo do esado de editando para salvando, e depois de salvando para inicial."
+              />
+            </p>
+            <p>
+              Não muito confiante na solução, deu a task como terminada e seguiu
+              sua vida.
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/gif-1.gif"
+                alt="gif de um menino nerd dando joinha."
+              />
+            </p>
+            <h2 class="subtitle--separator"></h2>
+            <p>
+              ...Era uma vez um designer, que esqueceu de trabalhar no estado de
+              erro do "simples" componente de input.
+            </p>
+            <p>
+              <em
+                ><strong
+                  >“Hey dev, Esqueci de um detalhe, não tratamos o estado de
+                  erro do input. Quando der erro, volta pro estado de edição por
+                  que o cliente pode tentar salvar novamente.”</strong
+                ></em
+              >
+            </p>
+            <p>
+              Mesmo sabendo que a solução atual não era a ideal, continuou com a
+              mesma implementação para adicionar o estado de erro, agora, ao
+              invés de 2 variáveis boleanas, seriam três:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span>
+<span class="line"><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false</span></span></code></pre>
+            <p>Essa pequena adição resultou na função de onClick abaixo:</p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isSaving</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">isError</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x26;&#x26;</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">catch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isError</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">true;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isSaving</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">       </span><span style="color: #D8DEE9">isEditing</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">false;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+            <p>
+              Task concluida novamente. Desconfortável com a solução final, foi
+              pesquisar. Afinal, qual o problema com variáveis boleanas?
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-4.png"
+                alt="imagem mostrando que podemos ter 8 variações usando 3 variáveis booleanas."
+              />
+            </p>
+            <p>
+              O problema é que como na imagem acima, apesar de parecer
+              inofensiva e óbvio, 1 variável boleana representa duas variações.
+              O porém que ninguém lembra é que adicionando mais de uma variável,
+              suas variações crescem exponencialmente. Com três variáveis
+              boleanas como no exemplo acima, temos 8 variações.
+            </p>
+            <p>
+              E aí, você acha que o código acima está preparado para lidar com 8
+              variações? A resposta infelizmente é: não. Seu código pode parecer
+              simples e estar 99% vunerável a bugs.
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-5.jpg"
+                alt="meme de um homem tampando a placa do carro pela metada na primeira parte da foto, e na segunda parte tampando a outra."
+              />
+            </p>
+            <p>
+              Sabendo disso, podemos fazer diferente, podemos mapear todos os
+              estados em uma constante:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">IDLE</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">IDLE</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">EDITING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">EDITING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">SAVING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">SAVING</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">ERROR</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">ERROR</span><span style="color: #ECEFF4">'</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #81A1C1">;</span></span></code></pre>
+            <p>
+              Podemos também criar um objeto que nos diga qual o estado atual e
+              qual o próximo estado, exemplo:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">success</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">error</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">ERROR</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">   </span><span style="color: #88C0D0">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">ERROR</span><span style="color: #88C0D0">]</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">SAVING</span></span>
+<span class="line"><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span></span></code></pre>
+            <p>
+              Limitaremos então o estado do input para apenas UM estado por vez:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #D8DEE9">inputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">IDLE</span></span></code></pre>
+            <p>
+              E nossa função de onClick receberia apenas o nosso estado atual
+              por parâmetro, e usando o objecto nextState, saberiamos qual o
+              próximo estado deveríamos mover nosso componente. Exemplo:
+            </p>
+            <pre
+              is:raw=""
+              class="astro-code nord"
+              style="background-color: #2e3440ff; overflow-x: auto"
+              tabindex="0"
+            ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">onClick</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">EDITING</span><span style="color: #D8DEE9FF">) </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #88C0D0">saveName</span><span style="color: #D8DEE9FF">()</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">then</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">saving</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">success</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">     </span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">catch</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">===</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">stateType</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">saving</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">error</span><span style="color: #D8DEE9FF">)</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">else</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">	  </span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">nextState</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">currentInputState</span><span style="color: #D8DEE9FF">]</span><span style="color: #81A1C1">;</span><span style="color: #D8DEE9FF">  </span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+            <p>Podemos resumir nossa história em problema e solução:</p>
+            <p><code>Problema:</code></p>
+            <p>
+              Manter o estado usando variáveis condicionais ficou confuso, além
+              de obrigar a tratar todos os edge cases e rezar para que o estado
+              não caísse em possíveis combinações que não foram tratadas.
+            </p>
+            <p><code>Solução:</code></p>
+            <p>
+              Ter um único estado por vez e definir as transições entre estados
+              através de um evento.
+            </p>
+            <h2 class="subtitle--separator"></h2>
+            <p>
+              Nossa solução tem um nome: <code>Finite State Machines</code>, mas
+              a final oq é Finite State Machines?
+            </p>
+            <blockquote>
+              <p>
+                Uma Máquina de estados finita (Finite State Machines ou FSM) é
+                um modelo matemático usado para representar programas de
+                computadores ou circuitos lógicos. O conceito é concebido como
+                uma máquina abstrata que deve estar em <strong>UM</strong> de um
+                número finito de estados.
+              </p>
+            </blockquote>
+            <p>
+              source:
+              <a
+                href="https://pt.wikipedia.org/wiki/M%C3%A1quina_de_estados_finita"
+                >https://pt.wikipedia.org/wiki/Máquina_de_estados_finita</a
+              >
+            </p>
+            <p>
+              Uma forma bem simples de representar FSM é usando um diagrama de
+              transição de estados, onde o conseguimos vizualizar todo o fluxo
+              de transição de estados por exemplo:
+            </p>
+            <p>
+              <em
+                ><strong
+                  >começando em um estado A ⇒ um vento X aconteceu ⇒ vamos para
+                  um estado B</strong
+                ></em
+              >
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-6.png"
+                alt="imagem mostrando um diagrama de transição de estados"
+              />
+            </p>
+            <h3 id="finite-state-machines-state-charts-que-confusão">
+              Finite State Machines? State charts? que confusão!
+            </h3>
+            <p>
+              Quando começamos a estudar mais sobre Finete State Machines vamos
+              sempre nos deparar com um outro nome que é
+              <code>State Charts</code>, mas a propósito qual a grande diferença
+              entre eles?
+            </p>
+            <p>
+              Como qualquer solução, Finite State Machines por sí só tem alguns
+              problemas, geralmente acabam com um grande número de estados,
+              muitos deles com transições idênticas, tornando muito verboso e de
+              difícil manutenção. Este é o famoso problema conhecido como
+              explosão de estados.
+            </p>
+            <p>
+              State Charts por sua vez, apareceu pouco tempo depois adicionando
+              soluções para que FSM fossem mais escalável a medida que o seu
+              sistema fosse crescendo e ficando mais complexo. Além de novas
+              ideias para tornar sua vida mais fácil.
+            </p>
+            <p>
+              <img
+                src="/images/web-development-with-state-charts-intro/image-7.png"
+                alt="imagem mostrando alguns dos conceitos que state charts contém, como activity, actions, paralel states entre outros..."
+              />
+            </p>
+            <p>
+              Vale lembrar que a ideia foi apresentada há mais de 20 anos atrás,
+              além de ser uma das bases da computação, é usada largamente em
+              hardware embarcados e games! Com o aparecimento da lib Xstate que
+              vamos descobrir no próximo post, o uso na web e pricipalmente
+              usando Javascript está crescendo cada vez mais. Apenas para deixar
+              um gostinho do que vamos ver no próximo artigo e também sobre uma
+              das maiores vantagens de se usar State Charts que é o poder de
+              vizualizar seu código, dá uma olhada como ficaria nosso codigo do
+              componente de input usando Xstate:
+            </p>
+            <p>
+              <a
+                href="https://xstate.js.org/viz/?gist=d73e129d583ac4a0ba956736e68dbdd2"
+                >https://xstate.js.org/viz/?gist=d73e129d583ac4a0ba956736e68dbdd2</a
+              >
+            </p>
+            <p>
+              Não se preocupe se não entendeu o código, vamos aprender tudo
+              sobre o uso de Xstate e State Charts em uma aplicação real no
+              próximo artigo!
+            </p>
+            <h3 id="estado-é-tipo-redux">Estado? É tipo redux?</h3>
+            <p>
+              Quando trabalhamos com State Charts, os famosos estados não são os
+              estados dinâmicos ou relacionados a dados de uma aplicação e sim
+              em qual cenário de uma possibilidade finita e pré estabelecida uma
+              aplicação está, lembre-se da regra de ouro, uma aplicação pode
+              estar em UM único estado por vez. Exemplo:
+            </p>
+            <p>
+              Sua aplicação pode estar no estado de loading e ter um contexto
+              <code>user=null</code>, em uma próximo momento sua aplicação
+              estaria em um estado de logado e ter um contexto
+              <code>user={ id: 1, name: 'Diel' }</code>. Com esse exemplo fica
+              fácil assimilar que o estado como estamos acostumados no Redux ou
+              outras opções são chamados de contexto no mundo dos statecharts.
+            </p>
+            <p>
+              Te vejo no próximo post, onde vamos aprender a como modelar uma
+              aplicação utilizando State Charts e Xstate.
+            </p>
+          </div>
+          <footer class="post-foot" data-astro-cid-gvpn4u4b>
+            <a class="back" href="/blog/pt-br/" data-astro-cid-gvpn4u4b
+              ><span aria-hidden="true" data-astro-cid-gvpn4u4b>←</span>Voltar
+              para artigos</a
+            >
+          </footer>
+        </article>
+      </main>
+      <footer class="foot" data-astro-cid-gvpn4u4b>
+        <span data-astro-cid-gvpn4u4b>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+          >·</span
+        ><span data-astro-cid-gvpn4u4b>o site inteiro é uma árvore</span>
+      </footer>
+    </div>
+  </body>
+</html>

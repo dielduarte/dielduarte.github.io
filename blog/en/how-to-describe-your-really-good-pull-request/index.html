@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en" data-astro-cid-gvpn4u4b>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to describe your really good pull request</title>
+    <link
+      rel="canonical"
+      href="https://dielduarte.dev/blog/en/how-to-describe-your-really-good-pull-request/"
+    />
+    <meta
+      name="description"
+      content="Sharing my vision on pull requests and best practices"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="How to describe your really good pull request"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:image"
+      content="https://dielduarte.dev/images/en-how-to-describe-your-really-good-pull-request.png"
+    />
+    <meta
+      property="og:url"
+      content="https://dielduarte.dev/blog/en/how-to-describe-your-really-good-pull-request/"
+    />
+    <meta
+      content="https://dielduarte.dev/images/en-how-to-describe-your-really-good-pull-request.png"
+      name="twitter:image"
+    />
+    <meta
+      content="How to describe your really good pull request"
+      name="twitter:title"
+    />
+    <meta content="@diel_duarte" name="twitter:site" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta
+      content="Sharing my vision on pull requests and best practices"
+      name="twitter:description"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.7c1bf1a0.css" />
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const t = document.getElementById("progress-bar"),
+          e = document.querySelector("article");
+        if (!t || !e) return;
+        const o = () => {
+          const n = window.scrollY,
+            s = e.offsetHeight + e.offsetTop - window.innerHeight,
+            r = Math.min(Math.max(n / s, 0), 1);
+          t.style.transform = `scaleX(${r})`;
+        };
+        (window.addEventListener("scroll", o, { passive: !0 }), o());
+      });
+    </script>
+  </head>
+  <body data-astro-cid-gvpn4u4b>
+    <div
+      class="reading-progress"
+      id="progress-bar"
+      aria-hidden="true"
+      data-astro-cid-gvpn4u4b
+    ></div>
+    <a class="skip-link" href="#main" data-astro-cid-gvpn4u4b
+      >Skip to content</a
+    >
+    <div class="shell" data-astro-cid-gvpn4u4b>
+      <header class="topbar" data-astro-cid-gvpn4u4b>
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <g
+              class="node active n-writing"
+              aria-label="writing — current state"
+              aria-current="page"
+              style="transform-origin: 138px 12px"
+              data-astro-cid-454q6bj6
+            >
+              <circle
+                class="hit"
+                cx="138"
+                cy="12"
+                r="20"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <circle
+                class="dot"
+                cx="138"
+                cy="12"
+                r="4"
+                data-astro-cid-454q6bj6
+              ></circle>
+              <text
+                class="label"
+                x="150"
+                y="16"
+                text-anchor="start"
+                data-astro-cid-454q6bj6
+              >
+                writing
+              </text>
+            </g>
+            <a
+              href="/about/en/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/en/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6
+            >current state — writing</span
+          >
+        </nav>
+        <a
+          class="lang"
+          href="/blog/pt-br/como-descrever-o-seu-pull-request-perfeito/"
+          hreflang="pt-br"
+          data-astro-cid-gvpn4u4b
+          ><span aria-hidden="true" data-astro-cid-gvpn4u4b>/</span>Ler em
+          português</a
+        >
+      </header>
+      <main id="main" class="main" data-astro-cid-gvpn4u4b>
+        <article class="post" data-astro-cid-gvpn4u4b>
+          <header class="post-head" data-astro-cid-gvpn4u4b>
+            <div class="meta" data-astro-cid-gvpn4u4b>
+              <time datetime="2023-09-07" data-astro-cid-gvpn4u4b
+                >September 06, 2023</time
+              ><span class="sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+                >·</span
+              ><span data-astro-cid-gvpn4u4b>4 min read</span>
+            </div>
+            <h1 data-astro-cid-gvpn4u4b>
+              How to describe your really good pull request
+            </h1>
+            <p class="dek" data-astro-cid-gvpn4u4b>
+              Sharing my vision on pull requests and best practices
+            </p>
+            <div class="rule" aria-hidden="true" data-astro-cid-gvpn4u4b>
+              <span class="rule-line" data-astro-cid-gvpn4u4b></span
+              ><span class="rule-dot" data-astro-cid-gvpn4u4b></span>
+            </div>
+          </header>
+          <div class="prose" data-astro-cid-gvpn4u4b>
+            <p>
+              Throughout my whole career I've been receiving some really good
+              feedbacks on how I described and organize my pull requests from
+              colleagues and managers. I'm not especial or better than anyone,
+              in fact, most of the teams I had the opportunity to work had a
+              well established step by step guide on how to write descriptions.
+              So why so many good feedbacks? what do I do different? A couple of
+              weeks ago I started thinking about it, and I decided to write this
+              post with a few points on how I see PRs as part of my job.
+            </p>
+            <h2 class="subtitle--separator">
+              Treat PRs description as documentation
+            </h2>
+            <p>
+              Imagine your team received a bug notification, a PR that was
+              merged 6 months ago is causing the issue. Your first reaction is
+              to open the PR for more context, the code changed was 1 line
+              changed with no tests and the description looks close to something
+              like that:
+            </p>
+            <ul>
+              <li>fix the bug #12123 &#x3C;- link to the ticket.</li>
+            </ul>
+            <p>
+              At this point you wanna cry, I know! I would too.
+              <img
+                src="/images/how-to-describe-your-really-good-pr/hide-the-pain.jpeg"
+                alt="hide the paing meme"
+                style="display: inline-block; width: 25px"
+              />
+            </p>
+            <p>
+              I faced this situation so many times during my career regardless
+              if it was a bug or a feature, that I just started seeing my PRs
+              descriptions as documentation and time saver. As a really good
+              documentation my expectation is that it answers as many questions
+              as I can have at any point, such as:
+            </p>
+            <ul>
+              <li>What was the scenario/environment at that time</li>
+              <li>Strategies considered but not chosen and the why</li>
+              <li>Strategy used and why</li>
+              <li>How to review the code</li>
+              <li>How to make sure what you did works / how to test it</li>
+              <li>Any expected side effects</li>
+              <li>
+                As many links to external resources as possible to add up
+                context such as slack threads, APIs documentation, stack
+                overflow links and internal tickets.
+              </li>
+            </ul>
+            <p>
+              When I think about good documentation, the best docs I read put me
+              in the right context by telling me the <code>why</code> and
+              <code>how</code>, assuming I'm a stranger and not the creator of
+              the creature. Always assume whoever is reading don't know as much
+              as you do.
+            </p>
+            <h2>Engage your readers</h2>
+            <p>
+              This point requires time to understand your audience/team, but as
+              soon as you know what engage more, go for it! With time and
+              feedback you start to understand your team's preferences and
+              improve on top of it, does my audience prefer long texts vs
+              videos? or maybe they will like some charts explaining flows.
+              Whatever it is, do it!
+            </p>
+            <p>
+              Engaging documentations are well organized, won't require hours of
+              uninterrupted attention, shows its value at the beginning and make
+              people want to finish because it is easy to follow. Recently I
+              received a very cool feedback, and it wasn't even related to my
+              PRs but the way I communicate, it feels relevant to share though:
+            </p>
+            <p>
+              "I checked that support link you posted. Always love reading your
+              solutions and the questions/answers format, it's like a
+              conversation making it easy to understand." - from an amazing
+              person I have the pleasure to work with. ❤️
+            </p>
+            <h2>Be your worst reviewer - in the good way.</h2>
+            <p>
+              Always review your PRs before sharing with your team and be
+              critical, at the end of the day you are the best person that knows
+              your limits and how good you can delivery something. Always
+              question your decisions, does this code really makes sense? what
+              could I do better here? what would I suggest if this wasn't my own
+              code and if I would suggest it, why I haven't done it already?
+            </p>
+            <p>
+              Add comments to lines/functions/files you think your team will
+              have questions. Use this strategy to guide the reviewers to the
+              points in the code you might not be sure about and want feedback,
+              be ahead of them and respect your colleagues time by using their
+              time wisely.
+            </p>
+            <p>
+              Let's be honest <b>everyone is busy</b>, and quite often code
+              review time is not considered when discussing the team's
+              capability of committing to delivering a feature or fixing a bug.
+              Avoiding back and forth and being as clear as possible is a way to
+              show you respect your reviewers and you are trying to do your best
+              work.
+            </p>
+            <p>
+              Hope I gave you some insights on how to improve your daily work
+              with PRs 👋
+            </p>
+          </div>
+          <footer class="post-foot" data-astro-cid-gvpn4u4b>
+            <a class="back" href="/blog/en/" data-astro-cid-gvpn4u4b
+              ><span aria-hidden="true" data-astro-cid-gvpn4u4b>←</span>Back to
+              writing</a
+            >
+          </footer>
+        </article>
+      </main>
+      <footer class="foot" data-astro-cid-gvpn4u4b>
+        <span data-astro-cid-gvpn4u4b>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-gvpn4u4b
+          >·</span
+        ><span data-astro-cid-gvpn4u4b>the whole thing is a tree</span>
+      </footer>
+    </div>
+  </body>
+</html>

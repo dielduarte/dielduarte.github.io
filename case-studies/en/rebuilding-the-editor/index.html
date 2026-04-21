@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Rebuilding the Editor — From Laggy to Lightning</title>
+    <link
+      rel="canonical"
+      href="https://dielduarte.dev/case-studies/en/rebuilding-the-editor/"
+    />
+    <meta
+      name="description"
+      content="How we rebuilt a core WYSIWYG editor from scratch, cutting render times by 60% and memory usage by 40% through architectural changes and state machine driven UI."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="Rebuilding the Editor — From Laggy to Lightning"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:image"
+      content="https://dielduarte.dev/images/diel.jpeg"
+    />
+    <meta
+      property="og:url"
+      content="https://dielduarte.dev/case-studies/en/rebuilding-the-editor/"
+    />
+    <meta
+      content="https://dielduarte.dev/images/diel.jpeg"
+      name="twitter:image"
+    />
+    <meta
+      content="Rebuilding the Editor — From Laggy to Lightning"
+      name="twitter:title"
+    />
+    <meta content="@diel_duarte" name="twitter:site" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta
+      content="How we rebuilt a core WYSIWYG editor from scratch, cutting render times by 60% and memory usage by 40% through architectural changes and state machine driven UI."
+      name="twitter:description"
+    />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      .smn-bar[data-astro-cid-454q6bj6] {
+        --smn-ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --smn-t: 0.2s;
+        display: inline-flex;
+        line-height: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn-bar[data-astro-cid-454q6bj6] svg[data-astro-cid-454q6bj6] {
+        display: block;
+        overflow: visible;
+      }
+      .edge[data-astro-cid-454q6bj6] {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--smn-t) var(--smn-ease);
+      }
+      .hit[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .node[data-astro-cid-454q6bj6] {
+        transition: transform var(--smn-t) var(--smn-ease);
+      }
+      .dot[data-astro-cid-454q6bj6] {
+        fill: transparent;
+        stroke: var(--n-4);
+        stroke-width: 1.5;
+        transition:
+          fill var(--smn-t) var(--smn-ease),
+          stroke var(--smn-t) var(--smn-ease);
+      }
+      .label[data-astro-cid-454q6bj6] {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.02em;
+        fill: var(--n-5);
+        transition: fill var(--smn-t) var(--smn-ease);
+      }
+      .node[data-astro-cid-454q6bj6].active .dot[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].active .label[data-astro-cid-454q6bj6] {
+        fill: var(--accent);
+      }
+      .node[data-astro-cid-454q6bj6].disabled .dot[data-astro-cid-454q6bj6] {
+        stroke-dasharray: 2 2;
+      }
+      .node[data-astro-cid-454q6bj6].disabled .label[data-astro-cid-454q6bj6] {
+        opacity: 0.55;
+      }
+      .node[data-astro-cid-454q6bj6].disabled {
+        pointer-events: none;
+      }
+      .node-link[data-astro-cid-454q6bj6] {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .dot[data-astro-cid-454q6bj6] {
+          fill: color-mix(in oklab, var(--accent) 22%, transparent);
+          stroke: var(--accent);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable
+          .label[data-astro-cid-454q6bj6] {
+          fill: var(--n-7);
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: scale(1.18);
+        }
+      }
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:hover)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-writing:focus-visible)
+        .e-writing[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:hover)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-about:focus-visible)
+        .e-about[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:hover)
+        .e-contact[data-astro-cid-454q6bj6],
+      .smn-bar[data-astro-cid-454q6bj6]:has(.n-contact:focus-visible)
+        .e-contact[data-astro-cid-454q6bj6] {
+        stroke: var(--accent);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .dot[data-astro-cid-454q6bj6] {
+        fill: color-mix(in oklab, var(--accent) 35%, transparent);
+        stroke: var(--accent);
+        stroke-width: 2.5;
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .label[data-astro-cid-454q6bj6] {
+        fill: var(--n-7);
+      }
+      .node-link[data-astro-cid-454q6bj6]:focus-visible
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(1.25);
+      }
+      .node-link[data-astro-cid-454q6bj6]:active
+        .node[data-astro-cid-454q6bj6].reachable {
+        transform: scale(0.94);
+      }
+      .sr-only[data-astro-cid-454q6bj6] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .edge[data-astro-cid-454q6bj6],
+        .dot[data-astro-cid-454q6bj6],
+        .label[data-astro-cid-454q6bj6],
+        .node[data-astro-cid-454q6bj6] {
+          transition: none;
+        }
+        .node-link[data-astro-cid-454q6bj6]:hover
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:focus-visible
+          .node[data-astro-cid-454q6bj6].reachable,
+        .node-link[data-astro-cid-454q6bj6]:active
+          .node[data-astro-cid-454q6bj6].reachable {
+          transform: none;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.a3801613.css" />
+    <script type="module" src="/hoisted.40f04d2f.js"></script>
+  </head>
+  <body
+    class="noise-overlay bg-ivory-100 dark:bg-ink-900 min-h-screen transition-colors duration-200 ease-out-soft"
+  >
+    <!-- Reading progress bar -->
+    <div class="reading-progress" id="progress-bar"></div>
+    <div class="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-20">
+      <!-- Top nav: tree + back link -->
+      <div class="flex justify-between items-center mb-12 gap-4">
+        <nav
+          class="smn-bar"
+          aria-label="Site navigation"
+          data-astro-cid-454q6bj6
+        >
+          <svg
+            viewBox="0 0 224 72"
+            width="224"
+            height="72"
+            role="img"
+            aria-label="Site navigation as a tree"
+            data-astro-cid-454q6bj6
+          >
+            <g aria-hidden="true" data-astro-cid-454q6bj6>
+              <line
+                class="edge e-writing"
+                x1="27.875562517042617"
+                y1="34.78436637578429"
+                x2="132.12443748295738"
+                y2="13.215633624215714"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-about"
+                x1="28"
+                y1="36"
+                x2="132"
+                y2="36"
+                data-astro-cid-454q6bj6
+              ></line>
+              <line
+                class="edge e-contact"
+                x1="27.875562517042617"
+                y1="37.21563362421571"
+                x2="132.12443748295738"
+                y2="58.78436637578429"
+                data-astro-cid-454q6bj6
+              ></line>
+            </g>
+            <a
+              href="/"
+              class="node-link n-home"
+              aria-label="go to home"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 22px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="22"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="22"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="22"
+                  y="60"
+                  text-anchor="middle"
+                  data-astro-cid-454q6bj6
+                >
+                  home
+                </text>
+              </g>
+            </a>
+            <a
+              href="/blog/en/"
+              class="node-link n-writing"
+              aria-label="go to writing"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 12px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="12"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="12"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="16"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  writing
+                </text>
+              </g>
+            </a>
+            <a
+              href="/about/en/"
+              class="node-link n-about"
+              aria-label="go to about"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 36px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="36"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="36"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="40"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  about
+                </text>
+              </g>
+            </a>
+            <a
+              href="/contact/en/"
+              class="node-link n-contact"
+              aria-label="go to contact"
+              data-astro-cid-454q6bj6
+            >
+              <g
+                class="node reachable"
+                style="transform-origin: 138px 60px"
+                data-astro-cid-454q6bj6
+              >
+                <circle
+                  class="hit"
+                  cx="138"
+                  cy="60"
+                  r="20"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <circle
+                  class="dot"
+                  cx="138"
+                  cy="60"
+                  r="4"
+                  data-astro-cid-454q6bj6
+                ></circle>
+                <text
+                  class="label"
+                  x="150"
+                  y="64"
+                  text-anchor="start"
+                  data-astro-cid-454q6bj6
+                >
+                  contact
+                </text>
+              </g>
+            </a></svg
+          ><span class="sr-only" data-astro-cid-454q6bj6>no active state</span>
+        </nav>
+        <a
+          href="/case-studies/en/"
+          class="inline-flex items-center gap-2 text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.97] transition-[color,transform] duration-200 ease-out-soft group"
+          ><svg
+            class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200 ease-out-soft"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+            ></path></svg
+          >Back to all case studies</a
+        >
+      </div>
+      <!-- Case Study Header -->
+      <header class="mb-12 md:mb-16">
+        <!-- Company & Meta -->
+        <div class="flex flex-wrap items-center gap-4 mb-4">
+          <span
+            class="text-sm font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-wider"
+            >Appcues</span
+          ><span class="text-ink-300 dark:text-ink-600">&middot;</span
+          ><time
+            datetime="2024-06-15"
+            class="text-sm font-mono text-ink-400 dark:text-ivory-400"
+            >June 14, 2024</time
+          ><span class="text-ink-300 dark:text-ink-600">&middot;</span
+          ><span class="text-sm text-ink-400 dark:text-ivory-400 font-mono"
+            >4 min read</span
+          >
+        </div>
+        <!-- Title -->
+        <h1
+          class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 leading-tight tracking-tight mb-6"
+        >
+          Rebuilding the Editor — From Laggy to Lightning
+        </h1>
+        <!-- Description -->
+        <p
+          class="text-lg md:text-xl text-ink-500 dark:text-ivory-300 leading-relaxed mb-8"
+        >
+          How we rebuilt a core WYSIWYG editor from scratch, cutting render
+          times by 60% and memory usage by 40% through architectural changes and
+          state machine driven UI.
+        </p>
+        <!-- Meta cards: Role, Duration, Impact -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div
+            class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700"
+          >
+            <p
+              class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1"
+            >
+              Role
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">
+              Principal Engineer
+            </p>
+          </div>
+          <div
+            class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700"
+          >
+            <p
+              class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1"
+            >
+              Duration
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">
+              4 months
+            </p>
+          </div>
+          <div
+            class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700"
+          >
+            <p
+              class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1"
+            >
+              Impact
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">
+              60% faster render, 40% less memory
+            </p>
+          </div>
+        </div>
+        <!-- Tech Stack Tags -->
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span
+            class="px-3 py-1 text-xs font-mono font-medium text-accent-500 dark:text-accent-300 bg-accent-500/10 dark:bg-accent-400/10 border border-accent-500/20 dark:border-accent-400/20 rounded-full"
+            >React</span
+          ><span
+            class="px-3 py-1 text-xs font-mono font-medium text-accent-500 dark:text-accent-300 bg-accent-500/10 dark:bg-accent-400/10 border border-accent-500/20 dark:border-accent-400/20 rounded-full"
+            >TypeScript</span
+          ><span
+            class="px-3 py-1 text-xs font-mono font-medium text-accent-500 dark:text-accent-300 bg-accent-500/10 dark:bg-accent-400/10 border border-accent-500/20 dark:border-accent-400/20 rounded-full"
+            >XState</span
+          ><span
+            class="px-3 py-1 text-xs font-mono font-medium text-accent-500 dark:text-accent-300 bg-accent-500/10 dark:bg-accent-400/10 border border-accent-500/20 dark:border-accent-400/20 rounded-full"
+            >Canvas API</span
+          >
+        </div>
+        <!-- Decorative divider -->
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-px bg-accent-400 dark:bg-accent-500"></div>
+          <div
+            class="w-1.5 h-1.5 bg-accent-400 dark:bg-accent-500 rounded-full"
+          ></div>
+        </div>
+      </header>
+      <!-- Article Content -->
+      <article class="prose-article">
+        <h2 id="the-problem">The Problem</h2>
+        <p>
+          Our WYSIWYG editor was the core of the product — every customer used
+          it daily to build in-app experiences. But as features accumulated over
+          three years, the editor had become painfully slow. Customers with
+          complex flows experienced noticeable input lag, and our support team
+          was fielding complaints weekly.
+        </p>
+        <p>The root causes were deeply architectural:</p>
+        <ul>
+          <li>
+            <strong>Uncontrolled re-renders</strong>: Every keystroke triggered
+            a full tree reconciliation across hundreds of components
+          </li>
+          <li>
+            <strong>Monolithic state</strong>: A single Redux store held
+            everything — selection state, content, toolbar state, undo history —
+            causing cascading updates
+          </li>
+          <li>
+            <strong>Memory leaks</strong>: Detached DOM nodes from drag-and-drop
+            operations accumulated over editing sessions
+          </li>
+        </ul>
+        <h2 id="context">Context</h2>
+        <p>
+          Before diving into a rewrite, we needed to validate the scope. I led a
+          two-week spike to instrument the existing editor and quantify the
+          problem:
+        </p>
+        <ul>
+          <li>
+            <strong>Input latency</strong>: p95 was 340ms on complex flows
+            (target: &#x3C; 50ms)
+          </li>
+          <li>
+            <strong>Memory growth</strong>: 15MB increase per hour of active
+            editing
+          </li>
+          <li>
+            <strong>Re-render count</strong>: ~2,400 component re-renders per
+            keystroke
+          </li>
+        </ul>
+        <p>
+          The team had considered incremental fixes, but profiling showed that
+          the architecture itself was the bottleneck — patching wouldn't close
+          the gap.
+        </p>
+        <h3 id="constraints">Constraints</h3>
+        <ul>
+          <li>Zero downtime for existing customers during migration</li>
+          <li>Full backward compatibility with saved flow data</li>
+          <li>Ship within one quarter (the team was 3 engineers)</li>
+        </ul>
+        <h2 id="solution">Solution</h2>
+        <p>
+          We rebuilt the editor core using a layered architecture with clear
+          separation of concerns:
+        </p>
+        <h3 id="1-state-machine-driven-ui">1. State Machine-Driven UI</h3>
+        <p>
+          Instead of ad-hoc state management, we modeled the entire editor
+          lifecycle as a state machine using XState:
+        </p>
+        <pre
+          is:raw=""
+          class="astro-code nord"
+          style="background-color: #2e3440ff; overflow-x: auto"
+          tabindex="0"
+        ><code><span class="line"><span style="color: #81A1C1">import</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">createMachine</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">assign</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">from</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">xstate</span><span style="color: #ECEFF4">'</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">editorMachine</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">createMachine</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">id</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">editor</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">initial</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">context</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">content</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">null</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">selection</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">null</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">history</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> []</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #D8DEE9">states</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">idle</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #D8DEE9">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #D8DEE9">FOCUS</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">editing</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #D8DEE9">LOAD</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #D8DEE9">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">assign</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">content</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">_</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">data</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">editing</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #D8DEE9">on</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #D8DEE9">INPUT</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #D8DEE9">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">assign</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #88C0D0">content</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">applyDelta</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">content</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">event</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">delta</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #88C0D0">history</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> [</span><span style="color: #81A1C1">...</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">history</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">content</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #D8DEE9">BLUR</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">idle</span><span style="color: #ECEFF4">'</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #D8DEE9">UNDO</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #D8DEE9">actions</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">assign</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #88C0D0">content</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">history</span><span style="color: #D8DEE9FF">[</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">history</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">length</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">-</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">1</span><span style="color: #D8DEE9FF">]</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">            </span><span style="color: #88C0D0">history</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">history</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">slice</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">0</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">-</span><span style="color: #B48EAD">1</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">          </span><span style="color: #88C0D0">cond</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">history</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">length</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">></span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">        </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span></code></pre>
+        <p>
+          This gave us predictable state transitions, eliminated impossible
+          states, and made the undo/redo system trivial to implement correctly.
+        </p>
+        <h3 id="2-virtualized-rendering-layer">
+          2. Virtualized Rendering Layer
+        </h3>
+        <p>
+          We replaced the DOM-heavy rendering approach with a virtualized canvas
+          layer for the content viewport:
+        </p>
+        <pre
+          is:raw=""
+          class="astro-code nord"
+          style="background-color: #2e3440ff; overflow-x: auto"
+          tabindex="0"
+        ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">EditorViewport</span><span style="color: #ECEFF4">({</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">blocks</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">visibleRange</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">})</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">canvasRef</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">useRef</span><span style="color: #ECEFF4">&#x3C;</span><span style="color: #8FBCBB">HTMLCanvasElement</span><span style="color: #ECEFF4">></span><span style="color: #D8DEE9FF">(</span><span style="color: #81A1C1">null</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #88C0D0">useEffect</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">()</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">canvasRef</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">current</span><span style="color: #ECEFF4">?.</span><span style="color: #88C0D0">getContext</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">'</span><span style="color: #A3BE8C">2d</span><span style="color: #ECEFF4">'</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #81A1C1">if</span><span style="color: #D8DEE9FF"> (</span><span style="color: #81A1C1">!</span><span style="color: #D8DEE9">ctx</span><span style="color: #D8DEE9FF">) </span><span style="color: #81A1C1">return;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #ECEFF4">    </span><span style="color: #616E88">// Only render blocks within the visible range</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">visibleBlocks</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">blocks</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">slice</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">visibleRange</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">start</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">visibleRange</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">end</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">clearRect</span><span style="color: #D8DEE9FF">(</span><span style="color: #B48EAD">0</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">0</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">canvas</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">width</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">canvas</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">height</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">visibleBlocks</span><span style="color: #ECEFF4">.</span><span style="color: #88C0D0">forEach</span><span style="color: #D8DEE9FF">(</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">block</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">index</span><span style="color: #ECEFF4">)</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=></span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">      </span><span style="color: #88C0D0">renderBlock</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">ctx</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">block</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">index</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">*</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">BLOCK_HEIGHT</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">},</span><span style="color: #D8DEE9FF"> [</span><span style="color: #D8DEE9">blocks</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">visibleRange</span><span style="color: #D8DEE9FF">])</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">&#x3C;canvas</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">ref</span><span style="color: #81A1C1">={</span><span style="color: #D8DEE9">canvasRef</span><span style="color: #81A1C1">}</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">/>;</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+        <h3 id="3-incremental-reconciliation">3. Incremental Reconciliation</h3>
+        <p>
+          Rather than diffing the entire content tree on each change, we
+          implemented a targeted update system that only reconciles the affected
+          subtree:
+        </p>
+        <pre
+          is:raw=""
+          class="astro-code nord"
+          style="background-color: #2e3440ff; overflow-x: auto"
+          tabindex="0"
+        ><code><span class="line"><span style="color: #81A1C1">function</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">applyDelta</span><span style="color: #ECEFF4">(</span><span style="color: #D8DEE9">content</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">ContentTree</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">delta</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">Delta</span><span style="color: #ECEFF4">)</span><span style="color: #81A1C1">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #8FBCBB">ContentTree</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">path</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">delta</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">path</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">const</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">node</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">=</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">getNodeAtPath</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">content</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">path</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #ECEFF4">  </span><span style="color: #616E88">// Clone only the affected branch, not the entire tree</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #81A1C1">return</span><span style="color: #D8DEE9FF"> </span><span style="color: #88C0D0">updateAtPath</span><span style="color: #D8DEE9FF">(</span><span style="color: #D8DEE9">content</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">path</span><span style="color: #ECEFF4">,</span><span style="color: #D8DEE9FF"> </span><span style="color: #ECEFF4">{</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #81A1C1">...</span><span style="color: #D8DEE9">node</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #81A1C1">...</span><span style="color: #D8DEE9">delta</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">changes</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">    </span><span style="color: #D8DEE9">version</span><span style="color: #ECEFF4">:</span><span style="color: #D8DEE9FF"> </span><span style="color: #D8DEE9">node</span><span style="color: #ECEFF4">.</span><span style="color: #D8DEE9">version</span><span style="color: #D8DEE9FF"> </span><span style="color: #81A1C1">+</span><span style="color: #D8DEE9FF"> </span><span style="color: #B48EAD">1</span><span style="color: #ECEFF4">,</span></span>
+<span class="line"><span style="color: #D8DEE9FF">  </span><span style="color: #ECEFF4">}</span><span style="color: #D8DEE9FF">)</span><span style="color: #81A1C1">;</span></span>
+<span class="line"><span style="color: #ECEFF4">}</span></span></code></pre>
+        <h2 id="impact">Impact</h2>
+        <p>After rolling out to 100% of customers over two weeks:</p>
+        <p>
+          | Metric | Before | After | Change |
+          |--------|--------|-------|--------| | Input latency (p95) | 340ms |
+          45ms | -87% | | Re-renders per keystroke | ~2,400 | ~12 | -99.5% | |
+          Memory growth per hour | 15MB | 2MB | -87% | | Customer support
+          tickets (editor) | ~40/month | ~5/month | -87% |
+        </p>
+        <p>
+          The state machine approach also paid dividends in developer velocity —
+          new editor features that used to take 2-3 weeks were shipping in 3-5
+          days because the state transitions were explicit and testable.
+        </p>
+        <h3 id="key-takeaways">Key Takeaways</h3>
+        <ul>
+          <li>
+            <strong>Measure first</strong>: The two-week instrumentation spike
+            saved us from guessing. We knew exactly where the bottlenecks were
+            before writing a single line of new code.
+          </li>
+          <li>
+            <strong>State machines eliminate entire categories of bugs</strong>:
+            Impossible states, race conditions, and undo/redo edge cases simply
+            don't exist when your state transitions are explicit.
+          </li>
+          <li>
+            <strong>Incremental migration is worth the overhead</strong>:
+            Running old and new editors in parallel for two weeks added
+            complexity, but meant zero customer disruption.
+          </li>
+        </ul>
+      </article>
+      <!-- Article Footer -->
+      <footer class="mt-16 pt-10 border-t border-ivory-300 dark:border-ink-700">
+        <!-- Author card -->
+        <div class="flex items-center gap-5 mb-10">
+          <div class="relative">
+            <div
+              class="absolute -inset-0.5 bg-gradient-to-br from-accent-400 to-accent-600 dark:from-accent-500 dark:to-accent-700 rounded-full opacity-50 blur-sm"
+            ></div>
+            <img
+              src="/images/diel.jpeg"
+              alt="Diel Duarte"
+              class="relative w-14 h-14 rounded-full object-cover ring-2 ring-ivory-100 dark:ring-ink-900"
+            />
+          </div>
+          <div>
+            <p
+              class="font-display font-semibold text-ink-800 dark:text-ivory-100"
+            >
+              Diel Duarte
+            </p>
+            <p class="text-sm text-ink-400 dark:text-ivory-400">
+              Principal Engineer at Appcues
+            </p>
+          </div>
+        </div>
+        <!-- Back to case studies --><a
+          href="/case-studies/en/"
+          class="inline-flex items-center gap-3 px-5 py-2.5 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-ivory-300 hover:bg-ink-800 hover:text-ivory-100 dark:hover:bg-ivory-100 dark:hover:text-ink-800 active:scale-[0.97] rounded-lg transition-[background-color,color,transform] duration-200 ease-out-soft text-sm font-medium"
+          ><svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+            ></path></svg
+          >Back to all case studies</a
+        >
+      </footer>
+    </div>
+  </body>
+</html>

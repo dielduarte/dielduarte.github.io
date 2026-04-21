@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="pt-br" data-astro-cid-xhaoqxbd>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diel Duarte — Open source na Resend</title>
+    <meta
+      name="description"
+      content="Diel Duarte trabalha com open source na Resend. Escreve sobre state charts, XState, code splitting e a arquitetura de UIs legíveis."
+    />
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="stylesheet" href="/_lang_.e7050210.css" />
+    <style type="text/css">
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-cyrillic-wght-normal.33d7ab46.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-ext-wght-normal.3640f935.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-latin-wght-normal.0cbbe628.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-cyrillic-wght-normal.a5e8e11f.woff2)
+          format("woff2-variations");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-ext-wght-normal.6aadc1c1.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: Geist Mono Variable;
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url(/geist-mono-latin-wght-normal.e9fb088e.woff2)
+          format("woff2-variations");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --n-0: #0a0a0a;
+        --n-1: #121212;
+        --n-2: #1a1a1a;
+        --n-3: #2a2a2a;
+        --n-4: #555555;
+        --n-5: #8a8a8a;
+        --n-6: #c8c8c8;
+        --n-7: #f5f5f5;
+        --accent: #3b82f6;
+        --accent-muted: color-mix(in oklab, var(--accent) 60%, var(--n-0));
+        --fs-xs: 0.75rem;
+        --fs-sm: 0.875rem;
+        --fs-base: 1rem;
+        --fs-md: 1.25rem;
+        --fs-lg: 1.5rem;
+        --fs-xl: 2rem;
+        --fs-2xl: 2.75rem;
+        --fs-3xl: 3.75rem;
+        --fs-4xl: 5rem;
+        --lh-tight: 1.1;
+        --lh-snug: 1.3;
+        --lh-body: 1.55;
+        --lh-read: 1.7;
+        --s-1: 4px;
+        --s-2: 8px;
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 52px;
+        --s-7: 84px;
+        --s-8: 136px;
+        --measure: 62ch;
+        --r-sm: 4px;
+        --r-md: 8px;
+        --r-lg: 12px;
+        --r-full: 999px;
+        --ease: cubic-bezier(0.32, 0.72, 0, 1);
+        --t-1: 0.1s;
+        --t-2: 0.16s;
+        --t-3: 0.2s;
+        --t-4: 0.28s;
+        --font-display:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --font-mono:
+          "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --font-prose:
+          "Charter", "Bitstream Charter", "Iowan Old Style", "Apple Garamond",
+          Georgia, Cambria, "Times New Roman", serif;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --t-1: 0.01ms;
+          --t-2: 0.01ms;
+          --t-3: 0.01ms;
+          --t-4: 0.01ms;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="/index.12506fb1.css" />
+    <style type="text/css">
+      .smn {
+        width: 100%;
+        max-width: 620px;
+        font-family: var(--font-mono);
+        color: var(--n-6);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .smn svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        overflow: visible;
+      }
+      .smn .edge {
+        stroke: var(--n-3);
+        stroke-width: 1;
+        fill: none;
+        transition: stroke var(--t-3) var(--ease);
+      }
+      .smn .edge.lit {
+        stroke: var(--accent);
+        stroke-width: 1.5;
+      }
+      .smn .node-link {
+        cursor: pointer;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .smn .hit {
+        fill: transparent;
+        pointer-events: all;
+      }
+      .smn .node {
+        pointer-events: none;
+        transition: transform var(--t-3) var(--ease);
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .smn .node circle {
+        fill: var(--n-1);
+        stroke: var(--n-3);
+        stroke-width: 1;
+        transition:
+          fill var(--t-3) var(--ease),
+          stroke var(--t-3) var(--ease);
+      }
+      .smn .node text {
+        fill: var(--n-5);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        pointer-events: none;
+        transition: fill var(--t-3) var(--ease);
+      }
+      .smn .node.active circle {
+        fill: var(--accent);
+        stroke: var(--accent);
+      }
+      .smn .node.active text {
+        fill: #fff;
+        font-weight: 600;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .smn .node-link:hover .node.reachable circle {
+          stroke: var(--accent);
+        }
+        .smn .node-link:hover .node.reachable text {
+          fill: var(--n-7);
+        }
+        .smn .node-link:hover .node.reachable {
+          transform: scale(1.05);
+        }
+      }
+      .smn .node-link:active .node.reachable {
+        transform: scale(0.97);
+      }
+      .smn .node.disabled {
+        opacity: 0.45;
+      }
+      .smn .node.disabled circle {
+        stroke-dasharray: 3 3;
+      }
+      .smn .node-link:focus-visible {
+        outline: none;
+      }
+      .smn .node-link:focus-visible .node.reachable circle {
+        stroke: var(--accent);
+        stroke-width: 3;
+        fill: color-mix(in oklab, var(--accent) 18%, var(--n-1));
+      }
+      .smn .node-link:focus-visible .node.reachable text {
+        fill: var(--n-7);
+      }
+      .smn .node-link:focus-visible .node.reachable {
+        transform: scale(1.08);
+      }
+      .smn .hint {
+        display: flex;
+        gap: var(--s-4);
+        margin-top: var(--s-4);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        flex-wrap: wrap;
+      }
+      .smn .hint span {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+      }
+      .smn .hint kbd {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        padding: 2px 6px;
+        border: 1px solid var(--n-3);
+        border-radius: var(--r-sm);
+        background: var(--n-1);
+        color: var(--n-6);
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .smn .hint .kb-hint {
+          display: none;
+        }
+      }
+      .smn .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: var(--r-full);
+        background: var(--accent);
+        display: inline-block;
+      }
+      .smn .dot.muted {
+        background: var(--n-3);
+      }
+      .smn .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .smn .node,
+        .smn .node circle,
+        .smn .node text,
+        .smn .edge {
+          transition: none;
+        }
+        .smn .node-link:hover .node.reachable,
+        .smn .node-link:focus-visible .node.reachable,
+        .smn .node-link:active .node.reachable {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body data-astro-cid-xhaoqxbd>
+    <a class="skip-link" href="#main" data-astro-cid-xhaoqxbd
+      >Pular para o conteúdo</a
+    >
+    <div class="shell" data-astro-cid-xhaoqxbd>
+      <header class="topbar" data-astro-cid-xhaoqxbd>
+        <a class="lang" href="/" hreflang="en" data-astro-cid-xhaoqxbd
+          ><span aria-hidden="true" data-astro-cid-xhaoqxbd>/</span>Read in
+          English</a
+        >
+      </header>
+      <main id="main" class="hero" data-astro-cid-xhaoqxbd>
+        <div class="col text" data-astro-cid-xhaoqxbd>
+          <p class="mono-note" data-astro-cid-xhaoqxbd>the site · v2</p>
+          <h1 data-astro-cid-xhaoqxbd>Diel&nbsp;Duarte.</h1>
+          <p class="role" data-astro-cid-xhaoqxbd>Open source na Resend</p>
+          <p class="bio" data-astro-cid-xhaoqxbd>
+            Construo software para a web. Principalmente JavaScript,
+            principalmente frontend. Me importo com arquitetura, experiência de
+            desenvolvimento e em ajudar times a entregar rápido sem abrir mão da
+            qualidade. Ultimamente escrevo sobre as partes invisíveis do
+            software, o que decide se um codebase continua fazendo sentido
+            conforme cresce.
+          </p>
+          <p class="lede" data-astro-cid-xhaoqxbd>
+            O site é uma árvore. Passe o mouse num nó. Clique num nó. Você está
+            na raiz — home.
+          </p>
+          <ul class="socials" aria-label="Redes" data-astro-cid-xhaoqxbd>
+            <li data-astro-cid-xhaoqxbd>
+              <a
+                href="https://github.com/dielduarte"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-astro-cid-xhaoqxbd
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  data-astro-cid-xhaoqxbd
+                >
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                    fill="currentColor"
+                    data-astro-cid-xhaoqxbd
+                  ></path></svg
+                ><span class="sr-only" data-astro-cid-xhaoqxbd
+                  >GitHub (abre em nova aba)</span
+                ></a
+              >
+            </li>
+            <li data-astro-cid-xhaoqxbd>
+              <a
+                href="https://www.linkedin.com/in/dielduarte/"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-astro-cid-xhaoqxbd
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  data-astro-cid-xhaoqxbd
+                >
+                  <path
+                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                    fill="currentColor"
+                    data-astro-cid-xhaoqxbd
+                  ></path></svg
+                ><span class="sr-only" data-astro-cid-xhaoqxbd
+                  >LinkedIn (abre em nova aba)</span
+                ></a
+              >
+            </li>
+            <li data-astro-cid-xhaoqxbd>
+              <a
+                href="https://twitter.com/diel_duarte"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-astro-cid-xhaoqxbd
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  data-astro-cid-xhaoqxbd
+                >
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    fill="currentColor"
+                    data-astro-cid-xhaoqxbd
+                  ></path></svg
+                ><span class="sr-only" data-astro-cid-xhaoqxbd
+                  >Twitter (abre em nova aba)</span
+                ></a
+              >
+            </li>
+            <li data-astro-cid-xhaoqxbd>
+              <a href="mailto:magdiel.kesller@gmail.com" data-astro-cid-xhaoqxbd
+                ><svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  data-astro-cid-xhaoqxbd
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 7.5l9 6 9-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"
+                    data-astro-cid-xhaoqxbd
+                  ></path></svg
+                ><span class="sr-only" data-astro-cid-xhaoqxbd>Email</span></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="col diagram" data-astro-cid-xhaoqxbd>
+          <div class="diagram-frame" data-astro-cid-xhaoqxbd>
+            <style>
+              astro-island,
+              astro-slot,
+              astro-static-slot {
+                display: contents;
+              }
+            </style>
+            <script>
+              (() => {
+                var e = async (t) => {
+                  await (
+                    await t()
+                  )();
+                };
+                (self.Astro || (self.Astro = {})).load = e;
+                window.dispatchEvent(new Event("astro:load"));
+              })();
+              (() => {
+                var b = Object.defineProperty;
+                var f = (a, s, i) =>
+                  s in a
+                    ? b(a, s, {
+                        enumerable: !0,
+                        configurable: !0,
+                        writable: !0,
+                        value: i,
+                      })
+                    : (a[s] = i);
+                var d = (a, s, i) => (
+                  f(a, typeof s != "symbol" ? s + "" : s, i),
+                  i
+                );
+                var u;
+                {
+                  let a = {
+                      0: (t) => m(t),
+                      1: (t) => i(t),
+                      2: (t) => new RegExp(t),
+                      3: (t) => new Date(t),
+                      4: (t) => new Map(i(t)),
+                      5: (t) => new Set(i(t)),
+                      6: (t) => BigInt(t),
+                      7: (t) => new URL(t),
+                      8: (t) => new Uint8Array(t),
+                      9: (t) => new Uint16Array(t),
+                      10: (t) => new Uint32Array(t),
+                    },
+                    s = (t) => {
+                      let [e, r] = t;
+                      return e in a ? a[e](r) : void 0;
+                    },
+                    i = (t) => t.map(s),
+                    m = (t) =>
+                      typeof t != "object" || t === null
+                        ? t
+                        : Object.fromEntries(
+                            Object.entries(t).map(([e, r]) => [e, s(r)]),
+                          );
+                  customElements.get("astro-island") ||
+                    customElements.define(
+                      "astro-island",
+                      ((u = class extends HTMLElement {
+                        constructor() {
+                          super(...arguments);
+                          d(this, "Component");
+                          d(this, "hydrator");
+                          d(this, "hydrate", async () => {
+                            var l;
+                            if (!this.hydrator || !this.isConnected) return;
+                            let e =
+                              (l = this.parentElement) == null
+                                ? void 0
+                                : l.closest("astro-island[ssr]");
+                            if (e) {
+                              e.addEventListener(
+                                "astro:hydrate",
+                                this.hydrate,
+                                { once: !0 },
+                              );
+                              return;
+                            }
+                            let r = this.querySelectorAll("astro-slot"),
+                              c = {},
+                              h = this.querySelectorAll(
+                                "template[data-astro-template]",
+                              );
+                            for (let n of h) {
+                              let o = n.closest(this.tagName);
+                              o != null &&
+                                o.isSameNode(this) &&
+                                ((c[
+                                  n.getAttribute("data-astro-template") ||
+                                    "default"
+                                ] = n.innerHTML),
+                                n.remove());
+                            }
+                            for (let n of r) {
+                              let o = n.closest(this.tagName);
+                              o != null &&
+                                o.isSameNode(this) &&
+                                (c[n.getAttribute("name") || "default"] =
+                                  n.innerHTML);
+                            }
+                            let p;
+                            try {
+                              p = this.hasAttribute("props")
+                                ? m(JSON.parse(this.getAttribute("props")))
+                                : {};
+                            } catch (n) {
+                              let o =
+                                  this.getAttribute("component-url") ||
+                                  "<unknown>",
+                                y = this.getAttribute("component-export");
+                              throw (
+                                y && (o += ` (export ${y})`),
+                                console.error(
+                                  `[hydrate] Error parsing props for component ${o}`,
+                                  this.getAttribute("props"),
+                                  n,
+                                ),
+                                n
+                              );
+                            }
+                            (await this.hydrator(this)(this.Component, p, c, {
+                              client: this.getAttribute("client"),
+                            }),
+                              this.removeAttribute("ssr"),
+                              this.dispatchEvent(
+                                new CustomEvent("astro:hydrate"),
+                              ));
+                          });
+                          d(this, "unmount", () => {
+                            this.isConnected ||
+                              this.dispatchEvent(
+                                new CustomEvent("astro:unmount"),
+                              );
+                          });
+                        }
+                        disconnectedCallback() {
+                          (document.removeEventListener(
+                            "astro:after-swap",
+                            this.unmount,
+                          ),
+                            document.addEventListener(
+                              "astro:after-swap",
+                              this.unmount,
+                              { once: !0 },
+                            ));
+                        }
+                        connectedCallback() {
+                          !this.hasAttribute("await-children") ||
+                          this.firstChild
+                            ? this.childrenConnectedCallback()
+                            : new MutationObserver((e, r) => {
+                                (r.disconnect(),
+                                  setTimeout(
+                                    () => this.childrenConnectedCallback(),
+                                    0,
+                                  ));
+                              }).observe(this, { childList: !0 });
+                        }
+                        async childrenConnectedCallback() {
+                          let e = this.getAttribute("before-hydration-url");
+                          (e && (await import(e)), this.start());
+                        }
+                        start() {
+                          let e = JSON.parse(this.getAttribute("opts")),
+                            r = this.getAttribute("client");
+                          if (Astro[r] === void 0) {
+                            window.addEventListener(
+                              `astro:${r}`,
+                              () => this.start(),
+                              { once: !0 },
+                            );
+                            return;
+                          }
+                          Astro[r](
+                            async () => {
+                              let c = this.getAttribute("renderer-url"),
+                                [h, { default: p }] = await Promise.all([
+                                  import(this.getAttribute("component-url")),
+                                  c ? import(c) : () => () => {},
+                                ]),
+                                l =
+                                  this.getAttribute("component-export") ||
+                                  "default";
+                              if (!l.includes(".")) this.Component = h[l];
+                              else {
+                                this.Component = h;
+                                for (let n of l.split("."))
+                                  this.Component = this.Component[n];
+                              }
+                              return ((this.hydrator = p), this.hydrate);
+                            },
+                            e,
+                            this,
+                          );
+                        }
+                        attributeChangedCallback() {
+                          this.hydrate();
+                        }
+                      }),
+                      d(u, "observedAttributes", ["props"]),
+                      u),
+                    );
+                }
+              })();
+            </script>
+            <astro-island
+              uid="2cpXIf"
+              prefix="r0"
+              component-url="/StateMachineNav.438bfdf6.js"
+              component-export="default"
+              renderer-url="/client.0193e3b9.js"
+              props='{"initialState":[0,"home"],"initialLang":[0,"pt-br"],"data-astro-cid-xhaoqxbd":[0,true]}'
+              ssr=""
+              client="load"
+              opts='{"name":"StateMachineNav","value":true}'
+              await-children=""
+              ><nav class="smn" aria-label="Site navigation">
+                <span class="sr-only"
+                  >Interactive state-machine diagram. The lit node is the
+                  current page. Tab between reachable states; press Enter to
+                  navigate.</span
+                ><svg viewBox="0 0 480 400" focusable="false">
+                  <g aria-hidden="true">
+                    <path
+                      class="edge"
+                      d="M 149.96253368220943 188.76404986917146 L 330.0374663177906 121.23595013082854"
+                    ></path>
+                    <path class="edge" d="M 152 200 L 328 200"></path>
+                    <path
+                      class="edge"
+                      d="M 149.96253368220943 211.23595013082854 L 330.0374663177906 278.76404986917146"
+                    ></path>
+                  </g>
+                  <g
+                    class="node active n-home"
+                    role="img"
+                    aria-label="home — current state"
+                    aria-current="page"
+                    style="transform-origin: 120px 200px"
+                  >
+                    <circle cx="120" cy="200" r="28"></circle>
+                    <text x="120" y="204" text-anchor="middle">home</text>
+                  </g>
+                  <a
+                    class="node-link n-writing"
+                    href="/blog/en/"
+                    aria-label="go to writing"
+                  >
+                    <circle class="hit" cx="360" cy="110" r="44"></circle>
+                    <g
+                      class="node reachable"
+                      style="transform-origin: 360px 110px"
+                    >
+                      <circle cx="360" cy="110" r="28"></circle>
+                      <text x="360" y="114" text-anchor="middle">writing</text>
+                    </g>
+                  </a>
+                  <a
+                    class="node-link n-about"
+                    href="/about/en/"
+                    aria-label="go to about"
+                  >
+                    <circle class="hit" cx="360" cy="200" r="44"></circle>
+                    <g
+                      class="node reachable"
+                      style="transform-origin: 360px 200px"
+                    >
+                      <circle cx="360" cy="200" r="28"></circle>
+                      <text x="360" y="204" text-anchor="middle">about</text>
+                    </g>
+                  </a>
+                  <a
+                    class="node-link n-contact"
+                    href="/contact/en/"
+                    aria-label="go to contact"
+                  >
+                    <circle class="hit" cx="360" cy="290" r="44"></circle>
+                    <g
+                      class="node reachable"
+                      style="transform-origin: 360px 290px"
+                    >
+                      <circle cx="360" cy="290" r="28"></circle>
+                      <text x="360" y="294" text-anchor="middle">contact</text>
+                    </g>
+                  </a>
+                </svg>
+                <div class="hint" aria-hidden="true">
+                  <span><span class="dot"></span> current state</span
+                  ><span
+                    ><span class="dot muted"></span> edge — hover to light</span
+                  ><span class="kb-hint"
+                    ><kbd>Tab</kbd> + <kbd>Enter</kbd> to navigate</span
+                  >
+                </div>
+              </nav></astro-island
+            >
+          </div>
+        </div>
+      </main>
+      <footer class="foot" data-astro-cid-xhaoqxbd>
+        <span data-astro-cid-xhaoqxbd>© 2026 Diel Duarte</span
+        ><span class="foot-sep" aria-hidden="true" data-astro-cid-xhaoqxbd
+          >·</span
+        ><span data-astro-cid-xhaoqxbd>o site inteiro é uma árvore</span>
+      </footer>
+    </div>
+  </body>
+</html>
