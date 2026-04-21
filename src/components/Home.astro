@@ -13,22 +13,22 @@ const isEnglish = lang === 'en';
 
 const content = {
   en: {
-    role: 'Principal Engineer at Appcues',
-    bio: "I build web software — mostly JavaScript, mostly frontend. At Appcues I shape the architecture and developer experience so a small team can keep shipping fast without compromising on quality. Lately I write about state charts, XState, and the shapes that make complex UI legible.",
+    role: 'Open source at Resend',
+    bio: "I build web software. Mostly JavaScript, mostly frontend. I care about architecture, developer experience, and helping teams ship fast without trading away quality. Lately I write about the invisible parts of software, the pieces that decide whether a codebase stays readable as it grows.",
     lede: "The site is a tree. Hover a branch. Click a node. You are at the root — home.",
     langSwitch: 'Ler em português',
     langSwitchHref: '/pt-br/',
-    title: 'Diel Duarte — Principal Engineer',
-    description: "Diel Duarte is a Principal Engineer at Appcues. Writes about state charts, XState, code splitting, and the architecture of legible UI.",
+    title: 'Diel Duarte — Open source at Resend',
+    description: "Diel Duarte works on open source at Resend. Writes about state charts, XState, code splitting, and the architecture of legible UI.",
   },
   'pt-br': {
-    role: 'Principal Engineer na Appcues',
-    bio: "Construo software para a web — principalmente JavaScript, principalmente frontend. Na Appcues, desenho a arquitetura e a experiência de desenvolvimento para que um time pequeno possa continuar entregando rápido sem abrir mão da qualidade. Ultimamente escrevo sobre state charts, XState e as formas que tornam UIs complexas legíveis.",
+    role: 'Open source na Resend',
+    bio: "Construo software para a web. Principalmente JavaScript, principalmente frontend. Me importo com arquitetura, experiência de desenvolvimento e em ajudar times a entregar rápido sem abrir mão da qualidade. Ultimamente escrevo sobre as partes invisíveis do software, o que decide se um codebase continua fazendo sentido conforme cresce.",
     lede: "O site é uma árvore. Passe o mouse num nó. Clique num nó. Você está na raiz — home.",
     langSwitch: 'Read in English',
     langSwitchHref: '/',
-    title: 'Diel Duarte — Principal Engineer',
-    description: "Diel Duarte é Principal Engineer na Appcues. Escreve sobre state charts, XState, code splitting e a arquitetura de UIs legíveis.",
+    title: 'Diel Duarte — Open source na Resend',
+    description: "Diel Duarte trabalha com open source na Resend. Escreve sobre state charts, XState, code splitting e a arquitetura de UIs legíveis.",
   },
 };
 
@@ -85,10 +85,6 @@ const socials = [
   <body>
     <main class="shell">
       <header class="topbar">
-        <span class="mark" aria-label="Diel Duarte">
-          <span class="mark-dot" aria-hidden="true"></span>
-          diel duarte
-        </span>
         <a class="lang" href={t.langSwitchHref} hreflang={isEnglish ? 'pt-br' : 'en'}>
           <span aria-hidden="true">/</span> {t.langSwitch}
         </a>
@@ -132,7 +128,7 @@ const socials = [
       <footer class="foot">
         <span>© {new Date().getFullYear()} Diel Duarte</span>
         <span class="foot-sep" aria-hidden="true">·</span>
-        <span>{isEnglish ? 'the whole thing is a tree' : 'a coisa toda é uma árvore'}</span>
+        <span>{isEnglish ? 'the whole thing is a tree' : 'o site inteiro é uma árvore'}</span>
       </footer>
     </main>
 
@@ -149,27 +145,12 @@ const socials = [
       .topbar {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         font-family: var(--font-mono);
         font-size: var(--fs-xs);
         letter-spacing: 0.04em;
         color: var(--n-5);
         padding-bottom: var(--s-4);
-      }
-
-      .mark {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--s-2);
-        color: var(--n-6);
-      }
-
-      .mark-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: var(--r-full);
-        background: var(--accent);
-        box-shadow: 0 0 12px color-mix(in oklab, var(--accent) 45%, transparent);
       }
 
       .lang {
