@@ -1,0 +1,372 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design system · v2</title>
+
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      background: var(--n-0);
+      color: var(--n-6);
+      font-family: var(--font-body);
+      font-size: var(--fs-base);
+      line-height: var(--lh-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: var(--s-6) var(--s-5);
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    h1, h2 {
+      color: var(--n-7);
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    h1 {
+      font-size: var(--fs-3xl);
+      line-height: var(--lh-tight);
+      font-weight: 600;
+    }
+    h2 {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--n-5);
+      margin-bottom: var(--s-4);
+    }
+
+    section { padding: var(--s-6) 0; border-bottom: 1px solid var(--n-3); }
+    section:last-of-type { border-bottom: none; }
+
+    .lede {
+      color: var(--n-5);
+      font-size: var(--fs-md);
+      line-height: var(--lh-read);
+      max-width: var(--measure);
+      margin-top: var(--s-3);
+    }
+    .mono-note {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* — Typography specimen — */
+    .specimen {
+      margin-top: var(--s-4);
+      padding: var(--s-5);
+      background: var(--n-1);
+      border: 1px solid var(--n-3);
+      border-radius: var(--r-md);
+    }
+    .specimen .label {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--accent);
+      margin-bottom: var(--s-3);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .specimen .display {
+      font-family: var(--font-display);
+      font-size: var(--fs-3xl);
+      font-weight: 600;
+      line-height: var(--lh-tight);
+      color: var(--n-7);
+      letter-spacing: -0.03em;
+      margin-bottom: var(--s-4);
+    }
+    .specimen .body {
+      font-size: var(--fs-md);
+      line-height: var(--lh-read);
+      color: var(--n-6);
+      max-width: var(--measure);
+    }
+    .specimen .mono-sample {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      color: var(--n-6);
+      margin-top: var(--s-4);
+      padding: var(--s-3);
+      background: var(--n-2);
+      border-radius: var(--r-sm);
+    }
+
+    /* — Accent — */
+    .accent-block {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--s-5);
+      margin-top: var(--s-4);
+      align-items: center;
+    }
+    @media (max-width: 720px) { .accent-block { grid-template-columns: 1fr; } }
+    .swatch-large {
+      aspect-ratio: 1;
+      background: var(--accent);
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      color: var(--n-0);
+      font-weight: 600;
+    }
+    .accent-derived {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--s-3);
+    }
+    .derived {
+      padding: var(--s-3);
+      border-radius: var(--r-sm);
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--n-6);
+    }
+    .d-accent    { background: var(--accent); color: var(--n-0); }
+    .d-muted     { background: var(--accent-muted); color: var(--n-7); }
+    .d-border    { background: var(--n-1); border: 1px solid var(--accent); }
+    .d-text      { color: var(--accent); background: var(--n-1); }
+
+    /* — Type scale — */
+    .scale { display: grid; gap: var(--s-3); margin-top: var(--s-4); }
+    .scale-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-4);
+      border-bottom: 1px dashed var(--n-3);
+      padding-bottom: var(--s-3);
+    }
+    .scale-row code {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--n-5);
+      min-width: 140px;
+    }
+    .scale-row span {
+      color: var(--n-7);
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+
+    /* — Spacing — */
+    .spacing { display: flex; flex-direction: column; gap: var(--s-3); margin-top: var(--s-4); }
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--n-5);
+    }
+    .spacing-row .bar { height: 10px; background: var(--accent); border-radius: 2px; }
+
+    /* — Motion — */
+    .motion-demo { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
+    .btn {
+      font-family: var(--font-display);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      padding: var(--s-3) var(--s-4);
+      border-radius: var(--r-md);
+      border: 1px solid var(--n-3);
+      background: var(--n-1);
+      color: var(--n-7);
+      cursor: pointer;
+      transition:
+        transform var(--t-2) var(--ease),
+        background var(--t-3) var(--ease),
+        border-color var(--t-3) var(--ease);
+    }
+    .btn:hover { background: var(--n-2); border-color: var(--accent); }
+    .btn:active { transform: scale(0.96); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .btn.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .btn.primary:hover { background: color-mix(in oklab, var(--accent) 85%, white); }
+
+    /* — Tree nav sketch — */
+    .nav-sketch {
+      margin-top: var(--s-4);
+      padding: var(--s-5);
+      background: var(--n-1);
+      border: 1px solid var(--n-3);
+      border-radius: var(--r-md);
+    }
+    .nav-sketch svg { width: 100%; height: auto; max-width: 520px; display: block; margin: 0 auto; }
+    .node circle {
+      fill: var(--n-2);
+      stroke: var(--n-4);
+      transition: fill var(--t-3) var(--ease), stroke var(--t-3) var(--ease);
+      cursor: pointer;
+    }
+    .node.active circle { fill: var(--accent); stroke: var(--accent); }
+    .node text {
+      fill: var(--n-6);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      pointer-events: none;
+    }
+    .node.active text { fill: white; font-weight: 600; }
+    .node:hover circle { stroke: var(--accent); }
+    .edge {
+      stroke: var(--n-3);
+      stroke-width: 1;
+      fill: none;
+      transition: stroke var(--t-3) var(--ease);
+    }
+    .edge.lit { stroke: var(--accent); }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <section>
+      <p class="mono-note">v2 · committed · 2026-04-21</p>
+      <h1 style="margin-top: var(--s-3);">Diel Duarte, in states.</h1>
+      <p class="lede">
+        Geist Sans for display and body. Geist Mono for code and UI labels.
+        <code style="color: var(--accent); font-family: var(--font-mono);">#3B82F6</code>
+        as the single accent. Near-black (<code style="color: var(--n-6); font-family: var(--font-mono);">#0A0A0A</code>)
+        page. One easing curve, <code style="color: var(--n-6); font-family: var(--font-mono);">cubic-bezier(0.32, 0.72, 0, 1)</code>,
+        on every transition. Self-hosted — no Google Fonts in production.
+      </p>
+    </section>
+
+    <section>
+      <h2>Typography — Geist Variable</h2>
+      <div class="specimen">
+        <div class="label">Geist Sans · display + body</div>
+        <div class="display">Thinking in states.</div>
+        <p class="body">
+          The site models itself as an explicit tree. Navigation is a diagram; clicking a node
+          follows a branch; the current position is always visible. The copy is second person,
+          present tense, slightly playful — "you're at the writing branch."
+        </p>
+        <div class="mono-sample">
+          {"// Geist Mono — const machine = createMachine({ initial: 'home' })"}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Accent — #3B82F6</h2>
+      <div class="accent-block">
+        <div class="swatch-large">#3B82F6</div>
+        <div>
+          <p class="lede" style="margin-top: 0;">
+            One accent, four derivations. Used for: the active node in the tree, lit branches,
+            link color, focus rings, primary buttons, the mono-note at the top of every section.
+          </p>
+          <div class="accent-derived" style="margin-top: var(--s-4);">
+            <div class="derived d-accent">accent · primary</div>
+            <div class="derived d-muted">accent-muted · quiet</div>
+            <div class="derived d-border">border · 1px accent</div>
+            <div class="derived d-text">text · accent on n-1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Type scale — perfect-fourth</h2>
+      <div class="scale">
+        <div class="scale-row"><code>--fs-xs   12</code><span style="font-size: var(--fs-xs);">The smallest legible label.</span></div>
+        <div class="scale-row"><code>--fs-sm   14</code><span style="font-size: var(--fs-sm);">Meta, captions, UI.</span></div>
+        <div class="scale-row"><code>--fs-base 16</code><span style="font-size: var(--fs-base);">Default reading size.</span></div>
+        <div class="scale-row"><code>--fs-md   20</code><span style="font-size: var(--fs-md);">Lede paragraphs, callouts.</span></div>
+        <div class="scale-row"><code>--fs-lg   24</code><span style="font-size: var(--fs-lg);">Sub-headings, card titles.</span></div>
+        <div class="scale-row"><code>--fs-xl   32</code><span style="font-size: var(--fs-xl);">Section headings.</span></div>
+        <div class="scale-row"><code>--fs-2xl  44</code><span style="font-size: var(--fs-2xl);">Article titles.</span></div>
+        <div class="scale-row"><code>--fs-3xl  60</code><span style="font-size: var(--fs-3xl);">Page-level display.</span></div>
+        <div class="scale-row"><code>--fs-4xl  80</code><span style="font-size: var(--fs-4xl);">Home hero — use once.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Spacing — golden-ratio</h2>
+      <div class="spacing">
+        <div class="spacing-row"><code style="min-width: 80px;">--s-1</code><div class="bar" style="width: 4px;"></div>4px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-2</code><div class="bar" style="width: 8px;"></div>8px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-3</code><div class="bar" style="width: 12px;"></div>12px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-4</code><div class="bar" style="width: 20px;"></div>20px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-5</code><div class="bar" style="width: 32px;"></div>32px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-6</code><div class="bar" style="width: 52px;"></div>52px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-7</code><div class="bar" style="width: 84px;"></div>84px</div>
+        <div class="spacing-row"><code style="min-width: 80px;">--s-8</code><div class="bar" style="width: 136px;"></div>136px</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Motion — one curve</h2>
+      <p class="lede">
+        <code style="font-family: var(--font-mono); color: var(--accent);">cubic-bezier(0.32, 0.72, 0, 1)</code> — iOS drawer.
+        Hover. Press. Same curve, different durations. Every interaction in the whole system uses this ease.
+      </p>
+      <div class="motion-demo">
+        <button class="btn primary">Transition &rarr; writing</button>
+        <button class="btn">Secondary action</button>
+        <button class="btn">Another</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Signature — the tree</h2>
+      <p class="lede">
+        Hover a node. Click one. This is a sketch; Phase 2 wires it to XState so the URL and view follow the machine.
+      </p>
+      <div class="nav-sketch">
+        <svg viewBox="0 0 520 260" role="img" aria-label="Tree navigation sketch">
+          <path class="edge lit" d="M 90 130 L 220 80" />
+          <path class="edge" d="M 90 130 L 220 180" />
+          <path class="edge" d="M 220 80 L 360 130" />
+          <path class="edge" d="M 220 180 L 360 130" />
+          <path class="edge" d="M 360 130 L 470 80" />
+          <path class="edge" d="M 360 130 L 470 180" />
+
+          <g class="node active">
+            <circle cx="90" cy="130" r="28" />
+            <text x="90" y="134" text-anchor="middle">home</text>
+          </g>
+          <g class="node"><circle cx="220" cy="80"  r="28" /><text x="220" y="84"  text-anchor="middle">writing</text></g>
+          <g class="node"><circle cx="220" cy="180" r="28" /><text x="220" y="184" text-anchor="middle">cases</text></g>
+          <g class="node"><circle cx="360" cy="130" r="28" /><text x="360" y="134" text-anchor="middle">lab</text></g>
+          <g class="node"><circle cx="470" cy="80"  r="28" /><text x="470" y="84"  text-anchor="middle">about</text></g>
+          <g class="node"><circle cx="470" cy="180" r="28" /><text x="470" y="184" text-anchor="middle">contact</text></g>
+        </svg>
+      </div>
+    </section>
+
+    <section style="border: none;">
+      <p class="mono-note">next — phase 2</p>
+      <p class="lede">
+        Scaffold the XState machine that drives the nav. Build the left-rail diagram component.
+        Wire URL ↔ state so deep links work and back/forward feel native.
+      </p>
+    </section>
+
+  </div>
+</body>
+</html>

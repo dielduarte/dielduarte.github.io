@@ -1,0 +1,176 @@
+---
+import PageV2 from '../../layouts/PageV2.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt-br' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'en' | 'pt-br' };
+const isEnglish = lang === 'en';
+
+const content = {
+  en: {
+    title: 'About — Diel Duarte',
+    description: 'Principal Engineer at Appcues. Writes about state charts, XState, and the architecture of legible UI.',
+    langSwitchHref: '/about/pt-br/',
+    headline: 'About.',
+    monoNote: 'the writer · in the about node',
+    paragraphs: [
+      "I'm Diel Duarte — Software Engineer, working mostly in the browser. I spend my days shaping architecture and developer experiences.",
+      "Over the years I've moved from a generalist full-stack role into frontend specialization. I care about the architecture of legible UI: splitting code along the grain of a product, modelling interactions as explicit state, and making the invisible parts of the system readable to the next person.",
+      "Lately I write about everything I'm interested in and learning. This site itself is structured as a tree: home at the root, a handful of branches, one of them rendered as a diagram on the home page.",
+      "Outside work I drive, run, lift, drink good coffee, and try to read more than I tweet. I live in Brazil.",
+    ],
+    listHeading: 'Currently',
+    list: [
+      { label: 'Working on', value: 'Open source at Resend' },
+      { label: 'Writing about', value: 'Everything software and learnings' },
+      { label: 'Based in', value: 'Belo Horizonte, Brazil' },
+    ],
+  },
+  'pt-br': {
+    title: 'Sobre — Diel Duarte',
+    description: 'Principal Engineer na Appcues. Escreve sobre state charts, XState e a arquitetura de UIs legíveis.',
+    langSwitchHref: '/about/en/',
+    headline: 'Sobre.',
+    monoNote: 'o autor · no nó about',
+    paragraphs: [
+      "Sou Diel Duarte — Software Engineer, trabalhando quase sempre no navegador. Meus dias se passam desenhando arquitetura e experiências de desenvolvimento.",
+      "Ao longo dos anos saí de um papel full-stack generalista para uma especialização em frontend. Me importo com a arquitetura de UIs legíveis: dividir código pela estrutura natural do produto, modelar interações como estado explícito, e deixar as partes invisíveis do sistema legíveis para quem vem depois.",
+      "Ultimamente escrevo sobre tudo que me interessa e estou aprendendo. Este site é ele próprio estruturado como uma árvore: home na raiz, alguns galhos, um deles renderizado como diagrama na home.",
+      "Fora do trabalho, dirijo, corro, treino, tomo café bom e tento ler mais do que tuito. Moro no Brasil.",
+    ],
+    listHeading: 'No momento',
+    list: [
+      { label: 'Trabalhando em', value: 'Open source na Resend' },
+      { label: 'Escrevendo sobre', value: 'Tudo sobre software e aprendizados' },
+      { label: 'Baseado em', value: 'Belo Horizonte, Brasil' },
+    ],
+  },
+};
+
+const t = content[lang];
+---
+
+<PageV2
+  lang={lang}
+  title={t.title}
+  description={t.description}
+  currentState="about"
+  langSwitchHref={t.langSwitchHref}
+>
+  <section class="about">
+    <p class="mono-note">{t.monoNote}</p>
+    <h1>{t.headline}</h1>
+
+    <div class="prose">
+      {t.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+
+    <div class="now">
+      <h2>{t.listHeading}</h2>
+      <dl>
+        {t.list.map((row) => (
+          <div class="row">
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</PageV2>
+
+<style>
+  .about {
+    max-width: 62ch;
+  }
+
+  .mono-note {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--s-4) 0;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--n-7);
+    margin: 0 0 var(--s-6) 0;
+    font-weight: 600;
+  }
+
+  .prose {
+    font-family: var(--font-prose);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--n-6);
+    letter-spacing: -0.003em;
+  }
+
+  .prose p {
+    margin: 0 0 1.6em 0;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .now {
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px dashed var(--n-3);
+  }
+
+  .now h2 {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--s-4) 0;
+    font-weight: 400;
+  }
+
+  dl {
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(120px, 160px) 1fr;
+    gap: var(--s-4);
+    align-items: baseline;
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--n-5);
+    letter-spacing: 0.02em;
+  }
+
+  dd {
+    font-size: var(--fs-sm);
+    color: var(--n-6);
+    margin: 0;
+  }
+
+  @media (max-width: 540px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: var(--s-1);
+    }
+    dt { font-size: var(--fs-xs); }
+  }
+</style>

@@ -1,18 +1,5 @@
 ---
-import HomePage from '../components/HomePage.astro';
-
-interface Frontmatter {
-  title: string;
-  description: string;
-  date: string;
-  languageKey: string;
-  languageLink: string;
-  socialImage: string;
-  slug: string;
-}
-
-const posts = await Astro.glob<Frontmatter>('./blog/en/**/*.md');
+import Home from '../components/Home.astro';
 ---
 
-<HomePage posts={posts} lang="en" />
-
+<Home lang="en" />

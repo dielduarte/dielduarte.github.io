@@ -1,0 +1,169 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+import NavBar from '../components/nav/NavBar.astro';
+import type { NavStateId } from '../components/nav/navMachine';
+
+interface Props {
+  lang: 'en' | 'pt-br';
+  title: string;
+  description?: string;
+  currentState?: NavStateId;
+  langSwitchHref: string;
+}
+
+const { lang, title, description, currentState, langSwitchHref } = Astro.props;
+const isEnglish = lang === 'en';
+const langSwitchLabel = isEnglish ? 'Ler em português' : 'Read in English';
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="alternate" hreflang={isEnglish ? 'pt-br' : 'en'} href={langSwitchHref} />
+
+    <style is:global>
+      :root { color-scheme: dark; }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--n-0);
+        color: var(--n-6);
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="mark" href={isEnglish ? '/' : '/pt-br/'} aria-label="Diel Duarte — home">
+          <span class="mark-dot" aria-hidden="true"></span>
+          diel duarte
+        </a>
+
+        <div class="topbar-right">
+          <NavBar lang={lang} currentState={currentState} />
+          <a class="lang" href={langSwitchHref} hreflang={isEnglish ? 'pt-br' : 'en'}>
+            <span aria-hidden="true">/</span> {langSwitchLabel}
+          </a>
+        </div>
+      </header>
+
+      <article class="page">
+        <slot />
+      </article>
+
+      <footer class="foot">
+        <span>© {new Date().getFullYear()} Diel Duarte</span>
+        <span class="foot-sep" aria-hidden="true">·</span>
+        <span>{isEnglish ? 'the whole thing is a tree' : 'a coisa toda é uma árvore'}</span>
+      </footer>
+    </main>
+
+    <style>
+      .shell {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: var(--s-5) var(--s-5) var(--s-6);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        color: var(--n-5);
+        padding-bottom: var(--s-4);
+        gap: var(--s-4);
+        flex-wrap: wrap;
+      }
+
+      .topbar-right {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-5);
+      }
+
+      .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+        color: var(--n-6);
+        transition: color var(--t-3) var(--ease);
+      }
+
+      .mark:hover { color: var(--n-7); }
+      .mark:active { transform: scale(0.98); }
+
+      .mark-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: var(--r-full);
+        background: var(--accent);
+        box-shadow: 0 0 12px color-mix(in oklab, var(--accent) 45%, transparent);
+      }
+
+      .lang {
+        color: var(--n-5);
+        transition: color var(--t-3) var(--ease);
+      }
+
+      .lang:hover { color: var(--n-7); }
+      .lang:active { transform: scale(0.97); }
+
+      .page {
+        flex: 1;
+        padding: var(--s-5) 0 var(--s-6);
+      }
+
+      .foot {
+        display: flex;
+        align-items: center;
+        gap: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+      }
+
+      .foot-sep { color: var(--n-4); }
+
+      @media (max-width: 640px) {
+        .shell { padding: var(--s-4) var(--s-4) var(--s-5); }
+        .topbar-right { gap: var(--s-3); }
+      }
+    </style>
+  </body>
+</html>

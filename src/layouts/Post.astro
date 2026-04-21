@@ -1,439 +1,532 @@
 ---
-import ScrollCounter from '../components/ScrollCounter.astro';
-import readingTime from 'reading-time'
-import { SEO } from "astro-seo";
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+import NavBar from '../components/nav/NavBar.astro';
+import readingTime from 'reading-time';
+import { SEO } from 'astro-seo';
 import { format } from 'date-fns';
-import fs from 'fs'
+import fs from 'fs';
 
-const {frontmatter, file} = Astro.props
+const { frontmatter, file } = Astro.props;
 
-const fileText = fs.readFileSync(file, 'utf8')
-const stats = readingTime(fileText)
-const totalTime = frontmatter.languageKey === 'en'
-  ? stats.text
-  : `${Math.ceil(stats.minutes)} min de leitura`
-const socialImage = Astro.site + frontmatter.socialImage
-const formattedDate = format(new Date(frontmatter.date), 'MMMM dd, yyyy')
+const fileText = fs.readFileSync(file, 'utf8');
+const stats = readingTime(fileText);
 
 const isEnglish = frontmatter.languageKey === 'en';
-const backLabel = isEnglish ? 'Back to all articles' : 'Voltar para artigos';
-const homeUrl = isEnglish ? '/' : '/pt-br/';
+const lang: 'en' | 'pt-br' = isEnglish ? 'en' : 'pt-br';
+
+const totalTime = isEnglish
+  ? stats.text
+  : `${Math.ceil(stats.minutes)} min de leitura`;
+
+const socialImage = Astro.site + frontmatter.socialImage;
+const formattedDate = format(
+  new Date(frontmatter.date),
+  isEnglish ? 'MMMM dd, yyyy' : 'dd MMMM yyyy'
+);
+
+const backLabel = isEnglish ? 'Back to writing' : 'Voltar para artigos';
+const indexHref = isEnglish ? '/blog/en/' : '/blog/pt-br/';
+
+function normalizeLangLink(raw?: string) {
+  if (!raw) return null;
+  const withLeading = raw.startsWith('/') ? raw : `/${raw}`;
+  const prefixed = withLeading.startsWith('/blog') ? withLeading : `/blog${withLeading}`;
+  return prefixed.endsWith('/') ? prefixed : `${prefixed}/`;
+}
+
+const langSwitchHref =
+  normalizeLangLink(frontmatter.languageLink) ??
+  (isEnglish ? '/blog/pt-br/' : '/blog/en/');
+const langSwitchLabel = isEnglish ? 'Ler em português' : 'Read in English';
 ---
 
 <html lang={frontmatter.languageKey}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-
-  <SEO
+    <SEO
       title={frontmatter.title}
       description={frontmatter.description}
       openGraph={{
         basic: {
           title: frontmatter.title,
-          type: "article",
-          image: socialImage ?? ''
-        }
+          type: 'article',
+          image: socialImage ?? '',
+        },
       }}
       extend={{
         meta: [
-          {
-            name: "twitter:image",
-            content: socialImage,
-          },
-          { name: "twitter:title", content: frontmatter.title },
-          { name: "twitter:site", content: '@diel_duarte' },
-          { name: "twitter:card", content: 'summary_large_image' },
-          { name: "twitter:description", content: frontmatter.description},
+          { name: 'twitter:image', content: socialImage },
+          { name: 'twitter:title', content: frontmatter.title },
+          { name: 'twitter:site', content: '@diel_duarte' },
+          { name: 'twitter:card', content: 'summary_large_image' },
+          { name: 'twitter:description', content: frontmatter.description },
         ],
       }}
     />
 
-  <style is:global>
-    html {
-      scroll-behavior: smooth;
-    }
+    <style is:global>
+      :root { color-scheme: dark; }
 
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+      *, *::before, *::after { box-sizing: border-box; }
 
-    /* Noise texture overlay */
-    .noise-overlay::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.025;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      z-index: 100;
-    }
-
-    /* Article content styles - Light Mode */
-    .prose-article {
-      font-family: 'Crimson Pro', Georgia, serif;
-      font-size: 1.25rem;
-      line-height: 1.75;
-      color: #3D3D3B;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article {
-        color: #E0E0E0;
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--n-0);
+        color: var(--n-6);
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-    }
 
-    .prose-article p {
-      margin: 1.75rem 0;
-    }
+      html { scroll-behavior: smooth; }
 
-    .prose-article strong {
-      color: #1F1F1D;
-      font-weight: 600;
-    }
+      a { color: inherit; text-decoration: none; }
 
-    @media (prefers-color-scheme: dark) {
-      .prose-article strong {
-        color: #FAFAF8;
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
       }
-    }
 
-    .prose-article a {
-      color: #7D6E5E;
-      text-decoration: none;
-      background-image: linear-gradient(currentColor, currentColor);
-      background-size: 0% 1px;
-      background-position: 0 100%;
-      background-repeat: no-repeat;
-      transition: background-size 0.3s ease;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article a {
-        color: #B8A99A;
-      }
-    }
-
-    .prose-article a:hover {
-      background-size: 100% 1px;
-    }
-
-    .prose-article h2 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #171715;
-      margin: 3rem 0 1.5rem;
-      letter-spacing: -0.02em;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article h2 {
-        color: #FAFAF8;
-      }
-    }
-
-    .prose-article h3 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.375rem;
-      font-weight: 600;
-      color: #1F1F1D;
-      margin: 2.5rem 0 1rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article h3 {
-        color: #F5F5F2;
-      }
-    }
-
-    .prose-article h4 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: #1F1F1D;
-      margin: 2rem 0 0.75rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article h4 {
-        color: #F5F5F2;
-      }
-    }
-
-    .prose-article pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin: 2rem 0;
-      overflow-x: auto;
-      background: #171715 !important;
-      border: 1px solid #2A2A28;
-    }
-
-    .prose-article code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875em;
-    }
-
-    .prose-article :not(pre) > code {
-      background: rgba(125, 110, 94, 0.1);
-      color: #635850;
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article :not(pre) > code {
-        background: rgba(184, 169, 154, 0.15);
-        color: #B8A99A;
-      }
-    }
-
-    .prose-article ul, .prose-article ol {
-      margin: 1.5rem 0;
-      padding-left: 0;
-      list-style: none;
-    }
-
-    .prose-article ul li, .prose-article ol li {
-      position: relative;
-      padding-left: 1.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .prose-article ul li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.75em;
-      width: 5px;
-      height: 5px;
-      background: #7D6E5E;
-      border-radius: 50%;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article ul li::before {
-        background: #9A8B7A;
-      }
-    }
-
-    .prose-article ol {
-      counter-reset: list-counter;
-    }
-
-    .prose-article ol li {
-      counter-increment: list-counter;
-    }
-
-    .prose-article ol li::before {
-      content: counter(list-counter);
-      position: absolute;
-      left: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.875rem;
-      color: #7D6E5E;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article ol li::before {
-        color: #9A8B7A;
-      }
-    }
-
-    .prose-article blockquote {
-      margin: 2.5rem 0;
-      padding: 1.5rem 2rem;
-      background: rgba(125, 110, 94, 0.05);
-      border-left: 3px solid #9A8B7A;
-      border-radius: 0 8px 8px 0;
-      font-style: italic;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article blockquote {
-        background: rgba(184, 169, 154, 0.05);
-        border-left-color: #7D6E5E;
-      }
-    }
-
-    .prose-article blockquote p {
-      margin: 0;
-      color: #5C5C5A;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article blockquote p {
-        color: #B8B8B5;
-      }
-    }
-
-    .prose-article img, .prose-article video {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 2.5rem auto;
-      display: block;
-    }
-
-    .prose-article hr {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #DCDCD7, transparent);
-      margin: 3rem 0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .prose-article hr {
-        background: linear-gradient(90deg, transparent, #2A2A28, transparent);
-      }
-    }
-
-    /* Reading progress bar */
-    .reading-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: #7D6E5E;
-      z-index: 1000;
-      transition: width 0.1s ease-out;
-    }
-
-    @media (prefers-color-scheme: dark) {
+      /* Reading progress — GPU-only scaleX */
       .reading-progress {
-        background: #9A8B7A;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        background: var(--accent);
+        z-index: 1000;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 100ms linear;
+        will-change: transform;
       }
-    }
-  </style>
-</head>
 
-<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 min-h-screen transition-colors duration-300">
-  <!-- Reading progress bar -->
-  <div class="reading-progress" id="progress-bar" style="width: 0%"></div>
+      /* Article prose — serif, token-driven, tuned for reading */
+      .prose {
+        font-family: var(--font-prose);
+        font-size: 1.0625rem;   /* 17px — comfortable reading zone */
+        line-height: 1.65;
+        color: var(--n-6);
+        max-width: 65ch;
+        letter-spacing: -0.003em;
+      }
 
-  <div class="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-20">
-    <!-- Back navigation -->
-    <nav class="mb-12">
-      <a
-        href={homeUrl}
-        class="inline-flex items-center gap-2 text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200 group"
-      >
-        <svg
-          class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
-        </svg>
-        {backLabel}
-      </a>
-    </nav>
+      .prose p {
+        margin: 0 0 1.6em 0;
+      }
 
-    <!-- Article Header -->
-    <header class="mb-12 md:mb-16">
-      <!-- Meta info -->
-      <div class="flex flex-wrap items-center gap-4 mb-6">
-        <time
-          datetime={frontmatter.date}
-          class="text-sm font-mono text-accent-500 dark:text-accent-400"
-        >
-          {formattedDate}
-        </time>
-        <span class="text-ink-300 dark:text-ink-600">·</span>
-        <span class="text-sm text-ink-400 dark:text-ivory-400 font-mono">{totalTime}</span>
-      </div>
+      .prose p:last-child {
+        margin-bottom: 0;
+      }
 
-      <!-- Title -->
-      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 leading-tight tracking-tight mb-6">
-        {frontmatter.title}
-      </h1>
+      .prose > * + * {
+        margin-top: 1.6em;
+      }
 
-      <!-- Description -->
-      {frontmatter.description && (
-        <p class="text-lg md:text-xl text-ink-500 dark:text-ivory-300 leading-relaxed">
-          {frontmatter.description}
-        </p>
-      )}
+      .prose strong {
+        color: var(--n-7);
+        font-weight: 600;
+      }
 
-      <!-- Decorative divider -->
-      <div class="mt-10 flex items-center gap-3">
-        <div class="w-12 h-px bg-accent-400 dark:bg-accent-500"></div>
-        <div class="w-1.5 h-1.5 bg-accent-400 dark:bg-accent-500 rounded-full"></div>
-      </div>
-    </header>
+      .prose em { font-style: italic; }
 
-    <!-- Article Content -->
-    <article class="prose-article">
-      <slot />
-    </article>
+      .prose a {
+        color: var(--accent);
+        background-image: linear-gradient(currentColor, currentColor);
+        background-size: 100% 1px;
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        transition: color var(--t-3) var(--ease);
+      }
 
-    <!-- Article Footer -->
-    <footer class="mt-16 pt-10 border-t border-ivory-300 dark:border-ink-700">
-      <!-- Author card -->
-      <div class="flex items-center gap-5 mb-10">
-        <div class="relative">
-          <div class="absolute -inset-0.5 bg-gradient-to-br from-accent-400 to-accent-600 dark:from-accent-500 dark:to-accent-700 rounded-full opacity-50 blur-sm"></div>
-          <img
-            src="/images/diel.jpeg"
-            alt="Diel Duarte"
-            class="relative w-14 h-14 rounded-full object-cover ring-2 ring-ivory-100 dark:ring-ink-900"
-          />
+      .prose a:hover { color: var(--n-7); }
+
+      .prose h2 {
+        font-family: var(--font-display);
+        font-size: 1.55rem;
+        font-weight: 600;
+        color: var(--n-7);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin: 2.2em 0 0.6em;
+      }
+
+      .prose h3 {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--n-7);
+        letter-spacing: -0.015em;
+        line-height: 1.25;
+        margin: 1.8em 0 0.5em;
+      }
+
+      .prose h4 {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--n-7);
+        margin: 1.6em 0 0.4em;
+      }
+
+      .prose code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+      }
+
+      .prose :not(pre) > code {
+        background: color-mix(in oklab, var(--accent) 10%, var(--n-1));
+        color: color-mix(in oklab, var(--accent) 80%, var(--n-7));
+        padding: 0.15em 0.4em;
+        border-radius: var(--r-sm);
+      }
+
+      .prose pre {
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        line-height: 1.6;
+        padding: var(--s-4);
+        border-radius: var(--r-md);
+        margin: var(--s-5) 0;
+        overflow-x: auto;
+        background: var(--n-1) !important;
+        border: 1px solid var(--n-3);
+      }
+
+      .prose pre code {
+        background: transparent !important;
+        color: inherit;
+        padding: 0;
+      }
+
+      .prose ul, .prose ol {
+        margin: 1.15em 0;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      .prose ul li, .prose ol li {
+        position: relative;
+        padding-left: 1.4em;
+        margin-bottom: 0.5em;
+      }
+
+      .prose ul li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.7em;
+        width: 5px;
+        height: 5px;
+        background: var(--accent);
+        border-radius: var(--r-full);
+      }
+
+      .prose ol { counter-reset: list-counter; }
+      .prose ol li { counter-increment: list-counter; }
+      .prose ol li::before {
+        content: counter(list-counter);
+        position: absolute;
+        left: 0;
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        color: var(--accent);
+      }
+
+      .prose blockquote {
+        margin: var(--s-5) 0;
+        padding: var(--s-3) var(--s-4);
+        border-left: 2px solid var(--accent);
+        background: color-mix(in oklab, var(--accent) 6%, transparent);
+        border-radius: 0 var(--r-md) var(--r-md) 0;
+        color: var(--n-5);
+        font-style: italic;
+      }
+
+      .prose blockquote p { margin: 0; }
+
+      .prose img, .prose video {
+        max-width: 100%;
+        border-radius: var(--r-md);
+        margin: var(--s-5) auto;
+        display: block;
+      }
+
+      .prose hr {
+        border: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--n-3), transparent);
+        margin: var(--s-6) 0;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: var(--r-sm);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="reading-progress" id="progress-bar"></div>
+
+    <main class="shell">
+      <header class="topbar">
+        <a class="mark" href={isEnglish ? '/' : '/pt-br/'} aria-label="Diel Duarte — home">
+          <span class="mark-dot" aria-hidden="true"></span>
+          diel duarte
+        </a>
+
+        <div class="topbar-right">
+          <NavBar lang={lang} currentState="writing" />
+          <a class="lang" href={langSwitchHref} hreflang={isEnglish ? 'pt-br' : 'en'}>
+            <span aria-hidden="true">/</span> {langSwitchLabel}
+          </a>
         </div>
-        <div>
-          <p class="font-display font-semibold text-ink-800 dark:text-ivory-100">Diel Duarte</p>
-          <p class="text-sm text-ink-400 dark:text-ivory-400">Principal Engineer at Appcues</p>
+      </header>
+
+      <article class="post">
+        <header class="post-head">
+          <div class="meta">
+            <time datetime={frontmatter.date}>{formattedDate}</time>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>{totalTime}</span>
+          </div>
+
+          <h1>{frontmatter.title}</h1>
+
+          {frontmatter.description && (
+            <p class="dek">{frontmatter.description}</p>
+          )}
+
+          <div class="rule" aria-hidden="true">
+            <span class="rule-line"></span>
+            <span class="rule-dot"></span>
+          </div>
+        </header>
+
+        <div class="prose">
+          <slot />
         </div>
-      </div>
 
-      <!-- Back to home -->
-      <a
-        href={homeUrl}
-        class="inline-flex items-center gap-3 px-5 py-2.5 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-ivory-300 hover:bg-ink-800 hover:text-ivory-100 dark:hover:bg-ivory-100 dark:hover:text-ink-800 rounded-lg transition-colors duration-200 text-sm font-medium"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
-        </svg>
-        {backLabel}
-      </a>
-    </footer>
-  </div>
+        <footer class="post-foot">
+          <a class="back" href={indexHref}>
+            <span aria-hidden="true">←</span> {backLabel}
+          </a>
+        </footer>
+      </article>
 
-  <script>
-    // Reading progress indicator
-    document.addEventListener('DOMContentLoaded', () => {
-      const progressBar = document.getElementById('progress-bar');
-      const article = document.querySelector('article');
+      <footer class="foot">
+        <span>© {new Date().getFullYear()} Diel Duarte</span>
+        <span class="foot-sep" aria-hidden="true">·</span>
+        <span>{isEnglish ? 'the whole thing is a tree' : 'a coisa toda é uma árvore'}</span>
+      </footer>
+    </main>
 
-      if (progressBar && article) {
-        const updateProgress = () => {
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('progress-bar');
+        const article = document.querySelector('article');
+        if (!progressBar || !article) return;
+
+        const update = () => {
           const scrollTop = window.scrollY;
-          const docHeight = article.offsetHeight + article.offsetTop - window.innerHeight;
-          const progress = Math.min(Math.max((scrollTop / docHeight) * 100, 0), 100);
-          progressBar.style.width = `${progress}%`;
+          const docHeight =
+            (article as HTMLElement).offsetHeight +
+            (article as HTMLElement).offsetTop -
+            window.innerHeight;
+          const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
+          (progressBar as HTMLElement).style.transform = `scaleX(${progress})`;
         };
 
-        window.addEventListener('scroll', updateProgress, { passive: true });
-        updateProgress();
-      }
-    });
-  </script>
-</body>
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      });
+    </script>
 
+    <style>
+      .shell {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: var(--s-5) var(--s-5) var(--s-6);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        color: var(--n-5);
+        padding-bottom: var(--s-5);
+        gap: var(--s-4);
+        flex-wrap: wrap;
+      }
+
+      .topbar-right {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-5);
+      }
+
+      .mark {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+        color: var(--n-6);
+        transition: color var(--t-3) var(--ease);
+      }
+
+      .mark:hover { color: var(--n-7); }
+
+      .mark-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: var(--r-full);
+        background: var(--accent);
+        box-shadow: 0 0 12px color-mix(in oklab, var(--accent) 45%, transparent);
+      }
+
+      .lang {
+        color: var(--n-5);
+        transition: color var(--t-3) var(--ease);
+      }
+
+      .lang:hover { color: var(--n-7); }
+      .lang:active { transform: scale(0.97); }
+
+      .post {
+        padding: var(--s-5) 0 var(--s-6);
+      }
+
+      .post-head {
+        margin-bottom: var(--s-6);
+        max-width: 62ch;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        color: var(--accent);
+        margin-bottom: var(--s-4);
+      }
+
+      .meta .sep { color: var(--n-4); }
+      .meta span:last-child { color: var(--n-5); }
+
+      .post-head h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4.5vw + 0.5rem, var(--fs-3xl));
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+        color: var(--n-7);
+        margin: 0 0 var(--s-4) 0;
+        font-weight: 600;
+      }
+
+      .dek {
+        font-size: var(--fs-md);
+        line-height: var(--lh-read);
+        color: var(--n-5);
+        margin: 0;
+        max-width: 58ch;
+      }
+
+      .rule {
+        margin-top: var(--s-5);
+        display: flex;
+        align-items: center;
+        gap: var(--s-2);
+      }
+
+      .rule-line {
+        width: 48px;
+        height: 1px;
+        background: var(--accent);
+      }
+
+      .rule-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: var(--r-full);
+        background: var(--accent);
+      }
+
+      .post-foot {
+        margin-top: var(--s-6);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--s-4);
+      }
+
+      .back {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        color: var(--n-5);
+        padding: var(--s-2) var(--s-3);
+        border: 1px solid var(--n-3);
+        border-radius: var(--r-md);
+        transition:
+          color var(--t-3) var(--ease),
+          background-color var(--t-3) var(--ease),
+          border-color var(--t-3) var(--ease),
+          transform var(--t-2) var(--ease);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .back:hover {
+          color: var(--n-7);
+          border-color: var(--accent);
+          background: color-mix(in oklab, var(--accent) 8%, transparent);
+        }
+      }
+
+      .back:active { transform: scale(0.97); }
+
+      .foot {
+        display: flex;
+        align-items: center;
+        gap: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+      }
+
+      .foot-sep { color: var(--n-4); }
+
+      @media (max-width: 640px) {
+        .shell { padding: var(--s-4) var(--s-4) var(--s-5); }
+        .topbar-right { gap: var(--s-3); }
+      }
+    </style>
+  </body>
 </html>

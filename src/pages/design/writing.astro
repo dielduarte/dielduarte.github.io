@@ -1,0 +1,497 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../../styles/tokens.css';
+import { format } from 'date-fns';
+import TimelineFlow from '../../components/writing/TimelineFlow.tsx';
+
+interface Frontmatter {
+  title: string;
+  description: string;
+  date: string;
+  slug: string;
+}
+
+const posts = await Astro.glob<Frontmatter>('../blog/en/**/*.md');
+const sorted = [...posts].sort(
+  (a, b) =>
+    new Date(b.frontmatter.date).getTime() -
+    new Date(a.frontmatter.date).getTime()
+);
+
+const flowPosts = sorted.map((p) => ({
+  title: p.frontmatter.title,
+  description: p.frontmatter.description,
+  date: p.frontmatter.date,
+  slug: p.frontmatter.slug,
+}));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design · writing list — three options</title>
+    <meta name="description" content="Three exploratory layouts for the writing index." />
+
+    <style is:global>
+      :root { color-scheme: dark; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--n-0);
+        color: var(--n-6);
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a { color: inherit; text-decoration: none; }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="shell">
+      <header class="page-head">
+        <p class="mono-note">design · writing index</p>
+        <h1>Three options.</h1>
+        <p class="lede">
+          Pick a direction for the writing list. Each uses the same ten posts.
+          Hover to feel it. Same tokens, same typeface, same accent — very different rhythms.
+        </p>
+      </header>
+
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION A — Spine (state-timeline, vertical)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="a">
+        <div class="opt-head">
+          <span class="opt-tag">Option A</span>
+          <h2>Spine</h2>
+          <p class="opt-desc">
+            Vertical spine, each post a node on the machine. State ids.
+            Editorial display title, body description. Dot fills accent on hover.
+            Calmly on-brand — reads as a side-view of the writing state's substates.
+          </p>
+        </div>
+
+        <div class="opt-body a-body">
+          <ol class="a-entries">
+            {sorted.map((post, i) => {
+              const id = String(i + 1).padStart(2, '0');
+              return (
+                <li class="a-entry">
+                  <a class="a-link" href={`/blog/${post.frontmatter.slug}/`}>
+                    <span class="a-dot" aria-hidden="true"></span>
+                    <span class="a-halo" aria-hidden="true"></span>
+                    <div class="a-meta">
+                      <span class="a-id">s_{id}</span>
+                      <span class="a-sep">·</span>
+                      <time datetime={post.frontmatter.date}>
+                        {format(new Date(post.frontmatter.date), 'MMM dd, yyyy')}
+                      </time>
+                    </div>
+                    <h3 class="a-title">{post.frontmatter.title}</h3>
+                    {post.frontmatter.description && (
+                      <p class="a-desc">{post.frontmatter.description}</p>
+                    )}
+                    <span class="a-read">enter →</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION B — Ledger (monospace log)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="b">
+        <div class="opt-head">
+          <span class="opt-tag">Option B</span>
+          <h2>Ledger</h2>
+          <p class="opt-desc">
+            Monospace log output. Aligned columns: ISO date · state id · title.
+            Reads like a process journal or kernel log — dev-native, dense, very distinctive.
+            The pipe gutter keeps it feeling like a continuous stream rather than discrete cards.
+          </p>
+        </div>
+
+        <div class="opt-body b-body">
+          <div class="b-frame">
+            <div class="b-frame-top">
+              <span class="b-dot b-dot-r"></span>
+              <span class="b-dot b-dot-y"></span>
+              <span class="b-dot b-dot-g"></span>
+              <span class="b-title-bar">~/writing — state: writing · {sorted.length} entries</span>
+            </div>
+            <ol class="b-entries">
+              {sorted.map((post, i) => {
+                const id = String(i + 1).padStart(2, '0');
+                const iso = format(new Date(post.frontmatter.date), 'yyyy.MM.dd');
+                return (
+                  <li class="b-entry">
+                    <a class="b-link" href={`/blog/${post.frontmatter.slug}/`}>
+                      <div class="b-row">
+                        <span class="b-gutter" aria-hidden="true">│</span>
+                        <span class="b-prompt">{iso}</span>
+                        <span class="b-arrow">s_{id}</span>
+                        <span class="b-title">{post.frontmatter.title}</span>
+                      </div>
+                      {post.frontmatter.description && (
+                        <div class="b-row b-row-desc">
+                          <span class="b-gutter" aria-hidden="true">│</span>
+                          <span class="b-prompt"></span>
+                          <span class="b-arrow b-indent">·</span>
+                          <span class="b-desc">{post.frontmatter.description}</span>
+                        </div>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+              <li class="b-entry b-cursor-row" aria-hidden="true">
+                <div class="b-row">
+                  <span class="b-gutter">│</span>
+                  <span class="b-prompt">&gt;</span>
+                  <span class="b-cursor"></span>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           OPTION C — Timeline (React Flow, zoomable canvas)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="option" data-opt="c">
+        <div class="opt-head">
+          <span class="opt-tag">Option C</span>
+          <h2>Timeline — zoomable</h2>
+          <p class="opt-desc">
+            Posts positioned on a 2D canvas by date. Titles dodge above and below
+            the chronology to avoid overlap; pan and zoom when clusters get dense.
+            Built on React Flow — same node/edge model as the nav machine, just
+            scaled to the archive. The MiniMap in the top right gives you overview
+            while you're zoomed in; the controls in the bottom right reset the view.
+          </p>
+        </div>
+
+        <div class="opt-body c-body">
+          <TimelineFlow client:only="react" posts={flowPosts} />
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>© {new Date().getFullYear()} Diel Duarte</span>
+        <span class="foot-sep" aria-hidden="true">·</span>
+        <span>design preview — pick one</span>
+      </footer>
+    </main>
+
+    <style>
+      .shell {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: var(--s-6) var(--s-5) var(--s-6);
+      }
+
+      .page-head { margin-bottom: var(--s-7); max-width: 56ch; }
+
+      .mono-note {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 var(--s-4) 0;
+      }
+
+      h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        color: var(--n-7);
+        margin: 0 0 var(--s-4) 0;
+        font-weight: 600;
+      }
+
+      .lede {
+        font-size: var(--fs-md);
+        line-height: var(--lh-read);
+        color: var(--n-5);
+        margin: 0;
+      }
+
+      .option {
+        margin-bottom: var(--s-8);
+        padding-top: var(--s-6);
+        border-top: 1px dashed var(--n-3);
+      }
+
+      .opt-head { margin-bottom: var(--s-5); max-width: 62ch; }
+
+      .opt-tag {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        padding: 2px 8px;
+        border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+        border-radius: var(--r-sm);
+        margin-bottom: var(--s-3);
+      }
+
+      .opt-head h2 {
+        font-family: var(--font-display);
+        font-size: var(--fs-2xl);
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+        color: var(--n-7);
+        margin: 0 0 var(--s-3) 0;
+        font-weight: 600;
+      }
+
+      .opt-desc {
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        color: var(--n-5);
+        margin: 0;
+        max-width: 62ch;
+      }
+
+      /* ═════ Option A — Spine ═════ */
+      .a-body { max-width: 780px; }
+
+      .a-entries {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+      }
+      .a-entries::before {
+        content: '';
+        position: absolute;
+        top: 22px;
+        bottom: 22px;
+        left: 11px;
+        border-left: 1px dashed var(--n-3);
+      }
+      .a-entry + .a-entry { margin-top: var(--s-2); }
+      .a-link {
+        display: block;
+        position: relative;
+        padding: var(--s-4) 52px var(--s-5) 40px;
+        color: var(--n-6);
+        border-radius: var(--r-md);
+        transition:
+          background-color var(--t-3) var(--ease),
+          transform var(--t-2) var(--ease);
+      }
+      .a-dot {
+        position: absolute;
+        top: calc(var(--s-4) + 10px);
+        left: 6px;
+        width: 11px; height: 11px;
+        border-radius: var(--r-full);
+        background: var(--n-0);
+        border: 1.5px solid var(--n-4);
+        z-index: 1;
+        transition: all var(--t-3) var(--ease);
+      }
+      .a-halo {
+        position: absolute;
+        top: calc(var(--s-4) + 4px);
+        left: 0;
+        width: 23px; height: 23px;
+        border-radius: var(--r-full);
+        background: var(--accent);
+        opacity: 0;
+        transform: scale(0.6);
+        filter: blur(6px);
+        transition: all var(--t-3) var(--ease);
+        pointer-events: none;
+      }
+      .a-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--s-2);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.04em;
+        margin-bottom: var(--s-2);
+      }
+      .a-id { color: var(--accent); }
+      .a-sep { color: var(--n-4); }
+      .a-meta time { color: var(--n-5); }
+      .a-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.25rem, 2.1vw + 0.6rem, var(--fs-xl));
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--n-7);
+        margin: 0 0 var(--s-2) 0;
+        transition: color var(--t-3) var(--ease);
+      }
+      .a-desc {
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        color: var(--n-5);
+        margin: 0;
+        max-width: 58ch;
+      }
+      .a-read {
+        display: inline-block;
+        margin-top: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.06em;
+        color: var(--n-4);
+        transition: all var(--t-3) var(--ease);
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .a-link:hover { background: color-mix(in oklab, var(--n-7) 3%, transparent); }
+        .a-link:hover .a-dot {
+          background: var(--accent);
+          border-color: var(--accent);
+          box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 20%, transparent);
+        }
+        .a-link:hover .a-halo {
+          opacity: 0.35;
+          transform: scale(1);
+        }
+        .a-link:hover .a-title { color: var(--accent); }
+        .a-link:hover .a-read { color: var(--accent); transform: translateX(4px); }
+      }
+
+      /* ═════ Option B — Ledger ═════ */
+      .b-body { max-width: 880px; }
+      .b-frame {
+        border: 1px solid var(--n-3);
+        border-radius: var(--r-md);
+        background: var(--n-1);
+        overflow: hidden;
+      }
+      .b-frame-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: var(--n-2);
+        border-bottom: 1px solid var(--n-3);
+      }
+      .b-dot {
+        width: 11px; height: 11px;
+        border-radius: var(--r-full);
+        display: inline-block;
+      }
+      .b-dot-r { background: #ff5f57; }
+      .b-dot-y { background: #febb2d; }
+      .b-dot-g { background: #28c940; }
+      .b-title-bar {
+        margin-left: 10px;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        letter-spacing: 0.02em;
+      }
+      .b-entries {
+        list-style: none;
+        margin: 0;
+        padding: var(--s-3) 0;
+      }
+      .b-entry + .b-entry { margin-top: var(--s-1); }
+      .b-link {
+        display: block;
+        padding: var(--s-2) var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        line-height: 1.55;
+        color: var(--n-6);
+        transition: background-color var(--t-3) var(--ease);
+        border-radius: var(--r-sm);
+      }
+      .b-row {
+        display: grid;
+        grid-template-columns: 18px 110px 64px 1fr;
+        align-items: baseline;
+        gap: 0;
+      }
+      .b-gutter {
+        color: var(--n-4);
+        user-select: none;
+      }
+      .b-prompt {
+        color: var(--n-5);
+        letter-spacing: 0.02em;
+      }
+      .b-arrow {
+        color: var(--accent);
+        font-weight: 500;
+      }
+      .b-indent { color: var(--n-4); }
+      .b-title {
+        color: var(--n-7);
+        font-weight: 500;
+        transition: color var(--t-3) var(--ease);
+      }
+      .b-row-desc { margin-top: 2px; }
+      .b-desc {
+        color: var(--n-5);
+        font-size: var(--fs-xs);
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .b-link:hover {
+          background: color-mix(in oklab, var(--accent) 8%, transparent);
+        }
+        .b-link:hover .b-title { color: var(--accent); }
+        .b-link:hover .b-gutter { color: var(--accent); }
+      }
+      .b-cursor-row .b-prompt { color: var(--accent); }
+      .b-cursor {
+        display: inline-block;
+        width: 7px; height: 14px;
+        background: var(--accent);
+        vertical-align: middle;
+        animation: blink 1.1s steps(2, start) infinite;
+      }
+      @keyframes blink {
+        to { visibility: hidden; }
+      }
+
+      /* ═════ Option C — Timeline (React Flow island) ═════ */
+      .c-body {
+        padding: var(--s-3) 0 0;
+      }
+
+      /* ═════ Page foot ═════ */
+      .foot {
+        margin-top: var(--s-8);
+        display: flex;
+        gap: var(--s-3);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+      }
+      .foot-sep { color: var(--n-4); }
+
+    </style>
+  </body>
+</html>

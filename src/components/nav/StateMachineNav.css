@@ -1,0 +1,161 @@
+.smn {
+  width: 100%;
+  max-width: 620px;
+  font-family: var(--font-mono);
+  color: var(--n-6);
+  user-select: none;
+}
+
+.smn svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.smn .edge {
+  stroke: var(--n-3);
+  stroke-width: 1;
+  fill: none;
+  transition: stroke var(--t-3) var(--ease);
+}
+
+.smn .edge.lit {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.smn .node {
+  cursor: pointer;
+  transition: transform var(--t-3) var(--ease);
+  transform-box: fill-box;
+  transform-origin: center;
+  outline: none;
+}
+
+.smn .node circle {
+  fill: var(--n-1);
+  stroke: var(--n-3);
+  stroke-width: 1;
+  transition:
+    fill var(--t-3) var(--ease),
+    stroke var(--t-3) var(--ease);
+}
+
+.smn .node text {
+  fill: var(--n-5);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  transition: fill var(--t-3) var(--ease);
+}
+
+.smn .node.active circle {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.smn .node.active text {
+  fill: #ffffff;
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .smn .node.reachable:hover circle {
+    stroke: var(--accent);
+  }
+  .smn .node.reachable:hover text {
+    fill: var(--n-7);
+  }
+  .smn .node.reachable:hover {
+    transform: scale(1.05);
+  }
+  .smn .node.active.reachable:hover text {
+    fill: #ffffff;
+  }
+}
+
+.smn .node.reachable:active {
+  transform: scale(0.97);
+}
+
+.smn .node.disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.smn .node.disabled circle {
+  stroke-dasharray: 3 3;
+}
+
+.smn .node:focus-visible {
+  outline: none;
+}
+
+.smn .node:focus-visible circle {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.smn .node:focus-visible + .focus-ring,
+.smn .node.focused circle {
+  stroke: var(--accent);
+}
+
+.smn .hint {
+  display: flex;
+  gap: var(--s-4);
+  margin-top: var(--s-4);
+  font-size: var(--fs-xs);
+  color: var(--n-5);
+  flex-wrap: wrap;
+}
+
+.smn .hint span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.smn .hint kbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border: 1px solid var(--n-3);
+  border-radius: var(--r-sm);
+  background: var(--n-1);
+  color: var(--n-6);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .smn .hint .kb-hint {
+    display: none;
+  }
+}
+
+.smn .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  display: inline-block;
+}
+
+.smn .dot.muted {
+  background: var(--n-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smn .node,
+  .smn .node circle,
+  .smn .node text,
+  .smn .edge {
+    transition: none;
+  }
+  .smn .node.reachable:hover,
+  .smn .node.reachable:active {
+    transform: none;
+  }
+}

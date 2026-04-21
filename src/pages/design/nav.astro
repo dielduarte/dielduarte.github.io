@@ -1,0 +1,212 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../../styles/tokens.css';
+import StateMachineNav from '../../components/nav/StateMachineNav.tsx';
+
+const machineSource = `import { setup, assign } from 'xstate';
+
+export const navMachine = setup({
+  types: {
+    context: {} as { lang: 'en' | 'pt-br' },
+    events: {} as
+      | { type: 'GO_HOME' }
+      | { type: 'GO_WRITING' }
+      | { type: 'GO_ABOUT' }
+      | { type: 'GO_CONTACT' }
+      | { type: 'SET_LANG'; lang: 'en' | 'pt-br' },
+  },
+  actions: {
+    setLang: assign({
+      lang: ({ event }) =>
+        event.type === 'SET_LANG' ? event.lang : 'en',
+    }),
+  },
+}).createMachine({
+  id: 'nav',
+  initial: 'home',
+  context: { lang: 'en' },
+  on: { SET_LANG: { actions: 'setLang' } },
+  states: {
+    home:    { on: { GO_WRITING: 'writing',
+                     GO_ABOUT:   'about',
+                     GO_CONTACT: 'contact' } },
+    writing: { on: { GO_HOME:    'home',
+                     GO_ABOUT:   'about',
+                     GO_CONTACT: 'contact' } },
+    about:   { on: { GO_HOME:    'home',
+                     GO_WRITING: 'writing',
+                     GO_CONTACT: 'contact' } },
+    contact: { on: { GO_HOME:    'home',
+                     GO_WRITING: 'writing',
+                     GO_ABOUT:   'about' } },
+  },
+});`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signature · the tree nav · Diel Duarte</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root { color-scheme: dark; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--n-0);
+        color: var(--n-6);
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: var(--s-7) var(--s-5) var(--s-8);
+      }
+
+      .mono-note {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 var(--s-3) 0;
+      }
+
+      h1 {
+        font-family: var(--font-display);
+        font-size: var(--fs-2xl);
+        line-height: var(--lh-tight);
+        letter-spacing: -0.02em;
+        margin: 0 0 var(--s-4) 0;
+        color: var(--n-7);
+        font-weight: 600;
+      }
+
+      .lede {
+        max-width: var(--measure);
+        font-size: var(--fs-md);
+        line-height: var(--lh-body);
+        color: var(--n-6);
+        margin: 0 0 var(--s-6) 0;
+      }
+
+      .lede code {
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+        color: var(--accent);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        gap: var(--s-6);
+        align-items: start;
+      }
+
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+
+      .panel {
+        background: var(--n-1);
+        border: 1px solid var(--n-3);
+        border-radius: var(--r-lg);
+        padding: var(--s-5);
+      }
+
+      .panel h2 {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--n-5);
+        margin: 0 0 var(--s-4) 0;
+        font-weight: 500;
+      }
+
+      .code {
+        margin: 0;
+        padding: var(--s-4);
+        background: var(--n-0);
+        border: 1px solid var(--n-3);
+        border-radius: var(--r-md);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        line-height: 1.55;
+        color: var(--n-6);
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .code .k { color: var(--accent); }
+
+      footer {
+        margin-top: var(--s-7);
+        padding-top: var(--s-5);
+        border-top: 1px dashed var(--n-3);
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+      }
+
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      footer a:hover { text-decoration: underline; }
+
+      .caption {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--n-5);
+        margin-top: var(--s-4);
+        max-width: 48ch;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="mono-note">phase 2 · signature</p>
+      <h1>The nav is the machine.</h1>
+      <p class="lede">
+        Six states. <code>home</code> lit. Hover a reachable node to see the edge from where you are
+        to where you'd go — <code>#3B82F6</code>, one curve, 200ms. Dashed nodes
+        (<code>lab</code>, <code>about</code>, <code>contact</code>) are future state space:
+        declared in the machine, not yet reachable. Click to navigate. Tab to focus. Enter to follow.
+      </p>
+
+      <div class="grid">
+        <div class="panel">
+          <h2>live · interact</h2>
+          <StateMachineNav client:load />
+          <p class="caption">
+            The component reads <code>window.location.pathname</code> on mount and sends the matching
+            event so the machine mirrors the URL. On this preview route there's no real state match,
+            so it stays in <code>home</code>.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2>definition · source of truth</h2>
+          <pre class="code"><code>{machineSource}</code></pre>
+        </div>
+      </div>
+
+      <footer>
+        <span>/ design / nav</span>
+        <a href="/design/">← back to system</a>
+      </footer>
+    </div>
+  </body>
+</html>

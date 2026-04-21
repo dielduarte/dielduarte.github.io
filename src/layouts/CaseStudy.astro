@@ -1,0 +1,505 @@
+---
+import ScrollCounter from '../components/ScrollCounter.astro';
+import NavBar from '../components/nav/NavBar.astro';
+import readingTime from 'reading-time'
+import { SEO } from "astro-seo";
+import { format } from 'date-fns';
+import fs from 'fs'
+
+const {frontmatter, file} = Astro.props
+
+const fileText = fs.readFileSync(file, 'utf8')
+const stats = readingTime(fileText)
+const totalTime = frontmatter.languageKey === 'en'
+  ? stats.text
+  : `${Math.ceil(stats.minutes)} min de leitura`
+const socialImage = Astro.site + frontmatter.socialImage
+const formattedDate = format(new Date(frontmatter.date), 'MMMM dd, yyyy')
+
+const isEnglish = frontmatter.languageKey === 'en';
+const backLabel = isEnglish ? 'Back to all case studies' : 'Voltar para estudos de caso';
+const backUrl = isEnglish ? '/case-studies/en/' : '/case-studies/pt-br/';
+---
+
+<html lang={frontmatter.languageKey}>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <SEO
+      title={frontmatter.title}
+      description={frontmatter.description}
+      openGraph={{
+        basic: {
+          title: frontmatter.title,
+          type: "article",
+          image: socialImage ?? ''
+        }
+      }}
+      extend={{
+        meta: [
+          {
+            name: "twitter:image",
+            content: socialImage,
+          },
+          { name: "twitter:title", content: frontmatter.title },
+          { name: "twitter:site", content: '@diel_duarte' },
+          { name: "twitter:card", content: 'summary_large_image' },
+          { name: "twitter:description", content: frontmatter.description},
+        ],
+      }}
+    />
+
+  <style is:global>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 100;
+    }
+
+    /* Article content styles - Light Mode */
+    .prose-article {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.25rem;
+      line-height: 1.75;
+      color: #3D3D3B;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article {
+        color: #E0E0E0;
+      }
+    }
+
+    .prose-article p {
+      margin: 1.75rem 0;
+    }
+
+    .prose-article strong {
+      color: #1F1F1D;
+      font-weight: 600;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article strong {
+        color: #FAFAF8;
+      }
+    }
+
+    .prose-article a {
+      color: #7D6E5E;
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-size: 0% 1px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article a {
+        color: #B8A99A;
+      }
+    }
+
+    .prose-article a:hover {
+      background-size: 100% 1px;
+    }
+
+    .prose-article h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #171715;
+      margin: 3rem 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h2 {
+        color: #FAFAF8;
+      }
+    }
+
+    .prose-article h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: #1F1F1D;
+      margin: 2.5rem 0 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h3 {
+        color: #F5F5F2;
+      }
+    }
+
+    .prose-article h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1F1F1D;
+      margin: 2rem 0 0.75rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article h4 {
+        color: #F5F5F2;
+      }
+    }
+
+    .prose-article pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      overflow-x: auto;
+      background: #171715 !important;
+      border: 1px solid #2A2A28;
+    }
+
+    .prose-article code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+    }
+
+    .prose-article :not(pre) > code {
+      background: rgba(125, 110, 94, 0.1);
+      color: #635850;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article :not(pre) > code {
+        background: rgba(184, 169, 154, 0.15);
+        color: #B8A99A;
+      }
+    }
+
+    .prose-article ul, .prose-article ol {
+      margin: 1.5rem 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .prose-article ul li, .prose-article ol li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .prose-article ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.75em;
+      width: 5px;
+      height: 5px;
+      background: #7D6E5E;
+      border-radius: 50%;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article ul li::before {
+        background: #9A8B7A;
+      }
+    }
+
+    .prose-article ol {
+      counter-reset: list-counter;
+    }
+
+    .prose-article ol li {
+      counter-increment: list-counter;
+    }
+
+    .prose-article ol li::before {
+      content: counter(list-counter);
+      position: absolute;
+      left: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #7D6E5E;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article ol li::before {
+        color: #9A8B7A;
+      }
+    }
+
+    .prose-article blockquote {
+      margin: 2.5rem 0;
+      padding: 1.5rem 2rem;
+      background: rgba(125, 110, 94, 0.05);
+      border-left: 3px solid #9A8B7A;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article blockquote {
+        background: rgba(184, 169, 154, 0.05);
+        border-left-color: #7D6E5E;
+      }
+    }
+
+    .prose-article blockquote p {
+      margin: 0;
+      color: #5C5C5A;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article blockquote p {
+        color: #B8B8B5;
+      }
+    }
+
+    .prose-article img, .prose-article video {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 2.5rem auto;
+      display: block;
+    }
+
+    .prose-article hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #DCDCD7, transparent);
+      margin: 3rem 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .prose-article hr {
+        background: linear-gradient(90deg, transparent, #2A2A28, transparent);
+      }
+    }
+
+    /* Reading progress bar — animate scaleX for GPU-only path */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: #7D6E5E;
+      z-index: 1000;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 100ms linear;
+      will-change: transform;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .reading-progress {
+        background: #9A8B7A;
+      }
+    }
+
+    /* Keyboard focus ring */
+    :focus-visible {
+      outline: 2px solid #7D6E5E;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 min-h-screen transition-colors duration-200 ease-out-soft">
+  <!-- Reading progress bar -->
+  <div class="reading-progress" id="progress-bar"></div>
+
+  <div class="max-w-3xl mx-auto px-6 md:px-8 py-12 md:py-20">
+    <!-- Top nav: tree + back link -->
+    <div class="flex justify-between items-center mb-12 gap-4">
+      <NavBar lang={isEnglish ? 'en' : 'pt-br'} currentState="cases" />
+      <a
+        href={backUrl}
+        class="inline-flex items-center gap-2 text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.97] transition-[color,transform] duration-200 ease-out-soft group"
+      >
+        <svg
+          class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200 ease-out-soft"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+        </svg>
+        {backLabel}
+      </a>
+    </div>
+
+    <!-- Case Study Header -->
+    <header class="mb-12 md:mb-16">
+      <!-- Company & Meta -->
+      <div class="flex flex-wrap items-center gap-4 mb-4">
+        <span class="text-sm font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-wider">
+          {frontmatter.company}
+        </span>
+        <span class="text-ink-300 dark:text-ink-600">&middot;</span>
+        <time
+          datetime={frontmatter.date}
+          class="text-sm font-mono text-ink-400 dark:text-ivory-400"
+        >
+          {formattedDate}
+        </time>
+        <span class="text-ink-300 dark:text-ink-600">&middot;</span>
+        <span class="text-sm text-ink-400 dark:text-ivory-400 font-mono">{totalTime}</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 leading-tight tracking-tight mb-6">
+        {frontmatter.title}
+      </h1>
+
+      <!-- Description -->
+      {frontmatter.description && (
+        <p class="text-lg md:text-xl text-ink-500 dark:text-ivory-300 leading-relaxed mb-8">
+          {frontmatter.description}
+        </p>
+      )}
+
+      <!-- Meta cards: Role, Duration, Impact -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        {frontmatter.role && (
+          <div class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700">
+            <p class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1">
+              {isEnglish ? 'Role' : 'Cargo'}
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">{frontmatter.role}</p>
+          </div>
+        )}
+        {frontmatter.duration && (
+          <div class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700">
+            <p class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1">
+              {isEnglish ? 'Duration' : 'Duração'}
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">{frontmatter.duration}</p>
+          </div>
+        )}
+        {frontmatter.impact && (
+          <div class="px-4 py-3 rounded-lg bg-ivory-200/50 dark:bg-ink-800/50 border border-ivory-300 dark:border-ink-700">
+            <p class="text-xs font-semibold text-ink-400 dark:text-ivory-400 uppercase tracking-wider mb-1">
+              {isEnglish ? 'Impact' : 'Impacto'}
+            </p>
+            <p class="text-sm font-medium text-ink-700 dark:text-ivory-200">{frontmatter.impact}</p>
+          </div>
+        )}
+      </div>
+
+      <!-- Tech Stack Tags -->
+      {frontmatter.techStack && frontmatter.techStack.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-8">
+          {frontmatter.techStack.map((tech: string) => (
+            <span class="px-3 py-1 text-xs font-mono font-medium text-accent-500 dark:text-accent-300 bg-accent-500/10 dark:bg-accent-400/10 border border-accent-500/20 dark:border-accent-400/20 rounded-full">
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <!-- Decorative divider -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-px bg-accent-400 dark:bg-accent-500"></div>
+        <div class="w-1.5 h-1.5 bg-accent-400 dark:bg-accent-500 rounded-full"></div>
+      </div>
+    </header>
+
+    <!-- Article Content -->
+    <article class="prose-article">
+      <slot />
+    </article>
+
+    <!-- Article Footer -->
+    <footer class="mt-16 pt-10 border-t border-ivory-300 dark:border-ink-700">
+      <!-- Author card -->
+      <div class="flex items-center gap-5 mb-10">
+        <div class="relative">
+          <div class="absolute -inset-0.5 bg-gradient-to-br from-accent-400 to-accent-600 dark:from-accent-500 dark:to-accent-700 rounded-full opacity-50 blur-sm"></div>
+          <img
+            src="/images/diel.jpeg"
+            alt="Diel Duarte"
+            class="relative w-14 h-14 rounded-full object-cover ring-2 ring-ivory-100 dark:ring-ink-900"
+          />
+        </div>
+        <div>
+          <p class="font-display font-semibold text-ink-800 dark:text-ivory-100">Diel Duarte</p>
+          <p class="text-sm text-ink-400 dark:text-ivory-400">Principal Engineer at Appcues</p>
+        </div>
+      </div>
+
+      <!-- Back to case studies -->
+      <a
+        href={backUrl}
+        class="inline-flex items-center gap-3 px-5 py-2.5 border border-ink-200 dark:border-ink-700 text-ink-600 dark:text-ivory-300 hover:bg-ink-800 hover:text-ivory-100 dark:hover:bg-ivory-100 dark:hover:text-ink-800 active:scale-[0.97] rounded-lg transition-[background-color,color,transform] duration-200 ease-out-soft text-sm font-medium"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+        </svg>
+        {backLabel}
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Reading progress indicator
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressBar = document.getElementById('progress-bar');
+      const article = document.querySelector('article');
+
+      if (progressBar && article) {
+        const updateProgress = () => {
+          const scrollTop = window.scrollY;
+          const docHeight = article.offsetHeight + article.offsetTop - window.innerHeight;
+          const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
+          progressBar.style.transform = `scaleX(${progress})`;
+        };
+
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
+    });
+  </script>
+</body>
+
+</html>

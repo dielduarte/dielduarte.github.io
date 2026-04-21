@@ -1,0 +1,310 @@
+---
+import { format } from 'date-fns';
+import NavBar from './nav/NavBar.astro';
+
+interface CaseStudy {
+  frontmatter: {
+    title: string;
+    company: string;
+    description: string;
+    date: string;
+    languageKey: string;
+    languageLink: string;
+    slug: string;
+    techStack: string[];
+    role: string;
+    impact: string;
+  };
+}
+
+interface Props {
+  caseStudies: CaseStudy[];
+  lang: 'en' | 'pt-br';
+}
+
+const { caseStudies, lang } = Astro.props;
+
+const sortedStudies = [...caseStudies].sort((a, b) => {
+  return new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime();
+});
+
+const isEnglish = lang === 'en';
+
+const content = {
+  en: {
+    label: 'Case Studies',
+    title: 'Technical Deep Dives',
+    subtitle: 'Deep dives into technical challenges I\'ve tackled — architecture decisions, performance wins, and lessons learned.',
+    backHome: 'Back to home',
+    langSwitch: 'Ler em Português',
+    viewCase: 'Read case study',
+  },
+  'pt-br': {
+    label: 'Estudos de Caso',
+    title: 'Mergulhos Técnicos',
+    subtitle: 'Mergulhos profundos em desafios técnicos que enfrentei — decisões de arquitetura, ganhos de performance e lições aprendidas.',
+    backHome: 'Voltar ao início',
+    langSwitch: 'Read in English',
+    viewCase: 'Ler estudo de caso',
+  }
+};
+
+const t = content[lang];
+---
+
+<html lang={lang}>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diel Duarte | {t.label}</title>
+  <meta name="description" content={t.subtitle}>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style is:global>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      z-index: 100;
+    }
+
+    /* Hide scrollbar on carousel */
+    .carousel-scroll {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .carousel-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Accent underline animation */
+    .accent-link {
+      position: relative;
+      text-decoration: none;
+    }
+    .accent-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .accent-link:hover::after {
+        transform: scaleX(1);
+      }
+    }
+
+    /* Keyboard focus ring */
+    :focus-visible {
+      outline: 2px solid #7D6E5E;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 text-ink-700 dark:text-ivory-200 font-body min-h-screen transition-colors duration-200 ease-out-soft">
+
+  <!-- Subtle accent line at top -->
+  <div class="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-400 to-transparent opacity-60" aria-hidden="true"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-8 py-16 md:py-24">
+
+    <!-- Top Navigation -->
+    <div class="flex justify-between items-center mb-16">
+      <NavBar lang={lang} />
+      <a
+        href={isEnglish ? '/case-studies/pt-br/' : '/case-studies/en/'}
+        class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.97] transition-[color,transform] duration-200 ease-out-soft flex items-center gap-2"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+        </svg>
+        {t.langSwitch}
+      </a>
+    </div>
+
+    <!-- Section Header -->
+    <header class="mb-12">
+      <p class="text-xs font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-widest mb-3">
+        {t.label}
+      </p>
+      <h1 class="text-4xl md:text-5xl font-display font-bold text-ink-800 dark:text-ivory-100 tracking-tight mb-4">
+        {t.title}
+      </h1>
+      <p class="text-lg text-ink-500 dark:text-ivory-300 leading-relaxed max-w-2xl">
+        {t.subtitle}
+      </p>
+    </header>
+
+    <!-- Carousel Section -->
+    <section class="relative" aria-label={t.label}>
+      <!-- Arrow buttons -->
+      <button
+        id="scroll-left"
+        class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-ivory-100 dark:bg-ink-800 border border-ivory-300 dark:border-ink-700 text-ink-500 dark:text-ivory-300 hover:bg-ivory-200 dark:hover:bg-ink-700 hover:scale-105 active:scale-95 transition-[background-color,transform,opacity] duration-200 ease-out-soft shadow-sm"
+        aria-label="Scroll left"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+
+      <button
+        id="scroll-right"
+        class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-ivory-100 dark:bg-ink-800 border border-ivory-300 dark:border-ink-700 text-ink-500 dark:text-ivory-300 hover:bg-ivory-200 dark:hover:bg-ink-700 hover:scale-105 active:scale-95 transition-[background-color,transform,opacity] duration-200 ease-out-soft shadow-sm"
+        aria-label="Scroll right"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <!-- Scrollable container -->
+      <div
+        id="carousel"
+        class="carousel-scroll flex gap-6 overflow-x-auto scroll-smooth pb-4"
+        style="scroll-snap-type: x mandatory;"
+      >
+        {sortedStudies.map((study) => (
+          <a
+            href={`/case-studies/${study.frontmatter.slug}/`}
+            class="group flex-shrink-0 w-[320px] md:w-[380px] scroll-snap-start active:scale-[0.99] transition-transform duration-200 ease-out-soft"
+            style="scroll-snap-align: start;"
+          >
+            <div class="h-full p-6 rounded-xl border border-ivory-300 dark:border-ink-700 bg-ivory-50 dark:bg-ink-800/50 group-hover:border-accent-400/50 dark:group-hover:border-accent-500/40 group-hover:bg-ivory-200/30 dark:group-hover:bg-ink-800 transition-[background-color,border-color] duration-200 ease-out-soft">
+              <!-- Company -->
+              <p class="text-xs font-semibold text-accent-500 dark:text-accent-400 uppercase tracking-wider mb-3">
+                {study.frontmatter.company}
+              </p>
+
+              <!-- Title -->
+              <h3 class="text-xl font-display font-bold text-ink-800 dark:text-ivory-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-200 ease-out-soft mb-3 leading-snug">
+                {study.frontmatter.title}
+              </h3>
+
+              <!-- Description -->
+              <p class="text-sm text-ink-500 dark:text-ivory-300 leading-relaxed mb-5 line-clamp-2">
+                {study.frontmatter.description}
+              </p>
+
+              <!-- Impact -->
+              {study.frontmatter.impact && (
+                <p class="text-xs font-mono text-accent-500 dark:text-accent-400 mb-5">
+                  {study.frontmatter.impact}
+                </p>
+              )}
+
+              <!-- Tech Stack -->
+              {study.frontmatter.techStack && (
+                <div class="flex flex-wrap gap-1.5 mb-5">
+                  {study.frontmatter.techStack.slice(0, 4).map((tech: string) => (
+                    <span class="px-2 py-0.5 text-[10px] font-mono font-medium text-ink-400 dark:text-ivory-400 bg-ivory-200/80 dark:bg-ink-700/80 rounded-full">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <!-- Read link -->
+              <span class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 dark:text-ivory-400 group-hover:text-ink-700 dark:group-hover:text-ivory-100 transition-colors duration-200 ease-out-soft">
+                {t.viewCase}
+                <svg
+                  class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 ease-out-soft"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-24 pt-8 border-t border-ivory-300 dark:border-ink-700">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-ink-400 dark:text-ivory-400">
+        <p>
+          &copy; {new Date().getFullYear()} Diel Duarte
+        </p>
+        <p class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-accent-500 rounded-full"></span>
+          {isEnglish ? 'Building things for the web' : 'Construindo coisas para a web'}
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const carousel = document.getElementById('carousel');
+      const leftBtn = document.getElementById('scroll-left');
+      const rightBtn = document.getElementById('scroll-right');
+
+      if (!carousel || !leftBtn || !rightBtn) return;
+
+      const scrollAmount = 400;
+
+      const updateArrows = () => {
+        const { scrollLeft, scrollWidth, clientWidth } = carousel;
+        leftBtn.style.opacity = scrollLeft <= 0 ? '0' : '1';
+        leftBtn.style.pointerEvents = scrollLeft <= 0 ? 'none' : 'auto';
+        rightBtn.style.opacity = scrollLeft + clientWidth >= scrollWidth - 1 ? '0' : '1';
+        rightBtn.style.pointerEvents = scrollLeft + clientWidth >= scrollWidth - 1 ? 'none' : 'auto';
+      };
+
+      leftBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+
+      rightBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+
+      carousel.addEventListener('scroll', updateArrows, { passive: true });
+      updateArrows();
+    });
+  </script>
+</body>
+</html>

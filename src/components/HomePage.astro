@@ -1,5 +1,6 @@
 ---
 import { format } from 'date-fns';
+import NavBar from './nav/NavBar.astro';
 
 interface Post {
   frontmatter: {
@@ -39,6 +40,7 @@ const content = {
     role: 'Principal Engineer at Appcues',
     bio: "I'm a software engineer with over a decade of experience across the stack, though my heart is in web development and JavaScript. My mission is to bridge the gap between speed and quality—shaping frontend architecture and developer experience so teams can ship great work without friction.",
     writings: 'Writings',
+    caseStudies: 'Case Studies',
     connect: 'Connect',
     readMore: 'Read article',
     langSwitch: 'Ler em Português',
@@ -47,6 +49,7 @@ const content = {
     role: 'Principal Engineer na Appcues',
     bio: "Engenheiro de software com mais de 10 anos de experiência full-stack, especializado em web e JavaScript. Como Principal Engineer na Appcues, foco em equilibrar agilidade e qualidade. Moldo a arquitetura frontend e o DX para garantir que o time avance rápido e mantenha um alto padrão de entrega.",
     writings: 'Artigos',
+    caseStudies: 'Estudos de Caso',
     connect: 'Conectar',
     readMore: 'Ler artigo',
     langSwitch: 'Read in English',
@@ -89,13 +92,34 @@ const t = content[lang];
       position: absolute;
       bottom: -2px;
       left: 0;
-      width: 0;
+      width: 100%;
       height: 1px;
       background: currentColor;
-      transition: width 0.3s ease;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .accent-link:hover::after {
-      width: 100%;
+    @media (hover: hover) and (pointer: fine) {
+      .accent-link:hover::after {
+        transform: scaleX(1);
+      }
+    }
+
+    /* Keyboard focus ring */
+    :focus-visible {
+      outline: 2px solid #7D6E5E;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
 
     /* Noise texture overlay */
@@ -114,7 +138,7 @@ const t = content[lang];
   </style>
 </head>
 
-<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 text-ink-700 dark:text-ivory-200 font-body min-h-screen transition-colors duration-300">
+<body class="noise-overlay bg-ivory-100 dark:bg-ink-900 text-ink-700 dark:text-ivory-200 font-body min-h-screen transition-colors duration-200 ease-out-soft">
 
   <!-- Subtle accent line at top -->
   <div class="fixed top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-400 to-transparent opacity-60" aria-hidden="true"></div>
@@ -123,18 +147,21 @@ const t = content[lang];
 
     <!-- Header / Hero Section -->
     <header class="mb-20 md:mb-28">
-      <!-- Language Switcher -->
-      <nav class="flex justify-end mb-12 opacity-0 animate-fade-up" aria-label="Language">
-        <a
-          href={isEnglish ? '/pt-br/' : '/'}
-          class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200 flex items-center gap-2"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-          </svg>
-          {t.langSwitch}
-        </a>
-      </nav>
+      <!-- Top bar: tree nav + language switcher -->
+      <div class="flex justify-between items-center mb-12 opacity-0 animate-fade-up">
+        <NavBar lang={lang} />
+        <nav aria-label="Language">
+          <a
+            href={isEnglish ? '/pt-br/' : '/'}
+            class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.97] transition-[color,transform] duration-200 ease-out-soft flex items-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            {t.langSwitch}
+          </a>
+        </nav>
+      </div>
 
       <!-- Hero Content -->
       <div class="flex flex-col md:flex-row md:items-start gap-8 md:gap-16">
@@ -170,7 +197,7 @@ const t = content[lang];
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 transition-colors duration-200"
+                class="inline-block text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 active:scale-[0.92] transition-[color,transform] duration-200 ease-out-soft"
                 aria-label={link.label}
               >
                 {link.icon === 'github' && (
@@ -196,6 +223,13 @@ const t = content[lang];
               class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 accent-link transition-colors duration-200"
             >
               magdiel.kesller@gmail.com
+            </a>
+            <span class="text-ink-300 dark:text-ink-600">|</span>
+            <a
+              href={isEnglish ? '/case-studies/en/' : '/case-studies/pt-br/'}
+              class="text-sm text-ink-400 dark:text-ivory-400 hover:text-ink-700 dark:hover:text-ivory-100 accent-link transition-colors duration-200"
+            >
+              {t.caseStudies}
             </a>
           </div>
         </div>
@@ -224,7 +258,7 @@ const t = content[lang];
           >
             <a
               href={`/blog/${post.frontmatter.slug}/`}
-              class="block p-6 md:p-8 -mx-6 md:-mx-8 rounded-xl hover:bg-ivory-200/50 dark:hover:bg-ink-800/50 transition-all duration-300"
+              class="block p-6 md:p-8 -mx-6 md:-mx-8 rounded-xl hover:bg-ivory-200/50 dark:hover:bg-ink-800/50 active:scale-[0.995] transition-[background-color,transform] duration-200 ease-out-soft"
             >
               <!-- Date badge -->
               <div class="flex items-center gap-4 mb-3">
@@ -247,10 +281,10 @@ const t = content[lang];
               </p>
 
               <!-- Read more link -->
-              <span class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 dark:text-ivory-400 group-hover:text-ink-700 dark:group-hover:text-ivory-100 transition-colors">
+              <span class="inline-flex items-center gap-2 text-sm font-medium text-ink-400 dark:text-ivory-400 group-hover:text-ink-700 dark:group-hover:text-ivory-100 transition-colors duration-200 ease-out-soft">
                 {t.readMore}
                 <svg
-                  class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200"
+                  class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 ease-out-soft"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -260,7 +294,7 @@ const t = content[lang];
               </span>
 
               <!-- Decorative corner -->
-              <div class="absolute top-6 right-6 w-8 h-8 border-t border-r border-transparent group-hover:border-ink-200 dark:group-hover:border-ink-700 rounded-tr-lg transition-colors duration-300" aria-hidden="true"></div>
+              <div class="absolute top-6 right-6 w-8 h-8 border-t border-r border-transparent group-hover:border-ink-200 dark:group-hover:border-ink-700 rounded-tr-lg transition-colors duration-200 ease-out-soft" aria-hidden="true"></div>
             </a>
           </article>
         ))}
@@ -302,7 +336,7 @@ const t = content[lang];
       articles.forEach((article, index) => {
         article.style.opacity = '0';
         article.style.transform = 'translateY(20px)';
-        article.style.transition = `opacity 0.5s ease ${index * 0.05}s, transform 0.5s ease ${index * 0.05}s`;
+        article.style.transition = `opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) ${index * 0.05}s, transform 400ms cubic-bezier(0.23, 1, 0.32, 1) ${index * 0.05}s`;
         observer.observe(article);
       });
     });

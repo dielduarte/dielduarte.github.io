@@ -1,0 +1,250 @@
+---
+import PageV2 from '../../layouts/PageV2.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt-br' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'en' | 'pt-br' };
+
+const content = {
+  en: {
+    title: 'Contact — Diel Duarte',
+    description: 'Get in touch with Diel Duarte — email, GitHub, LinkedIn, Twitter.',
+    langSwitchHref: '/contact/pt-br/',
+    headline: 'Contact.',
+    monoNote: 'reachable · in the contact node',
+    lede: "The best way to reach me is email. I read everything; I reply when I have something worth saying. For quick stuff, Twitter DMs are open.",
+    channelsHeading: 'Channels',
+    footnote: "No calendar links, no intake forms. If the email prompts a real conversation, we'll find a time.",
+  },
+  'pt-br': {
+    title: 'Contato — Diel Duarte',
+    description: 'Fale com Diel Duarte — email, GitHub, LinkedIn, Twitter.',
+    langSwitchHref: '/contact/en/',
+    headline: 'Contato.',
+    monoNote: 'acessível · no nó contact',
+    lede: "A melhor forma de me alcançar é por email. Leio tudo; respondo quando tenho algo que vale a pena dizer. Para coisas rápidas, DM no Twitter funciona.",
+    channelsHeading: 'Canais',
+    footnote: "Sem link de calendário, sem formulário. Se o email virar uma conversa de verdade, a gente marca um horário.",
+  },
+};
+
+const t = content[lang];
+
+const channels = [
+  {
+    label: 'Email',
+    handle: 'magdiel.kesller@gmail.com',
+    href: 'mailto:magdiel.kesller@gmail.com',
+    primary: true,
+  },
+  {
+    label: 'GitHub',
+    handle: 'dielduarte',
+    href: 'https://github.com/dielduarte',
+    primary: false,
+  },
+  {
+    label: 'LinkedIn',
+    handle: 'in/dielduarte',
+    href: 'https://www.linkedin.com/in/dielduarte/',
+    primary: false,
+  },
+  {
+    label: 'Twitter',
+    handle: '@diel_duarte',
+    href: 'https://twitter.com/diel_duarte',
+    primary: false,
+  },
+];
+---
+
+<PageV2
+  lang={lang}
+  title={t.title}
+  description={t.description}
+  currentState="contact"
+  langSwitchHref={t.langSwitchHref}
+>
+  <section class="contact">
+    <p class="mono-note">{t.monoNote}</p>
+    <h1>{t.headline}</h1>
+    <p class="lede">{t.lede}</p>
+
+    <div class="channels">
+      <h2>{t.channelsHeading}</h2>
+      <ul>
+        {channels.map((c) => (
+          <li class:list={['ch', c.primary && 'primary']}>
+            <a
+              href={c.href}
+              target={c.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={c.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+            >
+              <span class="ch-label">{c.label}</span>
+              <span class="ch-handle">{c.handle}</span>
+              <span class="ch-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <p class="footnote">{t.footnote}</p>
+  </section>
+</PageV2>
+
+<style>
+  .contact {
+    max-width: 62ch;
+  }
+
+  .mono-note {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--s-4) 0;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--n-7);
+    margin: 0 0 var(--s-5) 0;
+    font-weight: 600;
+  }
+
+  .lede {
+    font-size: var(--fs-md);
+    line-height: var(--lh-read);
+    color: var(--n-6);
+    margin: 0 0 var(--s-6) 0;
+    max-width: 52ch;
+  }
+
+  .channels h2 {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--s-4) 0;
+    font-weight: 400;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--n-3);
+    border: 1px solid var(--n-3);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+
+  .ch a {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: baseline;
+    gap: var(--s-4);
+    padding: var(--s-4);
+    background: var(--n-0);
+    transition:
+      background-color var(--t-3) var(--ease),
+      color var(--t-3) var(--ease),
+      transform var(--t-2) var(--ease);
+    color: var(--n-6);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ch a:hover {
+      background: var(--n-1);
+      color: var(--n-7);
+    }
+    .ch a:hover .ch-arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+  }
+
+  .ch a:active {
+    transform: scale(0.995);
+  }
+
+  .ch a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    background: var(--n-1);
+  }
+
+  .ch.primary a {
+    background: color-mix(in oklab, var(--accent) 7%, var(--n-0));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ch.primary a:hover {
+      background: color-mix(in oklab, var(--accent) 14%, var(--n-0));
+    }
+  }
+
+  .ch-label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--n-5);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+
+  .ch.primary .ch-label {
+    color: var(--accent);
+  }
+
+  .ch-handle {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--n-7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ch-arrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--n-5);
+    transition:
+      transform var(--t-3) var(--ease),
+      color var(--t-3) var(--ease);
+  }
+
+  .footnote {
+    margin-top: var(--s-5);
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-body);
+    color: var(--n-5);
+    padding: var(--s-3) var(--s-4);
+    border-left: 1px dashed var(--n-3);
+    max-width: 58ch;
+  }
+
+  @media (max-width: 540px) {
+    .ch a {
+      grid-template-columns: 1fr auto;
+      gap: var(--s-2);
+    }
+    .ch-label {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

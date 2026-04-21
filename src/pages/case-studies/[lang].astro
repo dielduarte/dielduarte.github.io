@@ -1,0 +1,30 @@
+---
+import CaseStudyList from '../../components/CaseStudyList.astro';
+
+interface Frontmatter {
+  title: string;
+  company: string;
+  description: string;
+  date: string;
+  languageKey: string;
+  languageLink: string;
+  slug: string;
+  techStack: string[];
+  role: string;
+  impact: string;
+}
+
+export async function getStaticPaths() {
+  const enStudies = await Astro.glob<Frontmatter>('./en/**/*.md');
+  const ptBrStudies = await Astro.glob<Frontmatter>('./pt-br/**/*.md');
+
+  return [
+    { params: { lang: 'en' }, props: { caseStudies: enStudies, lang: 'en' } },
+    { params: { lang: 'pt-br' }, props: { caseStudies: ptBrStudies, lang: 'pt-br' } },
+  ];
+}
+
+const { caseStudies, lang } = Astro.props;
+---
+
+<CaseStudyList caseStudies={caseStudies} lang={lang} />

@@ -1,5 +1,6 @@
 ---
-import HomePage from '../../components/HomePage.astro';
+import { format } from 'date-fns';
+import PageV2 from '../../layouts/PageV2.astro';
 
 interface Frontmatter {
   title: string;
@@ -12,16 +13,277 @@ interface Frontmatter {
 }
 
 export async function getStaticPaths() {
-  const enPosts = await Astro.glob<Frontmatter>('./en/**/*.md')
-  const ptBrPosts = await Astro.glob<Frontmatter>('./pt-br/**/*.md')
-  
+  const enPosts = await Astro.glob<Frontmatter>('./en/**/*.md');
+  const ptBrPosts = await Astro.glob<Frontmatter>('./pt-br/**/*.md');
+
   return [
-    {params: {lang: 'en'}, props: {posts: enPosts, lang: 'en'}},
-    {params: {lang: 'pt-br'}, props: {posts: ptBrPosts, lang: 'pt-br'}},
+    { params: { lang: 'en' }, props: { posts: enPosts, lang: 'en' } },
+    { params: { lang: 'pt-br' }, props: { posts: ptBrPosts, lang: 'pt-br' } },
   ];
 }
 
-const { posts, lang } = Astro.props;
+const { posts, lang } = Astro.props as {
+  posts: Array<{ frontmatter: Frontmatter }>;
+  lang: 'en' | 'pt-br';
+};
+
+const sortedPosts = [...posts].sort(
+  (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
+);
+
+const content = {
+  en: {
+    title: 'Writing — Diel Duarte',
+    description: 'Essays on state charts, XState, code splitting, and the architecture of legible UI.',
+    langSwitchHref: '/blog/pt-br/',
+    headline: 'Writing.',
+    monoNote: 'the index · in the writing node',
+    lede: 'Notes on state charts, XState, code splitting, and the architecture of legible UI.',
+    count: (n: number) => `${n} ${n === 1 ? 'entry' : 'entries'}`,
+    empty: 'No entries yet.',
+    col: { date: 'date', state: 'state', entry: 'entry' },
+  },
+  'pt-br': {
+    title: 'Artigos — Diel Duarte',
+    description: 'Ensaios sobre state charts, XState, code splitting e a arquitetura de UIs legíveis.',
+    langSwitchHref: '/blog/en/',
+    headline: 'Artigos.',
+    monoNote: 'o índice · no nó writing',
+    lede: 'Notas sobre state charts, XState, code splitting e a arquitetura de UIs legíveis.',
+    count: (n: number) => `${n} ${n === 1 ? 'entrada' : 'entradas'}`,
+    empty: 'Ainda sem entradas.',
+    col: { date: 'data', state: 'estado', entry: 'entrada' },
+  },
+};
+
+const t = content[lang];
 ---
 
-<HomePage posts={posts} lang={lang} />
+<PageV2
+  lang={lang}
+  title={t.title}
+  description={t.description}
+  currentState="writing"
+  langSwitchHref={t.langSwitchHref}
+>
+  <section class="writing">
+    <header class="head">
+      <p class="mono-note">{t.monoNote}</p>
+      <h1>{t.headline}</h1>
+      <p class="lede">{t.lede}</p>
+    </header>
+
+    {sortedPosts.length === 0 ? (
+      <p class="empty">{t.empty}</p>
+    ) : (
+      <div class="ledger">
+        <div class="ledger-head" aria-hidden="true">
+          <span class="col-date">{t.col.date}</span>
+          <span class="col-entry">{t.col.entry}</span>
+          <span class="col-count">{t.count(sortedPosts.length)}</span>
+        </div>
+
+        <ol class="rows">
+          {sortedPosts.map((post) => {
+            const iso = format(new Date(post.frontmatter.date), 'yyyy.MM.dd');
+            return (
+              <li class="row">
+                <a href={`/blog/${post.frontmatter.slug}/`} class="row-link">
+                  <time class="row-date" datetime={post.frontmatter.date}>{iso}</time>
+                  <div class="row-entry">
+                    <h2 class="row-title">{post.frontmatter.title}</h2>
+                    {post.frontmatter.description && (
+                      <p class="row-desc">{post.frontmatter.description}</p>
+                    )}
+                  </div>
+                  <span class="row-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    )}
+  </section>
+</PageV2>
+
+<style>
+  .writing { max-width: 920px; }
+
+  .head {
+    margin-bottom: var(--s-6);
+    max-width: 62ch;
+  }
+
+  .mono-note {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--s-4) 0;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--n-7);
+    margin: 0 0 var(--s-4) 0;
+    font-weight: 600;
+  }
+
+  .lede {
+    font-size: var(--fs-md);
+    line-height: var(--lh-read);
+    color: var(--n-6);
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  .empty {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--n-5);
+  }
+
+  /* ───── Ledger ───── */
+  .ledger {
+    border-top: 1px solid var(--n-3);
+  }
+
+  .ledger-head {
+    display: grid;
+    grid-template-columns: 108px 1fr auto;
+    gap: var(--s-4);
+    align-items: baseline;
+    padding: var(--s-3) var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--n-4);
+    border-bottom: 1px dashed var(--n-3);
+  }
+
+  .col-count {
+    color: var(--n-5);
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .row {
+    border-bottom: 1px dashed var(--n-3);
+  }
+
+  .row-link {
+    display: grid;
+    grid-template-columns: 108px 1fr 20px;
+    gap: var(--s-4);
+    align-items: baseline;
+    padding: var(--s-4) var(--s-2);
+    color: var(--n-6);
+    position: relative;
+    transition: background-color var(--t-3) var(--ease);
+  }
+
+  .row-date {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.04em;
+    color: var(--n-5);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--t-3) var(--ease);
+  }
+
+  .row-entry {
+    min-width: 0;
+  }
+
+  .row-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.2vw + 0.7rem, var(--fs-md));
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    color: var(--n-7);
+    margin: 0;
+    transition: color var(--t-3) var(--ease);
+  }
+
+  .row-desc {
+    font-size: var(--fs-sm);
+    line-height: var(--lh-body);
+    color: var(--n-5);
+    margin: var(--s-2) 0 0 0;
+    max-width: 56ch;
+  }
+
+  .row-arrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--n-4);
+    justify-self: end;
+    align-self: center;
+    transition:
+      color var(--t-3) var(--ease),
+      transform var(--t-3) var(--ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .row-link:hover {
+      background: color-mix(in oklab, var(--accent) 5%, transparent);
+    }
+    .row-link:hover .row-title { color: var(--accent); }
+    .row-link:hover .row-date { color: var(--n-6); }
+    .row-link:hover .row-arrow {
+      color: var(--accent);
+      transform: translateX(3px);
+    }
+  }
+
+  .row-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .row-link:active {
+    background: color-mix(in oklab, var(--accent) 9%, transparent);
+  }
+
+  @media (max-width: 640px) {
+    .ledger-head {
+      grid-template-columns: 92px 1fr;
+      gap: var(--s-3);
+    }
+    .ledger-head .col-count { display: none; }
+
+    .row-link {
+      grid-template-columns: 92px 1fr;
+      gap: var(--s-3);
+      padding: var(--s-3) var(--s-2);
+    }
+    .row-arrow { display: none; }
+
+    .row-title { font-size: 1.05rem; }
+  }
+
+  @media (max-width: 480px) {
+    .ledger-head { display: none; }
+
+    .row-link {
+      grid-template-columns: 1fr;
+      gap: var(--s-1);
+    }
+    .row-date {
+      display: inline;
+    }
+  }
+</style>

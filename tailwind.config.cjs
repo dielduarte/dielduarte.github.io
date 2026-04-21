@@ -2,6 +2,9 @@
 module.exports = {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	darkMode: 'media',
+	future: {
+		hoverOnlyWhenSupported: true,
+	},
 	theme: {
 		extend: {
 			fontFamily: {
@@ -40,12 +43,17 @@ module.exports = {
 					700: '#4A4238',
 				},
 			},
+			transitionTimingFunction: {
+				'out-soft': 'cubic-bezier(0.23, 1, 0.32, 1)',
+				'in-out-soft': 'cubic-bezier(0.77, 0, 0.175, 1)',
+				'drawer': 'cubic-bezier(0.32, 0.72, 0, 1)',
+			},
 			animation: {
-				'fade-up': 'fadeUp 0.6s ease-out forwards',
-				'fade-up-delay-1': 'fadeUp 0.6s ease-out 0.1s forwards',
-				'fade-up-delay-2': 'fadeUp 0.6s ease-out 0.2s forwards',
-				'fade-up-delay-3': 'fadeUp 0.6s ease-out 0.3s forwards',
-				'draw-line': 'drawLine 0.4s ease-out forwards',
+				'fade-up': 'fadeUp 500ms cubic-bezier(0.23, 1, 0.32, 1) forwards',
+				'fade-up-delay-1': 'fadeUp 500ms cubic-bezier(0.23, 1, 0.32, 1) 0.1s forwards',
+				'fade-up-delay-2': 'fadeUp 500ms cubic-bezier(0.23, 1, 0.32, 1) 0.2s forwards',
+				'fade-up-delay-3': 'fadeUp 500ms cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards',
+				'draw-line': 'drawLine 400ms cubic-bezier(0.23, 1, 0.32, 1) forwards',
 				'subtle-float': 'subtleFloat 6s ease-in-out infinite',
 			},
 			keyframes: {
