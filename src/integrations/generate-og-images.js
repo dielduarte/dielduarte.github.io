@@ -5,6 +5,15 @@ import { fileURLToPath } from 'node:url';
 import fm from 'front-matter';
 import puppeteer from 'puppeteer';
 
+function resolveChromeExecutable() {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
+  if (process.platform === 'darwin') {
+    const systemChrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+    if (fs.existsSync(systemChrome)) return systemChrome;
+  }
+  return undefined;
+}
+
 const GEIST = path.resolve(
   'node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2',
 );
@@ -183,6 +192,7 @@ export default ({ filterRoutes, getImagePath }) => ({
 
       const browser = await puppeteer.launch({
         headless: 'new',
+        executablePath: resolveChromeExecutable(),
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
 

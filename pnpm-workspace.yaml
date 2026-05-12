@@ -1,0 +1,6 @@
+allowBuilds:
+  core-js: true
+  esbuild: true
+  phantomjs-prebuilt: true
+  puppeteer: true
+  sharp: true
