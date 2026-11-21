@@ -27,6 +27,8 @@ const otherLang = lang === 'en' ? 'pt-br' : 'en';
               class:list={['state', { active }]}
               href={node.href?.[lang]}
               aria-current={active ? 'page' : undefined}
+              transition:name={`state-${node.id}`}
+              transition:animate="initial"
             >
               {node.labels[lang]}
             </a>
