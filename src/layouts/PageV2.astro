@@ -8,6 +8,7 @@ import { ViewTransitions } from 'astro:transitions';
 import StateBar from '../components/grid/StateBar.astro';
 import type { Lang, NavStateId } from '../components/nav/navMachine';
 import { ogImagePath } from '../lib/og-pages.mjs';
+import { alternateLinks } from '../lib/alternates';
 
 interface Props {
   lang: Lang;
@@ -24,6 +25,7 @@ const { lang, title, description, currentState, langSwitchHref, image, type = 'w
 const isEnglish = lang === 'en';
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 const imageUrl = new URL(image ?? ogImagePath('home', lang), Astro.site).href;
+const alternates = alternateLinks({ lang, pathname: Astro.url.pathname, langSwitchHref, site: Astro.site! });
 ---
 
 <html lang={lang}>
@@ -33,7 +35,7 @@ const imageUrl = new URL(image ?? ogImagePath('home', lang), Astro.site).href;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={pageUrl} />
-    <link rel="alternate" hreflang={isEnglish ? 'pt-br' : 'en'} href={langSwitchHref} />
+    {alternates.map(({ hreflang, href }) => <link rel="alternate" hreflang={hreflang} href={href} />)}
 
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="Diel Duarte" />
