@@ -7,6 +7,7 @@ import '../styles/tokens.css';
 import { ViewTransitions } from 'astro:transitions';
 import StateBar from '../components/grid/StateBar.astro';
 import type { Lang, NavStateId } from '../components/nav/navMachine';
+import { ogImagePath } from '../lib/og-pages.mjs';
 
 interface Props {
   lang: Lang;
@@ -14,10 +15,15 @@ interface Props {
   description?: string;
   currentState: NavStateId;
   langSwitchHref: string;
+  /** Share image, site-relative (images/og/home-en.png) or root-relative (/_astro/…). Defaults to the home card. */
+  image?: string;
+  type?: 'website' | 'article';
 }
 
-const { lang, title, description, currentState, langSwitchHref } = Astro.props;
+const { lang, title, description, currentState, langSwitchHref, image, type = 'website' } = Astro.props;
 const isEnglish = lang === 'en';
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(image ?? ogImagePath('home', lang), Astro.site).href;
 ---
 
 <html lang={lang}>
@@ -26,7 +32,21 @@ const isEnglish = lang === 'en';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={pageUrl} />
     <link rel="alternate" hreflang={isEnglish ? 'pt-br' : 'en'} href={langSwitchHref} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Diel Duarte" />
+    <meta property="og:locale" content={isEnglish ? 'en_US' : 'pt_BR'} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@diel_duarte" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={imageUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <slot name="head" />
     <ViewTransitions />

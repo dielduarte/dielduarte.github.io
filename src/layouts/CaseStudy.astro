@@ -2,7 +2,6 @@
 import PageV2 from './PageV2.astro';
 import Article from '../components/grid/Article.astro';
 import readingTime from 'reading-time';
-import { SEO } from 'astro-seo';
 import fs from 'fs';
 
 const { frontmatter, file } = Astro.props;
@@ -10,7 +9,6 @@ const { frontmatter, file } = Astro.props;
 const stats = readingTime(fs.readFileSync(file, 'utf8'));
 const isEnglish = frontmatter.languageKey === 'en';
 const lang = isEnglish ? 'en' : 'pt-br';
-const socialImage = Astro.site + frontmatter.socialImage;
 const indexHref = isEnglish ? '/case-studies/en/' : '/case-studies/pt-br/';
 const raw: string | undefined = frontmatter.languageLink;
 const langSwitchHref = raw ? (raw.endsWith('/') ? raw : `${raw}/`) : isEnglish ? '/case-studies/pt-br/' : '/case-studies/en/';
@@ -28,23 +26,12 @@ const facts: Array<[string, string]> = [
 <PageV2
   lang={lang}
   title={`${frontmatter.title} — Diel Duarte`}
+  description={frontmatter.description}
   currentState="cases"
   langSwitchHref={langSwitchHref}
+  image={frontmatter.socialImage}
+  type="article"
 >
-  <SEO
-    slot="head"
-    description={frontmatter.description}
-    openGraph={{ basic: { title: frontmatter.title, type: 'article', image: socialImage ?? '' } }}
-    extend={{
-      meta: [
-        { name: 'twitter:image', content: socialImage },
-        { name: 'twitter:title', content: frontmatter.title },
-        { name: 'twitter:site', content: '@diel_duarte' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:description', content: frontmatter.description },
-      ],
-    }}
-  />
 
   <Article
     title={frontmatter.title}

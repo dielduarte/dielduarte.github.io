@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import PageV2 from '../../../layouts/PageV2.astro';
 import type { Lang } from '../../../components/nav/navMachine';
 import {
@@ -36,6 +36,8 @@ const t = {
 }[lang];
 
 const d = photo.data;
+// Share the photo itself, as a JPEG wide enough for large link previews.
+const shareImage = await getImage({ src: d.image, width: 1200, format: 'jpeg' });
 // A photo without a title or a known place yet is called by its number.
 const label = (p: Photo) => photoLabel(p, lang) ?? `${t.numbered} ${plateNumber(photos, p)}`;
 const facts = [
@@ -54,6 +56,7 @@ const hasNeighbours = photos.length > 1;
   title={`${label(photo)} — ${t.back} — Diel Duarte`}
   description={d.alt[lang]}
   currentState="photos"
+  image={shareImage.src}
   langSwitchHref={photoHref(other, photo)}
 >
   <article class="frame">

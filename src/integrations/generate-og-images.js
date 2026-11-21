@@ -4,6 +4,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import fm from 'front-matter';
 import puppeteer from 'puppeteer';
+import sharp from 'sharp';
 
 function resolveChromeExecutable() {
   if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
@@ -14,21 +15,10 @@ function resolveChromeExecutable() {
   return undefined;
 }
 
-const GEIST = path.resolve(
-  'node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2',
+const BRICOLAGE = path.resolve(
+  'node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2',
 );
-const GEIST_MONO = path.resolve(
-  'node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2',
-);
-
-function toDataUrl(file) {
-  const buf = fs.readFileSync(file);
-  return `data:font/woff2;base64,${buf.toString('base64')}`;
-}
-
-function nodeLabel(componentPath) {
-  return componentPath.includes('/case-studies/') ? 'cases' : 'writing';
-}
+const PORTRAIT = path.resolve('public/images/diel.jpeg');
 
 function escape(str = '') {
   return String(str)
@@ -38,187 +28,182 @@ function escape(str = '') {
     .replace(/"/g, '&quot;');
 }
 
-function buildHtml({ title, node, geistData, monoData }) {
-  const label = `the ${node} node · dielduarte.dev`;
+// Same four inks as the portrait on the site, so the card matches the page it links to.
+async function posterizedPortrait() {
+  const inks = [
+    [0.3, [0, 0, 0]],
+    [0.56, [255, 196, 0]],
+    [0.82, [30, 59, 216]],
+    [Infinity, [236, 236, 231]],
+  ];
+  const { data, info } = await sharp(PORTRAIT)
+    .resize(600, 760, { fit: 'cover' })
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  for (let i = 0; i < data.length; i += 3) {
+    const lum = (0.3 * data[i] + 0.59 * data[i + 1] + 0.11 * data[i + 2]) / 255;
+    const [, rgb] = inks.find(([max]) => lum < max);
+    [data[i], data[i + 1], data[i + 2]] = rgb;
+  }
+  const png = await sharp(data, { raw: { width: info.width, height: info.height, channels: 3 } }).png().toBuffer();
+  return `data:image/png;base64,${png.toString('base64')}`;
+}
+
+function headlineHtml(headline, highlight) {
+  const key = (w) => w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+  return headline
+    .split(' ')
+    .map((word) => (highlight && key(word) === key(highlight) ? `<span class="hl">${escape(word)}</span>` : escape(word)))
+    .join(' ');
+}
+
+function buildHtml({ kicker, headline, highlight, fontData, portraitData }) {
   return `<!doctype html>
 <html>
 <head>
 <meta charset="utf-8" />
 <style>
   @font-face {
-    font-family: 'Geist';
-    src: url('${geistData}') format('woff2-variations');
-    font-weight: 100 900;
+    font-family: 'Bricolage';
+    src: url('${fontData}') format('woff2-variations');
+    font-weight: 200 800;
+    font-stretch: 75% 100%;
     font-display: block;
   }
-  @font-face {
-    font-family: 'Geist Mono';
-    src: url('${monoData}') format('woff2-variations');
-    font-weight: 100 900;
-    font-display: block;
-  }
-  html, body { margin: 0; padding: 0; background: #0A0A0A; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     width: 1200px;
     height: 630px;
-    font-family: 'Geist', -apple-system, sans-serif;
-    color: #F5F5F5;
+    overflow: hidden;
     position: relative;
-    overflow: hidden;
+    background: #ECECE7;
+    color: #000;
+    font-family: 'Bricolage', sans-serif;
   }
-  .frame {
+  /* 12-column hairlines, same grid as the site */
+  .lines {
     position: absolute;
-    inset: 0;
-    padding: 72px 80px;
+    inset: 0 40px;
+    border-right: 1px solid rgba(0, 0, 0, 0.18);
+    background: repeating-linear-gradient(to right, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px calc(100% / 12));
+  }
+  .page {
+    position: absolute;
+    inset: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr 72px;
+  }
+  .main {
+    grid-column: 1 / 11;
+    padding: 56px 12px 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-  }
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .mono-note {
-    font-family: 'Geist Mono', monospace;
-    font-size: 17px;
-    font-weight: 500;
-    color: #3B82F6;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .title {
-    font-size: 78px;
-    line-height: 1.02;
-    font-weight: 600;
-    letter-spacing: -0.035em;
-    color: #F5F5F5;
-    margin: 0;
-    max-width: 1000px;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+    gap: 18px;
     overflow: hidden;
   }
-  .body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex: 1;
-    padding: 56px 0;
+  .kicker { font-size: 26px; color: rgba(0, 0, 0, 0.6); }
+  .headline {
+    font-weight: 700;
+    font-stretch: 75%;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+  .hl { background: #FFC400; padding: 0 0.06em; }
+  .portrait {
+    grid-column: 11 / 13;
+    grid-row: 1 / 3;
+    background: #1E3BD8 url('${portraitData}') center / cover no-repeat;
   }
   .foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    grid-column: 1 / 11;
+    grid-row: 2;
+    border-top: 1px solid rgba(0, 0, 0, 0.18);
+    padding: 24px 12px;
+    font-size: 17px;
   }
-  .author {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-family: 'Geist Mono', monospace;
-    font-size: 18px;
-    font-weight: 500;
-    color: #8A8A8A;
-    letter-spacing: 0.04em;
-  }
-  .author .dash {
-    width: 28px;
-    height: 1px;
-    background: #2A2A2A;
-    display: inline-block;
-  }
-  .domain {
-    font-family: 'Geist Mono', monospace;
-    font-size: 15px;
-    color: #555555;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  svg .edge { stroke: #2A2A2A; stroke-width: 1; fill: none; }
-  svg .edge.lit { stroke: #3B82F6; stroke-width: 1.5; }
-  svg .dot { fill: #0A0A0A; stroke: #2A2A2A; stroke-width: 1.5; }
-  svg .dot.active { fill: #3B82F6; stroke: #3B82F6; }
-  svg .label {
-    font-family: 'Geist Mono', monospace;
-    font-size: 11px;
-    fill: #8A8A8A;
-    letter-spacing: 0.02em;
-  }
-  svg .label.active { fill: #3B82F6; }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="top">
-      <div class="mono-note">${escape(label)}</div>
-      <svg width="220" height="100" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg">
-        <line class="edge ${node === 'writing' ? 'lit' : ''}" x1="22" y1="50" x2="116" y2="16" />
-        <line class="edge ${node === 'cases' ? 'lit' : ''}" x1="22" y1="50" x2="116" y2="50" />
-        <line class="edge" x1="22" y1="50" x2="116" y2="84" />
-        <circle class="dot" cx="16" cy="50" r="5" />
-        <circle class="dot ${node === 'writing' ? 'active' : ''}" cx="122" cy="16" r="5" />
-        <circle class="dot ${node === 'cases' ? 'active' : ''}" cx="122" cy="50" r="5" />
-        <circle class="dot" cx="122" cy="84" r="5" />
-        <text class="label" x="16" y="70" text-anchor="middle">home</text>
-        <text class="label ${node === 'writing' ? 'active' : ''}" x="134" y="20" text-anchor="start">writing</text>
-        <text class="label ${node === 'cases' ? 'active' : ''}" x="134" y="54" text-anchor="start">cases</text>
-        <text class="label" x="134" y="88" text-anchor="start">about</text>
-      </svg>
+  <div class="lines"></div>
+  <div class="page">
+    <div class="main">
+      <p class="kicker">${escape(kicker)}</p>
+      <h1 class="headline">${headlineHtml(headline, highlight)}</h1>
     </div>
-
-    <div class="body">
-      <h1 class="title">${escape(title)}</h1>
-    </div>
-
-    <div class="foot">
-      <div class="author"><span class="dash"></span>Diel Duarte</div>
-      <div class="domain">dielduarte.dev</div>
-    </div>
+    <div class="portrait"></div>
+    <div class="foot">dielduarte.dev</div>
   </div>
+  <script>
+    // Largest headline that still fits: short page headlines go big, long post titles shrink.
+    document.fonts.ready.then(() => {
+      const main = document.querySelector('.main');
+      const headline = document.querySelector('.headline');
+      let size = 150;
+      headline.style.fontSize = size + 'px';
+      while (size > 40 && (main.scrollHeight > main.clientHeight || headline.scrollWidth > headline.clientWidth)) {
+        size -= 4;
+        headline.style.fontSize = size + 'px';
+      }
+      document.body.dataset.ready = 'true';
+    });
+  </script>
 </body>
 </html>`;
 }
 
-export default ({ filterRoutes, getImagePath }) => ({
+async function render(browser, html, filePath) {
+  await mkdir(path.dirname(filePath), { recursive: true });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 2 });
+  await page.setContent(html, { waitUntil: 'load' });
+  await page.waitForSelector('body[data-ready]');
+  await writeFile(filePath, await page.screenshot({ type: 'png' }));
+  await page.close();
+}
+
+/**
+ * Renders a share image for every markdown post (from its frontmatter) and for each
+ * top-level page in `pages`, in both languages.
+ */
+export default ({ filterRoutes, getImagePath, pages = [], pagePath }) => ({
   name: 'generate-og-images',
   hooks: {
     'astro:build:done': async (options) => {
       const articles = options.routes.filter(filterRoutes);
-      if (articles.length === 0) return;
-
-      const geistData = toDataUrl(GEIST);
-      const monoData = toDataUrl(GEIST_MONO);
-
+      const fontData = `data:font/woff2;base64,${fs.readFileSync(BRICOLAGE).toString('base64')}`;
+      const portraitData = await posterizedPortrait();
       const browser = await puppeteer.launch({
         headless: 'new',
         executablePath: resolveChromeExecutable(),
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
+      const card = (fields) => buildHtml({ ...fields, fontData, portraitData });
 
       try {
         for (const article of articles) {
-          const raw = fs.readFileSync(article.component, 'utf-8');
-          const { attributes } = fm(raw);
-
+          const { attributes } = fm(fs.readFileSync(article.component, 'utf-8'));
+          const lang = attributes.languageKey === 'pt-br' ? 'pt-br' : 'en';
           const { url, base } = getImagePath(attributes, options);
-          const filePath = fileURLToPath(new URL(url, base));
-          await mkdir(path.dirname(filePath), { recursive: true });
+          await render(
+            browser,
+            card({
+              kicker: lang === 'en' ? 'Writing' : 'Textos',
+              headline: attributes.title ?? '',
+            }),
+            fileURLToPath(new URL(url, base)),
+          );
+        }
 
-          const html = buildHtml({
-            title: attributes.title ?? '',
-            node: nodeLabel(article.component),
-            geistData,
-            monoData,
-          });
-
-          const page = await browser.newPage();
-          await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 2 });
-          await page.setContent(html, { waitUntil: 'networkidle0' });
-          const png = await page.screenshot({ type: 'png', omitBackground: false });
-          await page.close();
-
-          await writeFile(filePath, png);
+        for (const page of pages) {
+          for (const lang of ['en', 'pt-br']) {
+            await render(
+              browser,
+              card(page.copy[lang]),
+              fileURLToPath(new URL(pagePath(page.key, lang), options.dir)),
+            );
+          }
         }
       } finally {
         await browser.close();

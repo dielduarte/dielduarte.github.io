@@ -1,5 +1,6 @@
 ---
 import PageV2 from '../layouts/PageV2.astro';
+import { ogImagePath } from '../lib/og-pages.mjs';
 import Spread from './grid/Spread.astro';
 import PostRow from './grid/PostRow.astro';
 import { postsFor } from '../lib/writing';
@@ -51,6 +52,7 @@ const latest = postsFor(lang).slice(0, 3);
   title={t.title}
   description={t.description}
   currentState="home"
+  image={ogImagePath('home', lang)}
   langSwitchHref={t.langSwitchHref}
 >
   <Spread

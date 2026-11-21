@@ -1,5 +1,6 @@
 ---
 import PageV2 from '../../layouts/PageV2.astro';
+import { ogImagePath } from '../../lib/og-pages.mjs';
 import Spread from '../../components/grid/Spread.astro';
 import type { Lang } from '../../components/nav/navMachine';
 
@@ -83,6 +84,7 @@ const years = ({ from, to }: Job) =>
   title={t.title}
   description={t.description}
   currentState="about"
+  image={ogImagePath('about', lang)}
   langSwitchHref={t.langSwitchHref}
 >
   <Spread

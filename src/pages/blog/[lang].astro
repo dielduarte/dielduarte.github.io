@@ -1,5 +1,6 @@
 ---
 import PageV2 from '../../layouts/PageV2.astro';
+import { ogImagePath } from '../../lib/og-pages.mjs';
 import Spread from '../../components/grid/Spread.astro';
 import PostRow from '../../components/grid/PostRow.astro';
 import { postsFor } from '../../lib/writing';
@@ -44,6 +45,7 @@ const years = posts.map((p) => p.date.slice(0, 4));
   title={t.title}
   description={t.description}
   currentState="writing"
+  image={ogImagePath('writing', lang)}
   langSwitchHref={t.langSwitchHref}
 >
   <Spread
