@@ -100,8 +100,11 @@ const otherLang = lang === 'en' ? 'pt-br' : 'en';
     background: var(--cobalt);
   }
 
+  /* Transition layers stack in the old page's paint order. Without this, a marker moving
+     left (about → home) is painted after the label it lands on and covers it. */
   .state {
     position: relative;
+    z-index: 1;
     flex: 1;
     padding: var(--cell-pad);
     white-space: nowrap;
