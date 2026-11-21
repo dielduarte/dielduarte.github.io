@@ -1,0 +1,178 @@
+---
+import type { Lang } from '../nav/navMachine';
+
+export interface PortraitPlacement {
+  rows: [number, number];
+  cols: [number, number];
+  variant: 'block' | 'strip';
+}
+
+interface Props extends PortraitPlacement {
+  lang: Lang;
+}
+
+const { rows, cols, variant, lang } = Astro.props;
+---
+
+<div
+  class:list={['portrait', variant]}
+  style={`--rows:${rows[0]}/${rows[1]};--cols-span:${cols[0]}/${cols[1]}`}
+  role="img"
+  aria-label={lang === 'en' ? 'Illustrated portrait of Diel' : 'Retrato ilustrado do Diel'}
+  transition:name="portrait"
+  transition:animate="initial"
+>
+  <canvas width="600" height="760" data-portrait></canvas>
+</div>
+
+<script>
+  const SOURCE = '/images/diel.jpeg';
+  // Same four inks as the page, so the avatar reads as a printed colour field, not a photo.
+  const INKS: Array<[number, [number, number, number]]> = [
+    [0.3, [0, 0, 0]],
+    [0.56, [255, 196, 0]],
+    [0.82, [30, 59, 216]],
+    [Infinity, [236, 236, 231]],
+  ];
+  const SLIT_MS = 920;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  let poster: Promise<HTMLCanvasElement> | undefined;
+
+  function loadPoster(width: number, height: number) {
+    poster ??= (async () => {
+      const img = new Image();
+      img.src = SOURCE;
+      await img.decode();
+      const out = document.createElement('canvas');
+      out.width = width;
+      out.height = height;
+      const ctx = out.getContext('2d', { willReadFrequently: true })!;
+      const scale = Math.max(width / img.width, height / img.height);
+      const w = img.width * scale;
+      const h = img.height * scale;
+      ctx.drawImage(img, (width - w) / 2 - width * 0.1, (height - h) / 2, w, h);
+      const data = ctx.getImageData(0, 0, width, height);
+      const px = data.data;
+      for (let i = 0; i < px.length; i += 4) {
+        const lum = (0.3 * px[i] + 0.59 * px[i + 1] + 0.11 * px[i + 2]) / 255;
+        const [, rgb] = INKS.find(([max]) => lum < max)!;
+        [px[i], px[i + 1], px[i + 2]] = rgb;
+      }
+      ctx.putImageData(data, 0, 0);
+      return out;
+    })();
+    return poster;
+  }
+
+  // Slit-scan: everything right of the cut repeats a single pixel column.
+  function draw(canvas: HTMLCanvasElement, source: HTMLCanvasElement, cut: number) {
+    const ctx = canvas.getContext('2d')!;
+    const x = Math.round(canvas.width * cut);
+    ctx.drawImage(source, 0, 0);
+    if (x < canvas.width) {
+      ctx.drawImage(source, x, 0, 1, canvas.height, x, 0, canvas.width - x, canvas.height);
+    }
+  }
+
+  function canvases() {
+    return [...document.querySelectorAll<HTMLCanvasElement>('canvas[data-portrait]')];
+  }
+
+  // On hover the cut follows the cursor, so moving across the face drags the streaks with it.
+  // It eases toward the pointer and back to the still picture when the pointer leaves.
+  function followPointer(canvas: HTMLCanvasElement, source: HTMLCanvasElement) {
+    const box = canvas.parentElement;
+    if (!box || box.dataset.followsPointer) return;
+    box.dataset.followsPointer = 'true';
+
+    let cut = 1;
+    let target = 1;
+    let frame = 0;
+
+    const step = () => {
+      cut = reduceMotion.matches ? target : cut + (target - cut) * 0.18;
+      if (Math.abs(target - cut) < 0.001) cut = target;
+      draw(canvas, source, cut);
+      frame = cut === target ? 0 : requestAnimationFrame(step);
+    };
+
+    const aim = (to: number) => {
+      target = to;
+      if (!frame) frame = requestAnimationFrame(step);
+    };
+
+    box.addEventListener('pointermove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      aim(Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width)));
+    });
+    box.addEventListener('pointerleave', () => aim(1));
+  }
+
+  async function paint(animate: boolean) {
+    const targets = canvases();
+    if (targets.length === 0) return;
+    const source = await loadPoster(targets[0].width, targets[0].height);
+    if (!animate || reduceMotion.matches) {
+      targets.forEach((c) => draw(c, source, 1));
+      if (canHover.matches) targets.forEach((c) => followPointer(c, source));
+      return;
+    }
+    const start = performance.now();
+    const frame = (now: number) => {
+      const t = Math.min(1, (now - start) / SLIT_MS);
+      targets.forEach((c) => draw(c, source, 1 - 0.72 * Math.sin(Math.PI * t)));
+      if (t < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  // The stretch only happens while the page is changing state; at rest the portrait is still.
+  document.addEventListener('astro:after-swap', () => paint(true));
+  document.addEventListener('astro:page-load', () => paint(false));
+</script>
+
+<style>
+  .portrait {
+    position: relative;
+    grid-row: var(--rows);
+    grid-column: var(--cols-span);
+    align-self: stretch;
+    background: var(--cobalt);
+    overflow: hidden;
+    min-height: 120px;
+  }
+
+  /* The face is drawn at one size on every page and each box only crops it, so moving
+     between pages changes the frame around the picture, never the picture's scale.
+     That size is the widest portrait box on the site (four columns), so no box is left
+     with empty space beside the drawing. */
+  canvas {
+    --widest-box: calc((min(100vw, var(--frame-max)) - 2 * var(--gutter)) / 3);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--widest-box);
+    height: auto;
+    aspect-ratio: 600 / 760;
+    translate: -50% -50%;
+  }
+
+  @media (max-width: 760px) {
+    canvas {
+      --widest-box: calc(100vw - 2 * var(--gutter));
+    }
+
+    .portrait.block {
+      grid-row: auto;
+      grid-column: 1 / -1;
+      aspect-ratio: 4 / 3;
+      order: 2;
+    }
+
+    .portrait.strip {
+      display: none;
+    }
+  }
+</style>

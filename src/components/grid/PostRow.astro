@@ -1,0 +1,108 @@
+---
+export interface PostSummary {
+  title: string;
+  description: string;
+  date: string;
+  slug: string;
+  href: string;
+}
+
+interface Props {
+  post: PostSummary;
+  variant: 'full' | 'compact';
+  /** Only the first post of each year shows it, so the column reads as a timeline. */
+  showYear?: boolean;
+}
+
+const { post, variant, showYear = false } = Astro.props;
+// Frontmatter dates are calendar days ("2026-05-11"); read them as text so no time zone can shift them.
+const [year, month, day] = post.date.slice(0, 10).split('-');
+// The same name on the home page and the writing index lets a row slide between them.
+const name = `post-${post.slug.replace(/[^a-z0-9]+/gi, '-')}`;
+---
+
+<a
+  class:list={['row', variant]}
+  href={post.href}
+  style="view-transition-class:row"
+  transition:name={name}
+  transition:animate="initial"
+>
+  <span class="yr">{showYear ? year : ''}</span>
+  <span class="ttl">{post.title}</span>
+  <span class="desc">{post.description}</span>
+  <time class="dt" datetime={post.date}>{month}.{day}</time>
+</a>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 9px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row > * {
+    padding: 0 var(--cell-pad);
+    min-width: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .row:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+  }
+
+  .ttl {
+    font-size: var(--fs-row);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .desc {
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .row:hover .desc { color: inherit; opacity: 0.7; }
+
+  .dt {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .full { grid-column: 1 / -1; }
+  .full .yr { grid-column: 1 / 2; }
+  .full .ttl { grid-column: 3 / 8; }
+  .full .desc { grid-column: 8 / 12; }
+  .full .dt { grid-column: 12 / 13; }
+
+  .compact { grid-column: 1 / -1; }
+  .compact .yr,
+  .compact .desc { display: none; }
+  .compact .ttl { grid-column: 1 / 5; }
+  .compact .dt { grid-column: 5 / 6; }
+
+  @media (max-width: 760px) {
+    .full,
+    .compact { grid-column: 1 / -1; }
+
+    .full .yr { grid-column: 1 / 2; }
+    .full .ttl,
+    .compact .ttl { grid-column: 2 / 5; }
+    .full .desc { display: none; }
+    .full .dt,
+    .compact .dt {
+      grid-column: 2 / 5;
+      grid-row: 2;
+      text-align: left;
+      color: var(--muted);
+      padding-top: 4px;
+    }
+    .compact .yr { display: block; grid-column: 1 / 2; }
+  }
+</style>

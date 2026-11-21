@@ -1,0 +1,174 @@
+---
+import Portrait, { type PortraitPlacement } from './Portrait.astro';
+import type { Lang } from '../nav/navMachine';
+
+/** [row, firstColumn, lastColumnExclusive] on the 12-column desktop grid. */
+type Cell = [number, number, number];
+
+interface Props {
+  lang: Lang;
+  sentence: string;
+  cells: Cell[];
+  highlight: number;
+  size?: 'xl' | 'lg';
+  kicker?: string;
+  portrait?: PortraitPlacement;
+  /** A short line set small under the headline. */
+  aside?: { text: string; cols: [number, number] };
+}
+
+const { lang, sentence, cells, highlight, size = 'lg', kicker, portrait, aside } = Astro.props;
+const words = sentence.split(' ');
+
+if (words.length !== cells.length) {
+  throw new Error(`Spread: "${sentence}" has ${words.length} words but ${cells.length} cells`);
+}
+
+// A word keeps its view-transition name across pages, so shared words travel instead of fading.
+const seen = new Map<string, number>();
+const names = words.map((w) => {
+  const base = w.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '') || 'x';
+  const n = (seen.get(base) ?? 0) + 1;
+  seen.set(base, n);
+  return n === 1 ? `w-${base}` : `w-${base}-${n}`;
+});
+
+const lastRow = Math.max(...cells.map(([row]) => row));
+const mobileSpan = (word: string) => Math.min(4, Math.max(1, Math.ceil(word.length * 0.36)));
+const place = ([row, a, b]: Cell) => `--r:${row};--a:${a};--b:${b}`;
+---
+
+<section class="frame">
+  <div class:list={['grid', 'spread', size]}>
+    {kicker && <p class="kicker">{kicker}</p>}
+
+    <h1 class="sentence">
+      {words.map((word, i) => (
+        <>
+          {i === highlight && (
+            <span
+              class="hl"
+              style={place(cells[i])}
+              aria-hidden="true"
+              transition:name="highlight"
+              transition:animate="initial"
+            />
+          )}
+          <span
+            class:list={['word', { 'is-hl': i === highlight }]}
+            style={`${place(cells[i])};--m:${mobileSpan(word)}`}
+            transition:name={names[i]}
+            transition:animate="initial"
+          >
+            {word}
+          </span>{' '}
+        </>
+      ))}
+    </h1>
+
+    {portrait && <Portrait lang={lang} {...portrait} />}
+
+    {aside && (
+      <p
+        class="aside"
+        style={`--r:${lastRow + 1};--a:${aside.cols[0]};--b:${aside.cols[1]}`}
+      >
+        {aside.text}
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  .spread {
+    align-items: start;
+    padding-bottom: 20px;
+  }
+
+  .sentence {
+    display: contents;
+    font: inherit;
+    margin: 0;
+  }
+
+  .kicker {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    margin: 0;
+    padding: 24px var(--cell-pad) 0;
+    font-size: var(--fs-small);
+    line-height: 1.3;
+    max-width: 22ch;
+  }
+
+  .word,
+  .hl {
+    grid-row: var(--r);
+    grid-column: var(--a) / var(--b);
+  }
+
+  .word {
+    position: relative;
+    justify-self: start;
+    padding: 0.16em var(--cell-pad) 0.12em;
+    font-weight: 700;
+    font-stretch: 75%;
+    line-height: 0.86;
+    white-space: nowrap;
+  }
+
+  .xl .word { font-size: var(--fs-display-xl); }
+  .lg .word { font-size: var(--fs-display-lg); }
+
+  .hl {
+    align-self: stretch;
+    background: var(--sun);
+  }
+
+  .aside {
+    grid-row: var(--r);
+    grid-column: var(--a) / var(--b);
+    margin: 0;
+    padding: 14px var(--cell-pad) 34px;
+    font-size: var(--fs-lead);
+    letter-spacing: -0.01em;
+    color: var(--muted);
+  }
+
+  @media (max-width: 760px) {
+    .spread {
+      padding-bottom: 8px;
+    }
+
+    .kicker {
+      grid-row: auto;
+      grid-column: 1 / -1;
+      order: -1;
+      padding-top: 16px;
+      max-width: none;
+    }
+
+    .word {
+      grid-row: auto;
+      grid-column: span var(--m);
+    }
+
+    .xl .word { font-size: clamp(52px, 16vw, 80px); }
+    .lg .word { font-size: clamp(44px, 13vw, 68px); }
+
+    .hl { display: none; }
+
+    .word.is-hl {
+      justify-self: stretch;
+      background: var(--sun);
+    }
+
+    .aside {
+      grid-row: auto;
+      grid-column: 1 / -1;
+      order: 3;
+      padding-bottom: 20px;
+      font-size: 17px;
+    }
+  }
+</style>

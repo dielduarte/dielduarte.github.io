@@ -82,3 +82,46 @@
     --t-4: 0.01ms;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Grid system — v3 (Swiss / state-machine layout)
+   Colour is used as whole grid cells, never as tinted text:
+   cobalt marks where you are, sun marks what is changing.
+   ────────────────────────────────────────────────────────────── */
+
+:root {
+  --paper:  #ECECE7;
+  --ink:    #000000;
+  --cobalt: #1E3BD8;
+  --sun:    #FFC400;
+  --mint:   #5FC9A6;
+  --rule:   rgba(0, 0, 0, 0.18);
+  --muted:  rgba(0, 0, 0, 0.55);
+
+  --font-grotesk: "Bricolage Grotesque Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-reading: "Literata Variable", Georgia, "Times New Roman", serif;
+  --fs-reading: 18px;
+
+  --cols: 12;
+  --gutter: clamp(16px, 2.5vw, 32px);
+  --frame-max: 1440px;
+  --cell-pad: 10px;
+
+  --fs-meta:       11px;
+  --fs-small:      13px;
+  --fs-row:        15px;
+  --fs-lead:       20px;
+  --fs-display-md: clamp(36px, 4.4vw, 64px);
+  --fs-display-lg: clamp(52px, 8.1vw, 116px);
+  --fs-display-xl: clamp(60px, 10.3vw, 148px);
+
+  --vt-duration: 800ms;
+  --vt-ease: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --cols: 4;
+    --fs-meta: 12px;
+  }
+}

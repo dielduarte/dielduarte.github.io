@@ -5,6 +5,7 @@ export type Lang = 'en' | 'pt-br';
 export type NavStateId =
   | 'home'
   | 'writing'
+  | 'photos'
   | 'cases'
   | 'lab'
   | 'about'
@@ -13,6 +14,7 @@ export type NavStateId =
 export type NavEvent =
   | { type: 'GO_HOME' }
   | { type: 'GO_WRITING' }
+  | { type: 'GO_PHOTOS' }
   | { type: 'GO_CASES' }
   | { type: 'GO_LAB' }
   | { type: 'GO_ABOUT' }
@@ -26,6 +28,7 @@ export interface NavContext {
 export interface NavNode {
   id: NavStateId;
   label: string;
+  labels: Record<Lang, string>;
   x: number;
   y: number;
   href: Record<Lang, string> | null;
@@ -37,6 +40,7 @@ export const NODES: NavNode[] = [
   {
     id: 'home',
     label: 'home',
+    labels: { en: 'home', 'pt-br': 'início' },
     x: 120,
     y: 200,
     href: { en: '/', 'pt-br': '/pt-br/' },
@@ -45,14 +49,25 @@ export const NODES: NavNode[] = [
   {
     id: 'writing',
     label: 'writing',
+    labels: { en: 'writing', 'pt-br': 'textos' },
     x: 360,
     y: 110,
     href: { en: '/blog/en/', 'pt-br': '/blog/pt-br/' },
     event: 'GO_WRITING',
   },
   {
+    id: 'photos',
+    label: 'photos',
+    labels: { en: 'photos', 'pt-br': 'fotos' },
+    x: 360,
+    y: 155,
+    href: { en: '/photos/en/', 'pt-br': '/photos/pt-br/' },
+    event: 'GO_PHOTOS',
+  },
+  {
     id: 'about',
     label: 'about',
+    labels: { en: 'about', 'pt-br': 'sobre' },
     x: 360,
     y: 200,
     href: { en: '/about/en/', 'pt-br': '/about/pt-br/' },
@@ -61,6 +76,7 @@ export const NODES: NavNode[] = [
   {
     id: 'contact',
     label: 'contact',
+    labels: { en: 'contact', 'pt-br': 'contato' },
     x: 360,
     y: 290,
     href: { en: '/contact/en/', 'pt-br': '/contact/pt-br/' },
@@ -69,6 +85,7 @@ export const NODES: NavNode[] = [
   {
     id: 'cases',
     label: 'cases',
+    labels: { en: 'case study', 'pt-br': 'estudo de caso' },
     x: 0,
     y: 0,
     href: { en: '/case-studies/en/', 'pt-br': '/case-studies/pt-br/' },
@@ -78,6 +95,7 @@ export const NODES: NavNode[] = [
   {
     id: 'lab',
     label: 'lab',
+    labels: { en: 'lab', 'pt-br': 'lab' },
     x: 0,
     y: 0,
     href: null,
@@ -90,6 +108,7 @@ export const visibleNodes = NODES.filter((n) => !n.hidden);
 
 export const EDGES: Array<[NavStateId, NavStateId]> = [
   ['home', 'writing'],
+  ['home', 'photos'],
   ['home', 'about'],
   ['home', 'contact'],
 ];
@@ -97,6 +116,7 @@ export const EDGES: Array<[NavStateId, NavStateId]> = [
 const transitions = {
   GO_HOME: 'home',
   GO_WRITING: 'writing',
+  GO_PHOTOS: 'photos',
   GO_CASES: 'cases',
   GO_LAB: 'lab',
   GO_ABOUT: 'about',
@@ -124,6 +144,7 @@ export const navMachine = setup({
   states: {
     home: { on: buildTransitions('home') },
     writing: { on: buildTransitions('writing') },
+    photos: { on: buildTransitions('photos') },
     cases: { on: buildTransitions('cases') },
     lab: { on: buildTransitions('lab') },
     about: { on: buildTransitions('about') },
@@ -144,6 +165,7 @@ export function pathToState(pathname: string): NavStateId {
   const p = pathname.replace(/\/+$/, '') || '/';
   if (p === '' || p === '/' || p === '/pt-br') return 'home';
   if (p.startsWith('/blog')) return 'writing';
+  if (p.startsWith('/photos')) return 'photos';
   if (p.startsWith('/case-studies')) return 'cases';
   if (p.startsWith('/lab')) return 'lab';
   if (p.startsWith('/about')) return 'about';

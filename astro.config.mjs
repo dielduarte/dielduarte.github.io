@@ -4,6 +4,7 @@ import slugify from 'slugify';
 import tailwind from "@astrojs/tailwind";
 import generateOgImages from './src/integrations/generate-og-images.js';
 import react from '@astrojs/react';
+import codeTheme from './src/styles/code-theme.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,7 +33,7 @@ export default defineConfig({
     smartypants: false,
     syntaxHighlight: 'shiki',
     shikiConfig: {
-      theme: 'nord',
+      theme: codeTheme,
     }
   }
 });

@@ -1,0 +1,276 @@
+---
+import { getImage } from 'astro:assets';
+import PageV2 from '../../layouts/PageV2.astro';
+import Spread from '../../components/grid/Spread.astro';
+import type { Lang } from '../../components/nav/navMachine';
+import { SLOTS, fillSlots, poolsFor } from '../../lib/photoLayout';
+import { photoHref, photoLabel, photoTransitionName, photosNewestFirst, plateNumber } from '../../lib/photos';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'pt-br' } }];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+
+const content = {
+  en: {
+    title: 'Photos — Diel Duarte',
+    description: 'Street photography by Diel Duarte, still learning.',
+    langSwitchHref: '/photos/pt-br/',
+    sentence: "I'm learning street photography",
+    cells: [[1, 1, 3], [1, 4, 9], [2, 2, 6], [2, 6, 12]],
+    highlight: 2,
+    aside: 'and there is a long way to go',
+    heading: 'Photos',
+    count: (shown: number, total: number) => `${shown} of ${total}, a new set on every visit`,
+    empty: 'No photos yet. Add an image and a short .md file to src/content/photos to publish one.',
+  },
+  'pt-br': {
+    title: 'Fotos — Diel Duarte',
+    description: 'Fotografia de rua do Diel Duarte, que ainda está aprendendo.',
+    langSwitchHref: '/photos/en/',
+    sentence: 'Estou aprendendo fotografia de rua',
+    cells: [[1, 1, 4], [1, 5, 11], [2, 1, 6], [2, 7, 8], [2, 8, 11]],
+    highlight: 4,
+    aside: 'e ainda tenho muito chão pela frente',
+    heading: 'Fotos',
+    count: (shown: number, total: number) => `${shown} de ${total}, sorteadas a cada visita`,
+    empty: 'Ainda sem fotos. Adicione uma imagem e um arquivo .md curto em src/content/photos para publicar.',
+  },
+} satisfies Record<Lang, { cells: Array<[number, number, number]> } & Record<string, unknown>>;
+
+const t = content[lang];
+const photos = await photosNewestFirst();
+
+// Everything the page needs to fill a slot, prepared at build time so the browser only picks.
+const candidates = await Promise.all(
+  photos.map(async (photo) => {
+    const { image } = photo.data;
+    const optimized = await getImage({ src: image, widths: [480, 800, 1200, 1600], format: 'webp' });
+    return {
+      href: photoHref(lang, photo),
+      alt: photo.data.alt[lang],
+      label: photoLabel(photo, lang) ?? '',
+      year: String(photo.data.date.getUTCFullYear()),
+      plate: plateNumber(photos, photo),
+      width: image.width,
+      height: image.height,
+      src: optimized.src,
+      srcset: optimized.srcSet.attribute,
+      transitionName: photoTransitionName(photo),
+    };
+  }),
+);
+type Candidate = (typeof candidates)[number];
+
+const pools = poolsFor(photos.map((photo) => photo.data.image.width / photo.data.image.height));
+// Without JavaScript the wall still shows a set: the first photo of each pool.
+const fallback = fillSlots(pools, () => 0);
+const shown = fallback.filter((pick) => pick !== null).length;
+const place = (i: number) => {
+  const slot = SLOTS[i];
+  return `--r:${slot.row};--a:${slot.desktop[0]};--b:${slot.desktop[1]};--ma:${slot.mobile[0]};--mb:${slot.mobile[1]}`;
+};
+const fallbackPhoto = (i: number): Candidate | undefined => {
+  const pick = fallback[i];
+  return pick === null ? undefined : candidates[pick];
+};
+---
+
+<PageV2
+  lang={lang}
+  title={t.title}
+  description={t.description}
+  currentState="photos"
+  langSwitchHref={t.langSwitchHref}
+>
+  <Spread
+    lang={lang}
+    sentence={t.sentence}
+    cells={t.cells}
+    highlight={t.highlight}
+    aside={{ text: t.aside, cols: [2, 9] }}
+  />
+
+  <section class="frame" aria-labelledby="photos-heading">
+    <div class="grid">
+      <h2 id="photos-heading" class="section-title">{t.heading}</h2>
+      {photos.length > 0 && <p class="section-meta">{t.count(shown, photos.length)}</p>}
+    </div>
+
+    {photos.length === 0 ? (
+      <div class="grid"><p class="empty">{t.empty}</p></div>
+    ) : (
+      <div class="grid wall">
+        {SLOTS.map((slot, i) => {
+          const noscriptPhoto = fallbackPhoto(i);
+          return (
+            <figure class="slot" data-slot={i} style={place(i)}>
+              {/* Filled by the script below: no src until a photo is picked, so nothing downloads early. */}
+              <a class="plate" data-plate hidden>
+                <span class="frame-img" data-frame>
+                  <img data-img alt="" sizes={slot.sizes} decoding="async" loading={slot.row === 1 ? 'eager' : 'lazy'} />
+                </span>
+                <span class="caption">
+                  <span class="plate-n" data-plate-n></span>
+                  <span class="plate-title" data-label></span>
+                  <span class="plate-meta" data-year></span>
+                </span>
+              </a>
+              {noscriptPhoto && (
+                <noscript>
+                  <a class="plate" href={noscriptPhoto.href}>
+                    <span class="frame-img">
+                      <img
+                        src={noscriptPhoto.src}
+                        srcset={noscriptPhoto.srcset}
+                        sizes={slot.sizes}
+                        alt={noscriptPhoto.alt}
+                        width={noscriptPhoto.width}
+                        height={noscriptPhoto.height}
+                      />
+                    </span>
+                    <span class="caption">
+                      <span class="plate-n">{noscriptPhoto.plate}</span>
+                      <span class="plate-title">{noscriptPhoto.label}</span>
+                      <span class="plate-meta">{noscriptPhoto.year}</span>
+                    </span>
+                  </a>
+                </noscript>
+              )}
+            </figure>
+          );
+        })}
+      </div>
+    )}
+  </section>
+
+  <script type="application/json" id="photo-pool" set:html={JSON.stringify({ pools, photos: candidates })} />
+</PageV2>
+
+<script>
+  import { fillSlots } from '../../lib/photoLayout';
+
+  interface PoolPhoto {
+    href: string;
+    alt: string;
+    label: string;
+    year: string;
+    plate: string;
+    width: number;
+    height: number;
+    src: string;
+    srcset: string;
+    transitionName: string;
+  }
+
+  function fillWall() {
+    const data = document.getElementById('photo-pool');
+    if (!data?.textContent) return;
+    const { pools, photos } = JSON.parse(data.textContent) as { pools: number[][]; photos: PoolPhoto[] };
+    const picks = fillSlots(pools);
+
+    document.querySelectorAll<HTMLElement>('[data-slot]').forEach((slot) => {
+      if (slot.dataset.filled) return;
+      slot.dataset.filled = 'true';
+      const pick = picks[Number(slot.dataset.slot)];
+      if (pick === null || pick === undefined) {
+        slot.hidden = true;
+        return;
+      }
+      const photo = photos[pick];
+      const link = slot.querySelector<HTMLAnchorElement>('[data-plate]')!;
+      const img = slot.querySelector<HTMLImageElement>('[data-img]')!;
+      link.href = photo.href;
+      img.alt = photo.alt;
+      img.width = photo.width;
+      img.height = photo.height;
+      img.srcset = photo.srcset;
+      img.src = photo.src;
+      // Matches the name on the photo's own page, so opening it grows the picture into place.
+      slot.querySelector<HTMLElement>('[data-frame]')!.style.viewTransitionName = photo.transitionName;
+      slot.querySelector('[data-plate-n]')!.textContent = photo.plate;
+      slot.querySelector('[data-label]')!.textContent = photo.label;
+      slot.querySelector('[data-year]')!.textContent = photo.year;
+      link.hidden = false;
+    });
+  }
+
+  // after-swap fills the wall before the incoming page is shown; page-load covers the first visit.
+  document.addEventListener('astro:after-swap', fillWall);
+  document.addEventListener('astro:page-load', fillWall);
+</script>
+
+<style>
+  .wall {
+    border-top: 0;
+    align-items: start;
+    row-gap: 48px;
+    padding: 24px 0;
+  }
+
+  .empty {
+    grid-column: 1 / 7;
+    margin: 0;
+    padding: var(--cell-pad);
+    font-size: var(--fs-small);
+  }
+
+  .slot {
+    grid-row: var(--r);
+    grid-column: var(--a) / var(--b);
+    margin: 0;
+    padding: 0 var(--cell-pad);
+  }
+
+  .plate {
+    display: block;
+  }
+
+  .plate[hidden] {
+    display: none;
+  }
+
+  .frame-img {
+    display: block;
+    background: var(--ink);
+  }
+
+  .frame-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .caption {
+    display: grid;
+    grid-template-columns: 3em 1fr auto;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .plate-title {
+    font-size: var(--fs-small);
+    font-weight: 500;
+  }
+
+  .plate-meta {
+    color: var(--muted);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .plate:hover .caption {
+      background: var(--sun);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .wall { row-gap: 32px; }
+    .slot {
+      grid-row: auto;
+      grid-column: var(--ma) / var(--mb);
+    }
+    .empty { grid-column: 1 / -1; }
+  }
+</style>

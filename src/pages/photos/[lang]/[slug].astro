@@ -1,0 +1,199 @@
+---
+import { Image } from 'astro:assets';
+import PageV2 from '../../../layouts/PageV2.astro';
+import type { Lang } from '../../../components/nav/navMachine';
+import {
+  calendarDate,
+  photoHref,
+  photoLabel,
+  photoTransitionName,
+  photosIndexHref,
+  photosNewestFirst,
+  plateNumber,
+  type Photo,
+} from '../../../lib/photos';
+
+export async function getStaticPaths() {
+  const photos = await photosNewestFirst();
+  const langs: Lang[] = ['en', 'pt-br'];
+  return langs.flatMap((lang) =>
+    photos.map((photo) => ({ params: { lang, slug: photo.slug }, props: { photo } })),
+  );
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const { photo } = Astro.props as { photo: Photo };
+const other: Lang = lang === 'en' ? 'pt-br' : 'en';
+
+const photos = await photosNewestFirst();
+const index = photos.findIndex((p) => p.slug === photo.slug);
+const newer = photos[(index - 1 + photos.length) % photos.length];
+const older = photos[(index + 1) % photos.length];
+
+const t = {
+  en: { place: 'Place', date: 'Date', camera: 'Camera', lens: 'Lens', settings: 'Settings', all: 'All photos', back: 'Photos', pager: 'More photos', next: 'Next', previous: 'Previous', numbered: 'Plate' },
+  'pt-br': { place: 'Local', date: 'Data', camera: 'Câmera', lens: 'Lente', settings: 'Exposição', all: 'Todas as fotos', back: 'Fotos', pager: 'Mais fotos', next: 'Próxima', previous: 'Anterior', numbered: 'Foto' },
+}[lang];
+
+const d = photo.data;
+// A photo without a title or a known place yet is called by its number.
+const label = (p: Photo) => photoLabel(p, lang) ?? `${t.numbered} ${plateNumber(photos, p)}`;
+const facts = [
+  [t.place, d.place?.[lang]],
+  [t.date, calendarDate(d.date, lang)],
+  [t.camera, d.camera],
+  [t.lens, d.lens],
+  [t.settings, d.settings],
+].filter((row): row is [string, string] => Boolean(row[1]));
+
+const hasNeighbours = photos.length > 1;
+---
+
+<PageV2
+  lang={lang}
+  title={`${label(photo)} — ${t.back} — Diel Duarte`}
+  description={d.alt[lang]}
+  currentState="photos"
+  langSwitchHref={photoHref(other, photo)}
+>
+  <article class="frame">
+    <div class="grid photo">
+      <div class="back"><a class="link" href={photosIndexHref(lang)}>{t.all}</a></div>
+      <h1 class="title">{label(photo)}</h1>
+      <figure>
+        <span
+          class="frame-img"
+          style="view-transition-class:photo"
+          transition:name={photoTransitionName(photo)}
+          transition:animate="initial"
+        >
+          <Image
+            src={d.image}
+            alt={d.alt[lang]}
+            widths={[800, 1200, 1600, 2400]}
+            sizes="(max-width: 760px) 100vw, 75vw"
+            loading="eager"
+          />
+        </span>
+      </figure>
+      <aside class="side">
+        <dl class="facts">
+          {facts.map(([k, v]) => (
+            <div>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+        {hasNeighbours && (
+          <nav class="pager" aria-label={t.pager}>
+            <a class="step" href={photoHref(lang, older)}><span>{t.next}</span><span class="link">{label(older)}</span></a>
+            <a class="step" href={photoHref(lang, newer)}><span>{t.previous}</span><span class="link">{label(newer)}</span></a>
+          </nav>
+        )}
+      </aside>
+    </div>
+  </article>
+</PageV2>
+
+<style>
+  .photo {
+    align-items: start;
+  }
+
+  .back {
+    grid-column: 1 / 3;
+    padding: var(--cell-pad);
+    font-size: var(--fs-small);
+  }
+
+  .title {
+    grid-column: 3 / 13;
+    margin: 0;
+    padding: 24px var(--cell-pad) 24px;
+    font-size: var(--fs-display-md);
+    font-weight: 700;
+    font-stretch: 75%;
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+  }
+
+  figure {
+    grid-column: 1 / 10;
+    margin: 0;
+    padding: 0 var(--cell-pad) var(--cell-pad);
+  }
+
+  .frame-img {
+    display: block;
+    background: var(--ink);
+  }
+
+  .frame-img :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 82vh;
+    object-fit: contain;
+  }
+
+  .side {
+    grid-column: 10 / 13;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  .facts {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    margin: 0;
+  }
+
+  .facts div {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 9px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .facts dt {
+    grid-column: 1 / 2;
+    padding: 0 var(--cell-pad);
+    color: var(--muted);
+  }
+
+  .pager {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 2px;
+    padding: 24px var(--cell-pad) 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 8px;
+  }
+
+  .step span:first-child {
+    color: var(--muted);
+    min-width: 5em;
+  }
+
+  .facts dd {
+    grid-column: 2 / -1;
+    margin: 0;
+    padding: 0 var(--cell-pad);
+    font-weight: 500;
+  }
+
+  @media (max-width: 760px) {
+    .back { grid-column: 1 / -1; }
+    .title { grid-column: 1 / -1; padding-top: 8px; }
+    figure,
+    .side { grid-column: 1 / -1; }
+    .facts dt { grid-column: 1 / 2; }
+    .facts dd { grid-column: 2 / -1; }
+  }
+</style>

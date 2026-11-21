@@ -1,0 +1,145 @@
+---
+import { visibleNodes, type Lang, type NavStateId } from '../nav/navMachine';
+
+interface Props {
+  lang: Lang;
+  current: NavStateId;
+  langSwitchHref: string;
+}
+
+const { lang, current, langSwitchHref } = Astro.props;
+const homeHref = lang === 'en' ? '/' : '/pt-br/';
+const otherLang = lang === 'en' ? 'pt-br' : 'en';
+---
+
+<nav class="frame bar" aria-label={lang === 'en' ? 'Site navigation' : 'Navegação do site'}>
+  <div class="grid bar-grid">
+    <a class="cell who" href={homeHref}>Diel Duarte</a>
+    <ol class="states">
+      {visibleNodes.map((node) => {
+        const active = node.id === current;
+        return (
+          <li>
+            {active && (
+              <span class="marker" transition:name="state-marker" transition:animate="initial" />
+            )}
+            <a
+              class:list={['state', { active }]}
+              href={node.href?.[lang]}
+              aria-current={active ? 'page' : undefined}
+            >
+              {node.labels[lang]}
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+    <p class="cell clock" data-clock>Belo Horizonte</p>
+    <div class="cell lang">
+      <a class="link" href={langSwitchHref} hreflang={otherLang} lang={otherLang}>
+        {otherLang === 'pt-br' ? 'PT-BR' : 'EN'}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  let timer: number | undefined;
+  const format = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'America/Sao_Paulo',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  function tick() {
+    document.querySelectorAll<HTMLElement>('[data-clock]').forEach((el) => {
+      el.textContent = `Belo Horizonte, ${format.format(new Date())}`;
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    window.clearInterval(timer);
+    tick();
+    timer = window.setInterval(tick, 30_000);
+  });
+</script>
+
+<style>
+  .bar {
+    font-size: var(--fs-meta);
+  }
+
+  .bar-grid {
+    align-items: stretch;
+  }
+
+  .who {
+    grid-column: 1 / 3;
+    font-weight: 500;
+  }
+
+  .states {
+    grid-column: 3 / 8;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .states li {
+    position: relative;
+    display: flex;
+  }
+
+  .marker {
+    position: absolute;
+    inset: 0;
+    background: var(--cobalt);
+  }
+
+  .state {
+    position: relative;
+    flex: 1;
+    padding: var(--cell-pad);
+    white-space: nowrap;
+  }
+
+
+  .state.active {
+    color: var(--paper);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .state:not(.active):hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+  }
+
+  .clock {
+    grid-column: 9 / 11;
+  }
+
+  .lang {
+    grid-column: 11 / 13;
+    text-align: right;
+  }
+
+  @media (max-width: 760px) {
+    .who { grid-column: 1 / 3; }
+    .lang { grid-column: 3 / 5; }
+    .clock { display: none; }
+
+    .states {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      border-top: 1px solid var(--rule);
+    }
+
+    .state {
+      padding: 12px 6px;
+      text-align: center;
+    }
+  }
+</style>

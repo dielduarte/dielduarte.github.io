@@ -1,62 +1,42 @@
 ---
-import { format } from 'date-fns';
 import PageV2 from '../../layouts/PageV2.astro';
+import Spread from '../../components/grid/Spread.astro';
+import PostRow from '../../components/grid/PostRow.astro';
+import { postsFor } from '../../lib/writing';
+import type { Lang } from '../../components/nav/navMachine';
 
-interface Frontmatter {
-  title: string;
-  description: string;
-  date: string;
-  languageKey: string;
-  languageLink: string;
-  socialImage: string;
-  slug: string;
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'pt-br' } }];
 }
 
-export async function getStaticPaths() {
-  const enPosts = await Astro.glob<Frontmatter>('./en/**/*.md');
-  const ptBrPosts = await Astro.glob<Frontmatter>('./pt-br/**/*.md');
-
-  return [
-    { params: { lang: 'en' }, props: { posts: enPosts, lang: 'en' } },
-    { params: { lang: 'pt-br' }, props: { posts: ptBrPosts, lang: 'pt-br' } },
-  ];
-}
-
-const { posts, lang } = Astro.props as {
-  posts: Array<{ frontmatter: Frontmatter }>;
-  lang: 'en' | 'pt-br';
-};
-
-const sortedPosts = [...posts].sort(
-  (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-);
+const { lang } = Astro.params as { lang: Lang };
 
 const content = {
   en: {
     title: 'Writing — Diel Duarte',
-    description: 'Essays on architecture, developer experience, and the details that keep software readable as it grows.',
+    description:
+      'Essays on architecture, developer experience, and the details that keep software readable as it grows.',
     langSwitchHref: '/blog/pt-br/',
-    headline: 'Writing.',
-    monoNote: 'the index · in the writing node',
-    lede: 'Notes on architecture, developer experience, the shapes that keep software understandable at scale, and general learnings.',
-    count: (n: number) => `${n} ${n === 1 ? 'entry' : 'entries'}`,
-    empty: 'No entries yet.',
-    col: { date: 'date', state: 'state', entry: 'entry' },
+    sentence: 'I write about web software',
+    cells: [[1, 1, 2], [1, 2, 5], [1, 6, 9], [2, 2, 5], [2, 6, 11]],
+    heading: 'Writing',
+    count: (n: number, from: string, to: string) => `${n} entries, ${from}–${to}`,
   },
   'pt-br': {
-    title: 'Artigos — Diel Duarte',
-    description: 'Ensaios sobre arquitetura, experiência de desenvolvimento e os detalhes que mantêm software legível conforme cresce.',
+    title: 'Textos — Diel Duarte',
+    description:
+      'Textos sobre arquitetura, experiência de desenvolvimento e os detalhes que mantêm um software fácil de entender conforme ele cresce.',
     langSwitchHref: '/blog/en/',
-    headline: 'Artigos.',
-    monoNote: 'o índice · no nó writing',
-    lede: 'Notas sobre arquitetura, experiência de desenvolvimento, as formas que mantêm software compreensível em escala e aprendizados em geral.',
-    count: (n: number) => `${n} ${n === 1 ? 'entrada' : 'entradas'}`,
-    empty: 'Ainda sem entradas.',
-    col: { date: 'data', state: 'estado', entry: 'entrada' },
+    sentence: 'Eu escrevo sobre software para a web',
+    cells: [[1, 1, 3], [1, 3, 7], [1, 8, 11], [2, 2, 6], [2, 7, 9], [2, 9, 10], [3, 4, 7]],
+    heading: 'Textos',
+    count: (n: number, from: string, to: string) => `${n} textos, ${from}–${to}`,
   },
-};
+} satisfies Record<Lang, { cells: Array<[number, number, number]> } & Record<string, unknown>>;
 
 const t = content[lang];
+const posts = postsFor(lang);
+const years = posts.map((p) => p.date.slice(0, 4));
 ---
 
 <PageV2
@@ -66,224 +46,32 @@ const t = content[lang];
   currentState="writing"
   langSwitchHref={t.langSwitchHref}
 >
-  <section class="writing">
-    <header class="head">
-      <p class="mono-note">{t.monoNote}</p>
-      <h1>{t.headline}</h1>
-      <p class="lede">{t.lede}</p>
-    </header>
+  <Spread
+    lang={lang}
+    sentence={t.sentence}
+    cells={t.cells}
+    highlight={1}
+    portrait={{ rows: [1, 3], cols: [12, 13], variant: 'strip' }}
+  />
 
-    {sortedPosts.length === 0 ? (
-      <p class="empty">{t.empty}</p>
-    ) : (
-      <div class="ledger">
-        <div class="ledger-head" aria-hidden="true">
-          <span class="col-date">{t.col.date}</span>
-          <span class="col-entry">{t.col.entry}</span>
-          <span class="col-count">{t.count(sortedPosts.length)}</span>
-        </div>
-
-        <ol class="rows">
-          {sortedPosts.map((post) => {
-            const iso = format(new Date(post.frontmatter.date), 'yyyy.MM.dd');
-            return (
-              <li class="row">
-                <a href={`/blog/${post.frontmatter.slug}/`} class="row-link">
-                  <time class="row-date" datetime={post.frontmatter.date}>{iso}</time>
-                  <div class="row-entry">
-                    <h2 class="row-title">{post.frontmatter.title}</h2>
-                    {post.frontmatter.description && (
-                      <p class="row-desc">{post.frontmatter.description}</p>
-                    )}
-                  </div>
-                  <span class="row-arrow" aria-hidden="true">→</span>
-                </a>
-              </li>
-            );
-          })}
-        </ol>
+  <section class="frame" aria-labelledby="writing-heading">
+    <div class="grid">
+      <h2 id="writing-heading" class="section-title">{t.heading}</h2>
+      <p class="section-meta">{t.count(posts.length, years.at(-1) ?? '', years[0] ?? '')}</p>
+      <div class="list">
+        {posts.map((post, i) => (
+          <PostRow post={post} variant="full" showYear={years[i] !== years[i - 1]} />
+        ))}
       </div>
-    )}
+    </div>
   </section>
+
 </PageV2>
 
 <style>
-  .writing { max-width: 920px; }
-
-  .head {
-    margin-bottom: var(--s-6);
-    max-width: 62ch;
-  }
-
-  .mono-note {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 var(--s-4) 0;
-  }
-
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    color: var(--n-7);
-    margin: 0 0 var(--s-4) 0;
-    font-weight: 600;
-  }
-
-  .lede {
-    font-size: var(--fs-md);
-    line-height: var(--lh-read);
-    color: var(--n-6);
-    margin: 0;
-    max-width: 52ch;
-  }
-
-  .empty {
-    font-family: var(--font-mono);
-    font-size: var(--fs-sm);
-    color: var(--n-5);
-  }
-
-  /* ───── Ledger ───── */
-  .ledger {
-    border-top: 1px solid var(--n-3);
-  }
-
-  .ledger-head {
+  .list {
+    grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 108px 1fr auto;
-    gap: var(--s-4);
-    align-items: baseline;
-    padding: var(--s-3) var(--s-2);
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--n-4);
-    border-bottom: 1px dashed var(--n-3);
-  }
-
-  .col-count {
-    color: var(--n-5);
-    letter-spacing: 0.04em;
-    text-transform: none;
-  }
-
-  .rows {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .row {
-    border-bottom: 1px dashed var(--n-3);
-  }
-
-  .row-link {
-    display: grid;
-    grid-template-columns: 108px 1fr 20px;
-    gap: var(--s-4);
-    align-items: baseline;
-    padding: var(--s-4) var(--s-2);
-    color: var(--n-6);
-    position: relative;
-    transition: background-color var(--t-3) var(--ease);
-  }
-
-  .row-date {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.04em;
-    color: var(--n-5);
-    font-variant-numeric: tabular-nums;
-    transition: color var(--t-3) var(--ease);
-  }
-
-  .row-entry {
-    min-width: 0;
-  }
-
-  .row-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.15rem, 1.2vw + 0.7rem, var(--fs-md));
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
-    color: var(--n-7);
-    margin: 0;
-    transition: color var(--t-3) var(--ease);
-  }
-
-  .row-desc {
-    font-size: var(--fs-sm);
-    line-height: var(--lh-body);
-    color: var(--n-5);
-    margin: var(--s-2) 0 0 0;
-    max-width: 56ch;
-  }
-
-  .row-arrow {
-    font-family: var(--font-mono);
-    font-size: var(--fs-sm);
-    color: var(--n-4);
-    justify-self: end;
-    align-self: center;
-    transition:
-      color var(--t-3) var(--ease),
-      transform var(--t-3) var(--ease);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .row-link:hover {
-      background: color-mix(in oklab, var(--accent) 5%, transparent);
-    }
-    .row-link:hover .row-title { color: var(--accent); }
-    .row-link:hover .row-date { color: var(--n-6); }
-    .row-link:hover .row-arrow {
-      color: var(--accent);
-      transform: translateX(3px);
-    }
-  }
-
-  .row-link:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: -2px;
-  }
-
-  .row-link:active {
-    background: color-mix(in oklab, var(--accent) 9%, transparent);
-  }
-
-  @media (max-width: 640px) {
-    .ledger-head {
-      grid-template-columns: 92px 1fr;
-      gap: var(--s-3);
-    }
-    .ledger-head .col-count { display: none; }
-
-    .row-link {
-      grid-template-columns: 92px 1fr;
-      gap: var(--s-3);
-      padding: var(--s-3) var(--s-2);
-    }
-    .row-arrow { display: none; }
-
-    .row-title { font-size: 1.05rem; }
-  }
-
-  @media (max-width: 480px) {
-    .ledger-head { display: none; }
-
-    .row-link {
-      grid-template-columns: 1fr;
-      gap: var(--s-1);
-    }
-    .row-date {
-      display: inline;
-    }
+    grid-template-columns: subgrid;
   }
 </style>

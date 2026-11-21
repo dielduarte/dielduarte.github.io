@@ -1,58 +1,81 @@
 ---
 import PageV2 from '../../layouts/PageV2.astro';
+import Spread from '../../components/grid/Spread.astro';
+import type { Lang } from '../../components/nav/navMachine';
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'en' } },
-    { params: { lang: 'pt-br' } },
-  ];
+  return [{ params: { lang: 'en' } }, { params: { lang: 'pt-br' } }];
 }
 
-const { lang } = Astro.params as { lang: 'en' | 'pt-br' };
-const isEnglish = lang === 'en';
+const { lang } = Astro.params as { lang: Lang };
 
 const content = {
   en: {
     title: 'About — Diel Duarte',
-    description: 'Principal Engineer at Appcues. Writes about state charts, XState, and the architecture of legible UI.',
+    description: 'Diel Duarte works on devtools at Resend. Writes about statecharts, XState, and frontend architecture.',
     langSwitchHref: '/about/pt-br/',
-    headline: 'About.',
-    monoNote: 'the writer · in the about node',
+    sentence: 'I live in Belo Horizonte.',
+    country: 'Brazil',
+    cells: [[1, 1, 2], [1, 2, 5], [1, 5, 6], [2, 1, 3], [2, 3, 9]],
     paragraphs: [
-      "I'm Diel Duarte — Software Engineer, working mostly in the browser. I spend my days shaping architecture and developer experiences.",
-      "Over the years I've moved from a generalist full-stack role into frontend specialization. I care about the architecture of legible UI: splitting code along the grain of a product, modelling interactions as explicit state, and making the invisible parts of the system readable to the next person.",
-      "Lately I write about everything I'm interested in and learning. This site itself is structured as a tree: home at the root, a handful of branches, one of them rendered as a diagram on the home page.",
-      "Outside work I drive, run, lift, drink good coffee, and try to read more than I tweet. I live in Brazil.",
+      "I'm Diel Duarte, a software engineer who works mostly in the browser. I spend my days shaping architecture and developer experience.",
+      "Over the years I've moved from generalist full-stack work into frontend. I care about the architecture of legible UI: splitting code along the grain of a product, modelling interactions as explicit state, and making the invisible parts of a system readable to the next person. I've led teams, worked at companies of every size, and I'm comfortable across the whole stack, infrastructure included.",
     ],
-    listHeading: 'Currently',
-    list: [
-      { label: 'Working on', value: 'Open source at Resend' },
-      { label: 'Writing about', value: 'Everything software and learnings' },
-      { label: 'Based in', value: 'Belo Horizonte, Brazil' },
-    ],
+    projectsIntro: "I'm a builder at heart. A few of my side projects:",
+    experienceHeading: 'Career highlights',
+    present: 'present',
+    more: 'More on LinkedIn',
+    newTab: '(opens in new tab)',
   },
   'pt-br': {
     title: 'Sobre — Diel Duarte',
-    description: 'Principal Engineer na Appcues. Escreve sobre state charts, XState e a arquitetura de UIs legíveis.',
+    description: 'Diel Duarte trabalha com devtools na Resend e escreve sobre statecharts, XState e arquitetura de front-end.',
     langSwitchHref: '/about/en/',
-    headline: 'Sobre.',
-    monoNote: 'o autor · no nó about',
+    sentence: 'Eu moro em Belo Horizonte.',
+    country: 'Brasil',
+    cells: [[1, 1, 3], [1, 3, 6], [1, 6, 8], [2, 1, 3], [2, 3, 9]],
     paragraphs: [
-      "Sou Diel Duarte — Software Engineer, trabalhando quase sempre no navegador. Meus dias se passam desenhando arquitetura e experiências de desenvolvimento.",
-      "Ao longo dos anos saí de um papel full-stack generalista para uma especialização em frontend. Me importo com a arquitetura de UIs legíveis: dividir código pela estrutura natural do produto, modelar interações como estado explícito, e deixar as partes invisíveis do sistema legíveis para quem vem depois.",
-      "Ultimamente escrevo sobre tudo que me interessa e estou aprendendo. Este site é ele próprio estruturado como uma árvore: home na raiz, alguns galhos, um deles renderizado como diagrama na home.",
-      "Fora do trabalho, dirijo, corro, treino, tomo café bom e tento ler mais do que tuito. Moro no Brasil.",
+      'Eu sou o Diel, engenheiro de software, e trabalho quase sempre com o que roda no navegador. Passo meus dias pensando em arquitetura e em experiência de desenvolvimento.',
+      'Com o tempo, deixei de ser um full-stack generalista e me especializei em frontend. Gosto de interfaces com uma arquitetura fácil de entender: código dividido do jeito que o produto é organizado, interações modeladas como estado explícito e as partes invisíveis do sistema claras para quem chegar depois. Já liderei times, passei por empresas pequenas e grandes, e me viro bem em toda a stack, inclusive na infraestrutura.',
     ],
-    listHeading: 'No momento',
-    list: [
-      { label: 'Trabalhando em', value: 'Open source na Resend' },
-      { label: 'Escrevendo sobre', value: 'Tudo sobre software e aprendizados' },
-      { label: 'Baseado em', value: 'Belo Horizonte, Brasil' },
-    ],
+    projectsIntro: 'Sou builder por natureza. Alguns dos meus side projects:',
+    experienceHeading: 'Destaques da carreira',
+    present: 'hoje',
+    more: 'Mais no LinkedIn',
+    newTab: '(abre em nova aba)',
   },
-};
+} satisfies Record<Lang, { cells: Array<[number, number, number]> } & Record<string, unknown>>;
 
 const t = content[lang];
+
+interface Job {
+  company: string;
+  /** The last title held there. */
+  title: string;
+  from: number;
+  /** null while the job is current. */
+  to: number | null;
+}
+
+// Newest first. Titles stay in English on both language versions, as on LinkedIn.
+const experience: Job[] = [
+  { company: 'Resend', title: 'Software Engineer', from: 2026, to: null },
+  { company: 'Appcues', title: 'Principal Frontend Engineer', from: 2021, to: 2026 },
+  { company: 'AvantStay', title: 'Senior Frontend Developer', from: 2019, to: 2021 },
+  { company: 'GRITSpot', title: 'Senior Frontend Developer', from: 2018, to: 2018 },
+  { company: 'Hotmart', title: 'Senior Frontend Developer', from: 2016, to: 2018 },
+];
+
+const sideProjects = [
+  'https://feedrsauros.com/',
+  'https://maestrio.ai/',
+  'https://everythingsystemdesign.dev/',
+  'https://socontratos.com/',
+];
+const domain = (url: string) => new URL(url).hostname;
+
+const years = ({ from, to }: Job) =>
+  to === null ? `${from}–${t.present}` : from === to ? `${from}` : `${from}–${to}`;
 ---
 
 <PageV2
@@ -62,115 +85,140 @@ const t = content[lang];
   currentState="about"
   langSwitchHref={t.langSwitchHref}
 >
-  <section class="about">
-    <p class="mono-note">{t.monoNote}</p>
-    <h1>{t.headline}</h1>
+  <Spread
+    lang={lang}
+    sentence={t.sentence}
+    cells={t.cells}
+    highlight={4}
+    portrait={{ rows: [1, 4], cols: [9, 13], variant: 'block' }}
+    aside={{ text: t.country, cols: [1, 6] }}
+  />
 
-    <div class="prose">
-      {t.paragraphs.map((p) => <p>{p}</p>)}
-    </div>
-
-    <div class="now">
-      <h2>{t.listHeading}</h2>
-      <dl>
-        {t.list.map((row) => (
-          <div class="row">
-            <dt>{row.label}</dt>
-            <dd>{row.value}</dd>
-          </div>
-        ))}
-      </dl>
+  <section class="frame">
+    <div class="grid about">
+      <div class="prose reading">
+        {t.paragraphs.map((p) => <p>{p}</p>)}
+        <p>{t.projectsIntro}</p>
+        <ul class="projects">
+          {sideProjects.map((url) => (
+            <li>
+              <a class="link" href={url} target="_blank" rel="noopener noreferrer">
+                {domain(url)}<span class="sr-only"> {t.newTab}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="now-wrap">
+        <h2 class="now-heading">{t.experienceHeading}</h2>
+        <ol class="jobs">
+          {experience.map((job) => (
+            <li>
+              <span class="years">{years(job)}</span>
+              <span class="company">{job.company}</span>
+              <span class="role">{job.title}</span>
+            </li>
+          ))}
+        </ol>
+        <a class="link more" href="https://www.linkedin.com/in/dielduarte/" target="_blank" rel="noopener noreferrer">
+          {t.more}<span class="sr-only"> {t.newTab}</span>
+        </a>
+      </div>
     </div>
   </section>
 </PageV2>
 
 <style>
   .about {
-    max-width: 62ch;
-  }
-
-  .mono-note {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 var(--s-4) 0;
-  }
-
-  h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw + 0.5rem, var(--fs-3xl));
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    color: var(--n-7);
-    margin: 0 0 var(--s-6) 0;
-    font-weight: 600;
+    align-items: start;
   }
 
   .prose {
-    font-family: var(--font-prose);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    color: var(--n-6);
-    letter-spacing: -0.003em;
+    grid-column: 1 / 6;
+    padding: 12px var(--cell-pad) 0;
+    max-width: 60ch;
   }
 
   .prose p {
-    margin: 0 0 1.6em 0;
+    margin: 0 0 1em;
   }
 
-  .prose p:last-child {
-    margin-bottom: 0;
+  .projects {
+    margin: 0 0 1em;
+    padding: 0;
+    list-style: none;
   }
 
-  .now {
-    margin-top: var(--s-6);
-    padding-top: var(--s-5);
-    border-top: 1px dashed var(--n-3);
+  .projects li {
+    padding: 2px 0;
   }
 
-  .now h2 {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 var(--s-4) 0;
+  .now-wrap {
+    grid-column: 7 / 13;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  .now-heading {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 12px var(--cell-pad) 10px;
+    font-size: var(--fs-small);
     font-weight: 400;
+    color: var(--muted);
   }
 
-  dl {
-    margin: 0;
+  .jobs {
+    grid-column: 1 / -1;
     display: grid;
-    gap: var(--s-3);
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: minmax(120px, 160px) 1fr;
-    gap: var(--s-4);
-    align-items: baseline;
-  }
-
-  dt {
-    font-family: var(--font-mono);
-    font-size: var(--fs-xs);
-    color: var(--n-5);
-    letter-spacing: 0.02em;
-  }
-
-  dd {
-    font-size: var(--fs-sm);
-    color: var(--n-6);
+    grid-template-columns: subgrid;
     margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  @media (max-width: 540px) {
-    .row {
-      grid-template-columns: 1fr;
-      gap: var(--s-1);
-    }
-    dt { font-size: var(--fs-xs); }
+  .jobs li {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 9px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .jobs li > span {
+    padding: 0 var(--cell-pad);
+  }
+
+  .years {
+    grid-column: 1 / 2;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .company {
+    grid-column: 2 / 4;
+    font-size: var(--fs-small);
+    font-weight: 500;
+  }
+
+  .role {
+    grid-column: 4 / -1;
+    font-size: var(--fs-small);
+  }
+
+  .more {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin: 14px var(--cell-pad) 0;
+    font-size: var(--fs-small);
+  }
+
+  @media (max-width: 760px) {
+    .prose,
+    .now-wrap { grid-column: 1 / -1; }
+
+    .years { grid-column: 1 / 2; }
+    .company { grid-column: 2 / 3; }
+    .role { grid-column: 3 / -1; }
   }
 </style>
