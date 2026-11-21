@@ -5,7 +5,6 @@ export type Lang = 'en' | 'pt-br';
 export type NavStateId =
   | 'home'
   | 'writing'
-  | 'photos'
   | 'cases'
   | 'lab'
   | 'about'
@@ -14,7 +13,6 @@ export type NavStateId =
 export type NavEvent =
   | { type: 'GO_HOME' }
   | { type: 'GO_WRITING' }
-  | { type: 'GO_PHOTOS' }
   | { type: 'GO_CASES' }
   | { type: 'GO_LAB' }
   | { type: 'GO_ABOUT' }
@@ -54,15 +52,6 @@ export const NODES: NavNode[] = [
     y: 110,
     href: { en: '/blog/en/', 'pt-br': '/blog/pt-br/' },
     event: 'GO_WRITING',
-  },
-  {
-    id: 'photos',
-    label: 'photos',
-    labels: { en: 'photos', 'pt-br': 'fotos' },
-    x: 360,
-    y: 155,
-    href: { en: '/photos/en/', 'pt-br': '/photos/pt-br/' },
-    event: 'GO_PHOTOS',
   },
   {
     id: 'about',
@@ -108,7 +97,6 @@ export const visibleNodes = NODES.filter((n) => !n.hidden);
 
 export const EDGES: Array<[NavStateId, NavStateId]> = [
   ['home', 'writing'],
-  ['home', 'photos'],
   ['home', 'about'],
   ['home', 'contact'],
 ];
@@ -116,7 +104,6 @@ export const EDGES: Array<[NavStateId, NavStateId]> = [
 const transitions = {
   GO_HOME: 'home',
   GO_WRITING: 'writing',
-  GO_PHOTOS: 'photos',
   GO_CASES: 'cases',
   GO_LAB: 'lab',
   GO_ABOUT: 'about',
@@ -144,7 +131,6 @@ export const navMachine = setup({
   states: {
     home: { on: buildTransitions('home') },
     writing: { on: buildTransitions('writing') },
-    photos: { on: buildTransitions('photos') },
     cases: { on: buildTransitions('cases') },
     lab: { on: buildTransitions('lab') },
     about: { on: buildTransitions('about') },
@@ -165,7 +151,7 @@ export function pathToState(pathname: string): NavStateId {
   const p = pathname.replace(/\/+$/, '') || '/';
   if (p === '' || p === '/' || p === '/pt-br') return 'home';
   if (p.startsWith('/blog')) return 'writing';
-  if (p.startsWith('/photos')) return 'photos';
+  if (p.startsWith('/photos')) return 'about';
   if (p.startsWith('/case-studies')) return 'cases';
   if (p.startsWith('/lab')) return 'lab';
   if (p.startsWith('/about')) return 'about';

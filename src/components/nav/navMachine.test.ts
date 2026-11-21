@@ -1,18 +1,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createActor } from 'xstate';
-import { navMachine, pathToState, langFromPath } from './navMachine.ts';
+import { pathToState, langFromPath, visibleNodes } from './navMachine.ts';
 
-test('photos pages resolve to the photos state', () => {
-  assert.equal(pathToState('/photos/en/'), 'photos');
-  assert.equal(pathToState('/photos/pt-br/some-photo/'), 'photos');
+test('photos pages belong to about', () => {
+  assert.equal(pathToState('/photos/en/'), 'about');
+  assert.equal(pathToState('/photos/pt-br/some-photo/'), 'about');
   assert.equal(langFromPath('/photos/pt-br/some-photo/'), 'pt-br');
 });
 
-test('the machine can move into and out of photos', () => {
-  const actor = createActor(navMachine).start();
-  actor.send({ type: 'GO_PHOTOS' });
-  assert.equal(actor.getSnapshot().value, 'photos');
-  actor.send({ type: 'GO_ABOUT' });
-  assert.equal(actor.getSnapshot().value, 'about');
+test('the main menu is home, writing, about and contact', () => {
+  assert.deepEqual(
+    visibleNodes.map((node) => node.id),
+    ['home', 'writing', 'about', 'contact'],
+  );
 });

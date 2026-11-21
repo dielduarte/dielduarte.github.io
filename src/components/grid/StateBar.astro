@@ -15,7 +15,7 @@ const otherLang = lang === 'en' ? 'pt-br' : 'en';
 <nav class="frame bar" aria-label={lang === 'en' ? 'Site navigation' : 'Navegação do site'}>
   <div class="grid bar-grid">
     <a class="cell who" href={homeHref}>Diel Duarte</a>
-    <ol class="states">
+    <ol class="states" style={`--n:${visibleNodes.length}`}>
       {visibleNodes.map((node) => {
         const active = node.id === current;
         return (
@@ -81,9 +81,9 @@ const otherLang = lang === 'en' ? 'pt-br' : 'en';
   }
 
   .states {
-    grid-column: 3 / 8;
+    grid-column: 3 / span var(--n);
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
     margin: 0;
     padding: 0;
     list-style: none;
