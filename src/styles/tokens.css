@@ -115,7 +115,7 @@
   --fs-display-lg: clamp(52px, 8.1vw, 116px);
   --fs-display-xl: clamp(60px, 10.3vw, 148px);
 
-  --vt-duration: 800ms;
+  --vt-duration: 450ms;
   --vt-ease: cubic-bezier(0.76, 0, 0.24, 1);
 }
 

@@ -217,21 +217,21 @@ const alternates = alternateLinks({ lang, pathname: Astro.url.pathname, langSwit
       /* Old and new pages share one moving cut line, so the two never print on top of
          each other: the old page is trimmed from the left exactly as the new one is revealed. */
       html::view-transition-old(root) {
-        animation: vt-wipe-out 560ms var(--vt-ease) 300ms both !important;
+        animation: vt-wipe-out 380ms var(--vt-ease) 60ms both !important;
         mix-blend-mode: normal;
       }
 
       html::view-transition-new(root) {
-        animation: vt-wipe-in 560ms var(--vt-ease) 300ms both !important;
+        animation: vt-wipe-in 380ms var(--vt-ease) 60ms both !important;
         mix-blend-mode: normal;
       }
 
       ::view-transition-old(*):only-child {
-        animation: vt-wipe-out 380ms var(--vt-ease) both;
+        animation: vt-wipe-out 200ms var(--vt-ease) both;
       }
 
       ::view-transition-new(*):only-child {
-        animation: vt-wipe-in 560ms var(--vt-ease) 380ms both;
+        animation: vt-wipe-in 320ms var(--vt-ease) 200ms both;
       }
 
       /* Rows change width between layouts; crop the snapshot instead of stretching the
@@ -245,11 +245,11 @@ const alternates = alternateLinks({ lang, pathname: Astro.url.pathname, langSwit
       }
 
       ::view-transition-old(*.row) {
-        animation: vt-fade-out 180ms linear both;
+        animation: vt-fade-out 120ms linear both;
       }
 
       ::view-transition-new(*.row) {
-        animation: vt-wipe-in 500ms var(--vt-ease) 300ms both;
+        animation: vt-wipe-in 340ms var(--vt-ease) 80ms both;
       }
 
       /* Both portrait snapshots keep their natural size, centred, and the frame clips them
